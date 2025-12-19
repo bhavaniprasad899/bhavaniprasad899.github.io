@@ -244,6 +244,7 @@
 (() => {
   let secretNumber = Math.floor(Math.random() * 100) + 1;
   let attempts = 0;
+  const maxAttempts = 3;
 
   const guessInput = document.getElementById('guessInput');
   const guessBtn = document.getElementById('guessBtn');
@@ -251,8 +252,8 @@
   const resetGame = document.getElementById('resetGame');
   const pointsEl = document.getElementById('pointsDisplay');
 
-  let points = parseInt(localStorage.getItem('cyberArenaPoints')) || 0;
-  pointsEl.textContent = `💰 Points: ${points}`;
+  let bp = parseInt(localStorage.getItem('BP_POINTS')) || 0;
+  pointsEl.textContent = `💰 BP: ${bp}`;
 
   function reset() {
     secretNumber = Math.floor(Math.random() * 100) + 1;
@@ -276,16 +277,27 @@
     attempts++;
 
     if (guess === secretNumber) {
-      if (attempts === 1) {
-        points += 10;
-        localStorage.setItem('cyberArenaPoints', points);
-        pointsEl.textContent = `💰 Points: ${points}`;
-        guessResult.textContent = '🎉 FIRST TRY! +10 Points 🪙';
-      } else {
-        guessResult.textContent = `✅ Correct! The number was ${secretNumber}`;
-      }
+      let earnedBP = 0;
 
+      if (attempts === 1) earnedBP = 10;
+      else if (attempts === 2) earnedBP = 5;
+      else earnedBP = 2;
+
+      bp += earnedBP;
+      localStorage.setItem('BP_POINTS', bp);
+
+      pointsEl.textContent = `💰 BP: ${bp}`;
+      guessResult.innerHTML = `🎉 Correct! +${earnedBP} BP earned 😎`;
       guessResult.style.color = '#00cc44';
+
+      guessInput.disabled = true;
+      guessBtn.disabled = true;
+      resetGame.style.display = 'inline-block';
+
+    } else if (attempts >= maxAttempts) {
+      guessResult.innerHTML = `❌ Game Over! Number was <b>${secretNumber}</b>`;
+      guessResult.style.color = '#ff4d4d';
+
       guessInput.disabled = true;
       guessBtn.disabled = true;
       resetGame.style.display = 'inline-block';
