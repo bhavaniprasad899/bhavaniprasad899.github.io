@@ -249,11 +249,10 @@
   const guessBtn = document.getElementById('guessBtn');
   const guessResult = document.getElementById('guessResult');
   const resetGame = document.getElementById('resetGame');
-  const pointsEl = document.getElementById('points');
+  const pointsEl = document.getElementById('pointsDisplay');
 
-  // Load points from localStorage
   let points = parseInt(localStorage.getItem('cyberArenaPoints')) || 0;
-  pointsEl.textContent = points;
+  pointsEl.textContent = `💰 Points: ${points}`;
 
   function reset() {
     secretNumber = Math.floor(Math.random() * 100) + 1;
@@ -267,22 +266,21 @@
 
   guessBtn.addEventListener('click', () => {
     const guess = Number(guessInput.value);
-    attempts++;
 
-    if (!guess || guess < 3 || guess > 100) {
+    if (!guess || guess < 1 || guess > 100) {
       guessResult.textContent = '❌ Enter a number between 1 and 100!';
       guessResult.style.color = '#ff4d4d';
-      attempts--;
       return;
     }
 
+    attempts++;
+
     if (guess === secretNumber) {
-      // 🎯 FIRST ATTEMPT BONUS
-      if (attempts === 3) {
-        points += 10; // ⭐ you can change points later
+      if (attempts === 1) {
+        points += 10;
         localStorage.setItem('cyberArenaPoints', points);
-        pointsEl.textContent = points;
-        guessResult.textContent = `🎉 Correct on FIRST try! +10 Points 🪙`;
+        pointsEl.textContent = `💰 Points: ${points}`;
+        guessResult.textContent = '🎉 FIRST TRY! +10 Points 🪙';
       } else {
         guessResult.textContent = `✅ Correct! The number was ${secretNumber}`;
       }
@@ -302,7 +300,6 @@
   });
 
   resetGame.addEventListener('click', reset);
-  reset();
 })();
 </script>
 <script>
