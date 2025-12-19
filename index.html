@@ -1,101 +1,79 @@
-<!DOCTYPE html>
+<!DOCT<body style="font-family: Arial; background:#0d1117; color:#e6edf3; margin:0;">
+
+<!-- 🔹 NAVBAR -->
+<nav style="background:#161b22; padding:15px; text-align:center;">
+  <a href="#about" style="margin:15px; color:#58a6ff; text-decoration:none;">About</a>
+  <a href="#services" style="margin:15px; color:#58a6ff; text-decoration:none;">Services</a>
+  <a href="#contact" style="margin:15px; color:#58a6ff; text-decoration:none;">Contact</a>
+</nav>
+
+<!-- 🔹 HERO -->
+<section style="padding:60px 20px; text-align:center;">
+  <h1 style="color:#58a6ff;">⚔️ Welcome to CyberArena</h1>
+  <p>Play • Learn • Hack • Secure 😎</p>
+</section>
+
+<!-- 🔹 ABOUT -->
+<section id="about" style="padding:50px 20px; background:#010409;">
+  <h2 style="color:#58a6ff;">🧠 About CyberArena</h2>
+  <p>
+    CyberArena is a cybersecurity learning platform designed for students,
+    ethical hackers, and beginners who want to learn hacking in a fun and
+    practical way 🎮💻.
+  </p>
+  <p>
+    Here you can play mini-games, solve cyber challenges, learn real-world
+    attacks like XSS, SQL Injection, phishing, and improve your skills safely 🚀.
+  </p>
+</section>
+
+<!-- 🔹 SERVICES -->
+<section id="services" style="padding:50px 20px;">
+  <h2 style="color:#58a6ff;">🛠️ Our Services</h2>
+
+  <ul style="list-style:none; padding:0;">
+    <li>🎮 Cybersecurity Games & Challenges</li>
+    <li>🧪 Hands-on Hacking Practice (Legal & Safe)</li>
+    <li>📚 Beginner to Advanced Cyber Lessons</li>
+    <li>🏆 Points, Levels & Rewards System</li>
+    <li>🛡️ Awareness on Scams, Phishing & Fake Sites</li>
+  </ul>
+</section>
+
+<!-- 🔹 CONTACT -->
+<section id="contact" style="padding:50px 20px; background:#010409;">
+  <h2 style="color:#58a6ff;">📞 Contact Us</h2>
+
+  <p>Have questions or want to collaborate? 😄</p>
+
+  <form style="max-width:400px;">
+    <input type="text" placeholder="Your Name" required
+      style="width:100%; padding:10px; margin-bottom:10px;">
+    <input type="email" placeholder="Your Email" required
+      style="width:100%; padding:10px; margin-bottom:10px;">
+    <textarea placeholder="Your Message" required
+      style="width:100%; padding:10px; margin-bottom:10px;"></textarea>
+    <button type="submit"
+      style="background:#238636; color:white; padding:10px 20px; border:none; cursor:pointer;">
+      Send Message 🚀
+    </button>
+  </form>
+</section>
+
+<!-- 🔹 FOOTER -->
+<footer style="background:#161b22; text-align:center; padding:15px;">
+  <p>© 2025 CyberArena | Built by Bhavani Prasad 😎</p>
+</footer>
+
+</body>
+YPE html>
 <html>
 <head>
   <title>CyberArena – Play & Learn Cybersecurity</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     body {
-      font-family: Arial;
-      background: #0d1117;
-      color: #e6edf3;
-      text-align: center;
-      padding: 40px;
-      margin: 0;
-      overflow-x: hidden; /* Prevent horizontal scroll when side menu open */
-    }
-    /* Hamburger button */
-    #menuToggle {
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      width: 30px;
-      height: 25px;
-      cursor: pointer;
-      z-index: 1001;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-    }
-    #menuToggle span {
-      display: block;
-      height: 4px;
-      background: #58a6ff;
-      border-radius: 2px;
-      transition: 0.3s;
-    }
-    /* Side menu */
-    #sideMenu {
-      position: fixed;
-      top: 0;
-      right: -250px; /* hidden by default */
-      width: 250px;
-      height: 100vh;
-      background: #161b22;
-      box-shadow: -2px 0 8px rgba(0,0,0,0.7);
-      padding: 20px;
-      box-sizing: border-box;
-      transition: right 0.3s ease;
-      z-index: 1000;
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      color: #e6edf3;
-    }
-    #sideMenu.active {
-      right: 0;
-    }
-    #sideMenu .closeBtn {
-      align-self: flex-end;
-      font-size: 24px;
-      cursor: pointer;
-      margin-bottom: 20px;
-      color: #58a6ff;
-    }
-    #sideMenu .logo {
-      font-weight: bold;
-      font-size: 22px;
-      margin-bottom: 30px;
-      color: #58a6ff;
-    }
-    #sideMenu nav a {
-      color: #58a6ff;
-      text-decoration: none;
-      font-weight: bold;
-      font-size: 18px;
-      margin: 15px 0;
-      width: 100%;
-      display: block;
-      transition: color 0.3s;
-    }
-    #sideMenu nav a:hover {
-      color: #1f6feb;
-      text-decoration: underline;
-    }
-    /* Optional: fade overlay when menu open */
-    #overlay {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100vw; height: 100vh;
-      background: rgba(0,0,0,0.5);
-      opacity: 0;
-      visibility: hidden;
-      transition: opacity 0.3s;
-      z-index: 999;
-    }
-    #overlay.active {
-      opacity: 1;
-      visibility: visible;
-    }
+      
   </style>
 </head>
 <body>
