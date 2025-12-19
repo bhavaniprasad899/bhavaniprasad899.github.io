@@ -143,6 +143,12 @@
   <p id="guessResult" style="margin-top:15px; font-weight:bold;"></p>
   <button id="resetGame" style="margin-top:10px; padding:8px 12px; font-size:14px; cursor:pointer; border:none; border-radius:4px; background:#1f6feb; color:#fff; display:none;">Restart Game</button>
   </div>
+  <div style="margin-top:40px; max-width:450px; margin:auto; background:#161b22; padding:20px; border-radius:8px; color:#e6edf3; text-align:center;">
+  <h2>🎓 Get Your Unique Cybersecurity Task</h2>
+  <button id="getTaskBtn" style="padding:10px 20px; font-size:16px; background:#58a6ff; border:none; border-radius:5px; cursor:pointer; color:#fff;">Get My Task Code</button>
+  <p id="taskCode" style="margin-top:20px; font-size:20px; font-weight:bold;"></p>
+  <p id="taskDesc" style="margin-top:10px; font-size:16px;"></p>
+  </div>
 
   <script>
     const menuToggle = document.getElementById('menuToggle');
@@ -270,6 +276,45 @@
 
     resetGame.addEventListener('click', reset);
     reset();
+  })();
+</script>
+<script>
+  (() => {
+    const tasks = [
+      {code: 'TASK001', desc: 'Find and report an XSS vulnerability on a demo site.'},
+      {code: 'TASK002', desc: 'Perform SQL Injection on a safe lab and explain the impact.'},
+      {code: 'TASK003', desc: 'Write a script to scan open ports using Nmap.'},
+      {code: 'TASK004', desc: 'Create a strong password policy and test it.'},
+      {code: 'TASK005', desc: 'Explore Burp Suite and capture HTTP requests.'},
+      {code: 'TASK006', desc: 'Set up a firewall and block unwanted IPs.'},
+      {code: 'TASK007', desc: 'Explain how phishing emails can be identified.'},
+      {code: 'TASK008', desc: 'Use Wireshark to analyze network traffic.'},
+      {code: 'TASK009', desc: 'Write a report on a recent cybersecurity breach.'},
+      {code: 'TASK010', desc: 'Build a simple phishing detection script in Python.'}
+    ];
+
+    const btn = document.getElementById('getTaskBtn');
+    const codeEl = document.getElementById('taskCode');
+    const descEl = document.getElementById('taskDesc');
+    let assignedTasks = JSON.parse(localStorage.getItem('assignedTasks')) || [];
+
+    function getUniqueTask() {
+    
+      const availableTasks = tasks.filter(t => !assignedTasks.includes(t.code));
+
+      if(availableTasks.length === 0){
+        codeEl.textContent = 'All tasks assigned!';
+        descEl.textContent = 'Please check back later for more tasks.';
+        return;
+      }
+      const randomTask = availableTasks[Math.floor(Math.random() * availableTasks.length)];
+      assignedTasks.push(randomTask.code);
+      localStorage.setItem('assignedTasks', JSON.stringify(assignedTasks));
+      codeEl.textContent = `Your Task Code: ${randomTask.code}`;
+      descEl.textContent = randomTask.desc;
+    }
+
+    btn.addEventListener('click', getUniqueTask)
   })();
 </script>
   
