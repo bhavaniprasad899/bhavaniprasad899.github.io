@@ -162,5 +162,51 @@
       }
     });
   </script>
+  <div style="margin-top:40px; max-width:400px; margin-left:auto; margin-right:auto; text-align:left; background:#161b22; padding:20px; border-radius:8px;">
+  <h2>Password Strength Checker 🔒</h2>
+  <input type="password" id="pwdInput" placeholder="Enter your password" style="width:100%; padding:10px; font-size:16px; border-radius:4px; border:none; margin-bottom:10px;">
+  <div id="strengthMsg" style="font-weight:bold; font-size:18px;"></div>
+</div>
+
+<script>
+  const pwdInput = document.getElementById('pwdInput');
+  const strengthMsg = document.getElementById('strengthMsg');
+
+  pwdInput.addEventListener('input', () => {
+    const val = pwdInput.value;
+    let strength = 0;
+
+    if (val.length >= 8) strength++;
+    if (/[A-Z]/.test(val)) strength++;
+    if (/[0-9]/.test(val)) strength++;
+    if (/[^A-Za-z0-9]/.test(val)) strength++;
+
+    let msg = '';
+    let color = '';
+
+    switch(strength) {
+      case 0:
+      case 1:
+        msg = 'Weak 🔴';
+        color = '#ff4d4d';
+        break;
+      case 2:
+        msg = 'Moderate 🟠';
+        color = '#ffa500';
+        break;
+      case 3:
+        msg = 'Strong 🟢';
+        color = '#00cc44';
+        break;
+      case 4:
+        msg = 'Very Strong 💪🟢';
+        color = '#008000';
+        break;
+    }
+    strengthMsg.textContent = msg;
+    strengthMsg.style.color = color;
+  });
+</script>
+  
 </body>
 </html>
