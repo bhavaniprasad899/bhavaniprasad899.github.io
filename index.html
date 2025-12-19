@@ -135,6 +135,14 @@
   <button id="quoteBtn" style="padding:10px 15px; font-size:16px; cursor:pointer; border:none; border-radius:4px; background:#58a6ff; color:#fff;">Show Quote</button>
   <p id="quoteText" style="margin-top:15px; font-style: italic;"></p>
   </div>
+  <div style="margin-top:40px; max-width:400px; margin-left:auto; margin-right:auto; background:#161b22; padding:20px; border-radius:8px; text-align:center; color:#e6edf3;">
+  <h2>🎯 Guess the Number Game</h2>
+  <p>I'm thinking of a number between 1 and 100. Try to guess it!</p>
+  <input type="number" id="guessInput" placeholder="Enter your guess" style="padding:10px; width:60%; font-size:16px; border-radius:4px; border:none;">
+  <button id="guessBtn" style="padding:10px 15px; font-size:16px; margin-left:10px; cursor:pointer; border:none; border-radius:4px; background:#58a6ff; color:#fff;">Guess</button>
+  <p id="guessResult" style="margin-top:15px; font-weight:bold;"></p>
+  <button id="resetGame" style="margin-top:10px; padding:8px 12px; font-size:14px; cursor:pointer; border:none; border-radius:4px; background:#1f6feb; color:#fff; display:none;">Restart Game</button>
+  </div>
 
   <script>
     const menuToggle = document.getElementById('menuToggle');
@@ -222,6 +230,50 @@
     const idx = Math.floor(Math.random() * quotes.length);
     document.getElementById('quoteText').textContent = quotes[idx];
   });
+</script>
+
+<script>
+  (() => {
+    let secretNumber = Math.floor(Math.random() * 100) + 1;
+    const guessInput = document.getElementById('guessInput');
+    const guessBtn = document.getElementById('guessBtn');
+    const guessResult = document.getElementById('guessResult');
+    const resetGame = document.getElementById('resetGame');
+
+    function reset() {
+      secretNumber = Math.floor(Math.random() * 100) + 1;
+      guessResult.textContent = '';
+      guessInput.value = '';
+      guessInput.disabled = false;
+      guessBtn.disabled = false;
+      resetGame.style.display = 'none';
+    }
+
+    guessBtn.addEventListener('click', () => {
+      const guess = Number(guessInput.value);
+      if (!guess || guess < 1 || guess > 100) {
+        guessResult.textContent = 'Please enter a valid number between 1 and 100!';
+        guessResult.style.color = '#ff4d4d';
+        return;
+      }
+      if (guess === secretNumber) {
+        guessResult.textContent = `🎉 Correct! The number was ${secretNumber}. You rock!`;
+        guessResult.style.color = '#00cc44';
+        guessInput.disabled = true;
+        guessBtn.disabled = true;
+        resetGame.style.display = 'inline-block';
+      } else if (guess < secretNumber) {
+        guessResult.textContent = 'Too low! Try a higher number.';
+        guessResult.style.color = '#ffa500';
+      } else {
+        guessResult.textContent = 'Too high! Try a lower number.';
+        guessResult.style.color = '#ffa500';
+      }
+    });
+
+    resetGame.addEventListener('click', reset);
+    reset();
+  })();
 </script>
   
 </body>
