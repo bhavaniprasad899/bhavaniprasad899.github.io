@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>CyberArena Level 7 - Final Challenge</title>
+<style>
+  body {
+    background: #0d1117;
+    color: #c9d1d9;
+    font-family: 'Courier New', Courier, monospace;
+    text-align: center;
+    padding: 20px;
+  }
+  h1 {
+    color: #58a6ff;
+  }
+  .question-box {
+    background: #161b22;
+    margin: 20px auto;
+    padding: 20px;
+    border-radius: 10px;
+    max-width: 700px;
+    box-shadow: 0 0 10px #58a6ff66;
+  }
+  .options {
+    margin-top: 15px;
+    text-align: left;
+  }
+  button.option-btn {
+    background: #21262d;
+    border: 1px solid #30363d;
+    color: #c9d1d9;
+    padding: 10px 15px;
+    margin: 8px 0;
+    width: 100%;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background 0.3s ease;
+  }
+  button.option-btn:hover {
+    background: #238636;
+  }
+  .scoreboard {
+    margin-top: 25px;
+    font-size: 20px;
+    color: #79c0ff;
+  }
+  .message {
+    margin-top: 15px;
+    font-size: 18px;
+    color: #2ea043;
+  }
+  .final-msg {
+    font-size: 24px;
+    margin-top: 30px;
+    color: #f85149;
+  }
+</style>
+</head>
+<body>
+
+<h1>🎯 CyberArena Level 7 - Final Challenge 🎯</h1>
+<div class="question-box" id="question-box">
+  <!-- Question and options will go here -->
+</div>
+
+<div class="scoreboard" id="scoreboard">Score: 0</div>
+<div class="message" id="message"></div>
+<div class="final-msg" id="final-msg"></div>
+
+<script>
+const questions = [
+  {
+    q: "Which of the following techniques is most effective for preventing SQL Injection attacks?",
+    options: ["Input validation", "Parameterized queries (prepared statements)", "Escaping special characters", "Disabling database logging"],
+    answer: "Parameterized queries (prepared statements)"
+  },
+  {
+    q: "In asymmetric encryption, which key is used to encrypt the data?",
+    options: ["Public key", "Private key", "Symmetric key", "Hash key"],
+    answer: "Public key"
+  },
+  {
+    q: "Which protocol is considered the most secure for web traffic encryption?",
+    options: ["HTTP", "FTP", "TLS", "Telnet"],
+    answer: "TLS"
+  },
+  {
+    q: "What is the primary purpose of a 'nonce' in cryptographic protocols?",
+    options: ["To encrypt data", "To ensure message freshness and prevent replay attacks", "To generate keys", "To sign certificates"],
+    answer: "To ensure message freshness and prevent replay attacks"
+  },
+  {
+    q: "Which Linux command is commonly used to scan open ports on a remote system?",
+    options: ["ping", "nmap", "traceroute", "netstat"],
+    answer: "nmap"
+  },
+  {
+    q: "What does the 'XSS' vulnerability stand for?",
+    options: ["Cross-site scripting", "Cross-site stealing", "Cross-site spying", "Cross-site spoofing"],
+    answer: "Cross-site scripting"
+  },
+  {
+    q: "Which technique can an attacker use to intercept communication between two parties without their knowledge?",
+    options: ["Man-in-the-Middle attack", "Phishing", "Brute force", "SQL Injection"],
+    answer: "Man-in-the-Middle attack"
+  },
+  {
+    q: "Which of the following hashing algorithms is considered secure for password storage?",
+    options: ["MD5", "SHA-1", "bcrypt", "SHA-0"],
+    answer: "bcrypt"
+  },
+  {
+    q: "What is a 'buffer overflow' attack?",
+    options: ["Exploiting an input buffer by writing more data than it can hold", "Overloading the network buffer", "Manipulating DNS cache", "Hijacking user session"],
+    answer: "Exploiting an input buffer by writing more data than it can hold"
+  },
+  {
+    q: "Which port does HTTPS typically use?",
+    options: ["80", "22", "443", "21"],
+    answer: "443"
+  },
+  {
+    q: "What is the main purpose of a firewall?",
+    options: ["To encrypt data", "To filter network traffic", "To store passwords", "To monitor user activity"],
+    answer: "To filter network traffic"
+  },
+  {
+    q: "In the context of cybersecurity, what is 'phishing'?",
+    options: ["A method to steal data by masquerading as a trustworthy entity", "A denial of service attack", "A vulnerability scanner", "A cryptographic algorithm"],
+    answer: "A method to steal data by masquerading as a trustworthy entity"
+  },
+  {
+    q: "What does the 'CIA triad' stand for in information security?",
+    options: ["Confidentiality, Integrity, Availability", "Control, Identification, Authorization", "Confidentiality, Identification, Authentication", "Control, Integrity, Access"],
+    answer: "Confidentiality, Integrity, Availability"
+  },
+  {
+    q: "Which tool is primarily used for packet capturing and network protocol analysis?",
+    options: ["Metasploit", "Wireshark", "Burp Suite", "Nmap"],
+    answer: "Wireshark"
+  },
+  {
+    q: "What does 'social engineering' refer to in cybersecurity?",
+    options: ["Manipulating people into revealing confidential information", "Encrypting data", "Hacking network protocols", "Installing firewalls"],
+    answer: "Manipulating people into revealing confidential information"
+  },
+  {
+    q: "Which of these is NOT a common type of malware?",
+    options: ["Worm", "Trojan", "Rootkit", "Phishing"],
+    answer: "Phishing"
+  },
+  {
+    q: "What is the function of a 'honeypot' in network security?",
+    options: ["To attract and trap attackers", "To block malware", "To monitor employee activity", "To encrypt data"],
+    answer: "To attract and trap attackers"
+  },
+  {
+    q: "What kind of attack involves overwhelming a system with traffic to make it unavailable?",
+    options: ["DDoS", "MITM", "XSS", "SQLi"],
+    answer: "DDoS"
+  },
+  {
+    q: "Which of these is a common vulnerability in web applications allowing attackers to inject malicious scripts?",
+    options: ["XSS", "CSRF", "SQLi", "RCE"],
+    answer: "XSS"
+  },
+  {
+    q: "Which cybersecurity framework is developed by the US National Institute of Standards and Technology (NIST)?",
+    options: ["ISO 27001", "NIST Cybersecurity Framework", "COBIT", "GDPR"],
+    answer: "NIST Cybersecurity Framework"
+  }
+];
+
+// Shuffle function to randomize options array
+function shuffleArray(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
+}
+
+let currentQ = 0;
+let score = 0;
+
+const questionBox = document.getElementById('question-box');
+const scoreboard = document.getElementById('scoreboard');
+const message = document.getElementById('message');
+const finalMsg = document.getElementById('final-msg');
+
+function loadQuestion() {
+  if (currentQ >= questions.length) {
+    questionBox.innerHTML = "";
+    finalMsg.innerHTML = `🎉 You completed the final level with a score of <strong>${score} / ${questions.length}</strong>! Awesome job, Cyber Warrior! 🏆😄`;
+    message.innerHTML = '';
+    return;
+  }
+
+  const qObj = questions[currentQ];
+  let optionsShuffled = shuffleArray([...qObj.options]); // clone and shuffle options
+
+  // Build options HTML with buttons
+  let optionsHtml = optionsShuffled.map(opt => 
+    `<button class="option-btn" onclick="selectAnswer('${opt}')">${opt}</button>`
+  ).join('');
+
+  questionBox.innerHTML = `
+    <h2>Question ${currentQ + 1} of ${questions.length}</h2>
+    <p>${qObj.q}</p>
+    <div class="options">${optionsHtml}</div>
+  `;
+
+  message.innerHTML = '';
+}
+
+function selectAnswer(selected) {
+  const correctAnswer = questions[currentQ].answer;
+  if (selected === correctAnswer) {
+    score++;
+    scoreboard.textContent = `Score: ${score}`;
+    message.style.color = '#2ea043';
+    message.textContent = `🎉 Correct! Keep rocking! 😁`;
+  } else {
+    message.style.color = '#f85149';
+    message.textContent = `😞 Oops! The correct answer was: "${correctAnswer}". Don't give up! 💪`;
+  }
+
+  currentQ++;
+
+  // Delay before next question for better UX
+  setTimeout(() => {
+    loadQuestion();
+  }, 1800);
+}
+
+// Start quiz
+loadQuestion();
+</script>
+
+</body>
+</html>
