@@ -1,185 +1,198 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>CyberArena – 3D Hacker Terminal</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CyberArena – Hacker Matrix Terminal</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <style>
-    body {
-      margin: 0;
-      height: 100vh;
-      background: radial-gradient(circle at top, #020409, #000);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-family: monospace;
-      perspective: 1200px;
-      color: #00ffcc;
-    }
+<style>
+html, body {
+  margin: 0;
+  height: 100%;
+  background: black;
+  overflow: hidden;
+  font-family: monospace;
+}
 
-    .terminal-3d {
-      width: 90%;
-      max-width: 900px;
-      height: 85vh;
-      background: linear-gradient(145deg, #020a13, #000);
-      border-radius: 15px;
-      box-shadow:
-        0 0 25px #00ffcc55,
-        inset 0 0 25px #000;
-      transform: rotateX(12deg);
-      animation: float 6s ease-in-out infinite;
-      padding: 20px;
-      overflow: hidden;
-    }
+/* MATRIX CANVAS */
+#matrix {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 0;
+}
 
-    @keyframes float {
-      0%, 100% { transform: rotateX(12deg) translateY(0); }
-      50% { transform: rotateX(12deg) translateY(-10px); }
-    }
+/* TERMINAL */
+.terminal {
+  position: relative;
+  z-index: 2;
+  width: 90%;
+  max-width: 900px;
+  height: 85vh;
+  margin: auto;
+  margin-top: 40px;
+  background: rgba(0,0,0,0.85);
+  border: 1px solid #00ff00;
+  box-shadow: 0 0 25px #00ff0055;
+  padding: 15px;
+  color: #00ffcc;
+  overflow-y: auto;
+}
 
-    .header {
-      color: #58a6ff;
-      text-align: center;
-      font-weight: bold;
-      margin-bottom: 10px;
-      text-shadow: 0 0 10px #58a6ff;
-    }
+.header {
+  text-align: center;
+  color: #00ff00;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
 
-    .screen {
-      background: #000;
-      height: 100%;
-      padding: 15px;
-      border-radius: 10px;
-      overflow-y: auto;
-      box-shadow: inset 0 0 15px #00ffcc33;
-    }
+.line { margin: 6px 0; }
+.prompt { color: #00ff00; }
 
-    .line {
-      margin: 6px 0;
-    }
-
-    .prompt {
-      color: #00ff00;
-    }
-
-    input {
-      background: transparent;
-      border: none;
-      outline: none;
-      color: #00ffcc;
-      font-family: monospace;
-      font-size: 16px;
-      width: 90%;
-    }
-
-    .cursor {
-      display: inline-block;
-      width: 10px;
-      height: 18px;
-      background: #00ffcc;
-      animation: blink 1s infinite;
-      margin-left: 3px;
-    }
-
-    @keyframes blink {
-      50% { opacity: 0; }
-    }
-  </style>
+input {
+  background: transparent;
+  border: none;
+  outline: none;
+  color: #00ffcc;
+  font-family: monospace;
+  width: 80%;
+}
+</style>
 </head>
 
 <body>
 
-<div class="terminal-3d">
-  <div class="header">☠ CYBERARENA :: OFFENSIVE TERMINAL ☠</div>
-  <div class="screen" id="screen">
-    <div class="line">Initializing CyberArena OS...</div>
-    <div class="line">Loading modules ██████████ 100%</div>
-    <div class="line">Type <b>help</b> to begin.</div>
-    <br>
-    <div class="line">
-      <span class="prompt">root@cyberarena:~$</span>
-      <input id="command" autofocus onkeydown="runCommand(event)">
-      <span class="cursor"></span>
-    </div>
+<canvas id="matrix"></canvas>
+
+<div class="terminal" id="terminal">
+  <div class="header">☠ CYBERARENA :: MATRIX HACKER TERMINAL ☠</div>
+  <div class="line">Booting Offensive Lab...</div>
+  <div class="line">Type <b>help</b> to begin your mission.</div>
+  <br>
+  <div class="line">
+    <span class="prompt">root@cyberarena:~$</span>
+    <input id="cmd" autofocus onkeydown="run(event)">
   </div>
 </div>
 
 <script>
-function runCommand(e) {
+/* ===== MATRIX RAIN ===== */
+const canvas = document.getElementById("matrix");
+const ctx = canvas.getContext("2d");
+
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+const letters = "アカサタナハマヤラワ0123456789";
+const fontSize = 16;
+const columns = canvas.width / fontSize;
+const drops = Array.from({length: columns}).fill(1);
+
+function drawMatrix() {
+  ctx.fillStyle = "rgba(0,0,0,0.05)";
+  ctx.fillRect(0,0,canvas.width,canvas.height);
+  ctx.fillStyle = "#00ff00";
+  ctx.font = fontSize + "px monospace";
+
+  drops.forEach((y, i) => {
+    const text = letters[Math.floor(Math.random()*letters.length)];
+    ctx.fillText(text, i*fontSize, y*fontSize);
+    if (y*fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
+    drops[i]++;
+  });
+}
+setInterval(drawMatrix, 35);
+
+/* ===== TERMINAL LOGIC ===== */
+let points = 0;
+let taskStep = 0;
+const terminal = document.getElementById("terminal");
+
+function print(text) {
+  const div = document.createElement("div");
+  div.className = "line";
+  div.innerHTML = text;
+  terminal.appendChild(div);
+  terminal.scrollTop = terminal.scrollHeight;
+}
+
+function run(e) {
   if (e.key === "Enter") {
-    let input = document.getElementById("command");
-    let cmd = input.value.trim();
-    let screen = document.getElementById("screen");
-
-    let line = document.createElement("div");
-    line.className = "line";
-    line.innerHTML = `<span class="prompt">root@cyberarena:~$</span> ${cmd}`;
-    screen.appendChild(line);
-
-    processCommand(cmd, screen);
-
+    const input = document.getElementById("cmd");
+    const cmd = input.value.trim();
+    print(`<span class="prompt">root@cyberarena:~$</span> ${cmd}`);
     input.value = "";
-    screen.scrollTop = screen.scrollHeight;
+    handle(cmd);
   }
 }
 
-function processCommand(cmd, screen) {
-  let out = document.createElement("div");
-  out.className = "line";
-
+function handle(cmd) {
   if (cmd === "help") {
-    out.innerHTML = `
-      Commands available:
-      <br>whois domain
-      <br>subdomain domain
-      <br>ipinfo ip
-      <br>clear
-    `;
+    print(`
+Commands:
+<br>start-task
+<br>whois domain
+<br>subdomain domain
+<br>score
+<br>clear
+    `);
   }
+
+  else if (cmd === "start-task") {
+    taskStep = 1;
+    print("🧠 TASK 1: Find WHOIS info of google.com");
+    print("👉 Use: whois google.com");
+  }
+
   else if (cmd.startsWith("whois ")) {
-    let target = cmd.split(" ")[1];
-    out.textContent = "Scanning WHOIS database...";
-    screen.appendChild(out);
-    fetch("https://api.hackertarget.com/whois/?q=" + target)
+    const t = cmd.split(" ")[1];
+    fetch("https://api.hackertarget.com/whois/?q=" + t)
       .then(r => r.text())
-      .then(d => out.textContent = d);
-    return;
+      .then(d => {
+        print("<pre>"+d+"</pre>");
+        if (taskStep === 1 && t === "google.com") {
+          points += 10;
+          taskStep = 2;
+          print("✅ Task 1 completed (+10 points)");
+          print("🧠 TASK 2: Enumerate subdomains of github.com");
+          print("👉 Use: subdomain github.com");
+        }
+      });
   }
+
   else if (cmd.startsWith("subdomain ")) {
-    let target = cmd.split(" ")[1];
-    out.textContent = "Enumerating subdomains...";
-    screen.appendChild(out);
-    fetch("https://api.hackertarget.com/hostsearch/?q=" + target)
+    const t = cmd.split(" ")[1];
+    fetch("https://api.hackertarget.com/hostsearch/?q=" + t)
       .then(r => r.text())
-      .then(d => out.textContent = d);
-    return;
+      .then(d => {
+        print("<pre>"+d+"</pre>");
+        if (taskStep === 2 && t === "github.com") {
+          points += 15;
+          taskStep = 0;
+          print("✅ Task 2 completed (+15 points)");
+          print("🎉 Mission completed!");
+        }
+      });
   }
-  else if (cmd.startsWith("ipinfo ")) {
-    let target = cmd.split(" ")[1];
-    out.textContent = "Fetching IP intelligence...";
-    screen.appendChild(out);
-    fetch("https://api.hackertarget.com/ipinfo/?q=" + target)
-      .then(r => r.text())
-      .then(d => out.textContent = d);
-    return;
+
+  else if (cmd === "score") {
+    print("🏆 Your Score: " + points);
   }
+
   else if (cmd === "clear") {
-    screen.innerHTML = `
+    terminal.innerHTML = `
+      <div class="header">☠ CYBERARENA :: MATRIX HACKER TERMINAL ☠</div>
       <div class="line">Terminal cleared.</div>
       <br>
       <div class="line">
         <span class="prompt">root@cyberarena:~$</span>
-        <input id="command" autofocus onkeydown="runCommand(event)">
-        <span class="cursor"></span>
+        <input id="cmd" autofocus onkeydown="run(event)">
       </div>
     `;
-    return;
-  }
-  else {
-    out.textContent = "Command not found. Type 'help'";
   }
 
-  screen.appendChild(out);
+  else {
+    print("❌ Unknown command. Type help");
+  }
 }
 </script>
 
