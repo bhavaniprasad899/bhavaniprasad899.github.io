@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>CyberArena – WHOIS & Subdomain Lookup</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      background: #0d1117;
+      color: #00ffcc;
+      font-family: monospace;
+      text-align: center;
+      padding: 20px;
+    }
+    h1 {
+      color: #58a6ff;
+    }
+    input, button {
+      padding: 12px;
+      margin: 10px;
+      width: 80%;
+      max-width: 400px;
+      background: black;
+      color: #00ff00;
+      border: 1px solid #00ff00;
+      font-family: monospace;
+    }
+    button:hover {
+      background: #00ff00;
+      color: black;
+      cursor: pointer;
+    }
+    pre {
+      background: black;
+      padding: 15px;
+      text-align: left;
+      overflow-x: auto;
+      border: 1px solid #00ff00;
+      max-width: 95%;
+      margin: auto;
+    }
+    a {
+      color: #58a6ff;
+      text-decoration: none;
+    }
+  </style>
+</head>
+
+<body>
+
+<h1>🌐 CyberArena – WHOIS & Subdomain Scanner</h1>
+
+<input type="text" id="target" placeholder="Enter domain or IP (example.com)">
+<br>
+
+<button onclick="whoisLookup()">WHOIS Lookup</button>
+<button onclick="subdomainLookup()">Find Subdomains</button>
+<button onclick="ipLookup()">IP Info</button>
+
+<pre id="output">Waiting for input...</pre>
+
+<br>
+<a href="index.html">⬅ Back to Home</a>
+
+<script>
+function whoisLookup() {
+  let target = document.getElementById("target").value;
+  let output = document.getElementById("output");
+  output.textContent = "Fetching WHOIS data...\n";
+
+  fetch("https://api.hackertarget.com/whois/?q=" + target)
+    .then(res => res.text())
+    .then(data => output.textContent = data)
+    .catch(() => output.textContent = "Error fetching WHOIS data");
+}
+
+function subdomainLookup() {
+  let target = document.getElementById("target").value;
+  let output = document.getElementById("output");
+  output.textContent = "Finding subdomains...\n";
+
+  fetch("https://api.hackertarget.com/hostsearch/?q=" + target)
+    .then(res => res.text())
+    .then(data => output.textContent = data)
+    .catch(() => output.textContent = "Error fetching subdomains");
+}
+
+function ipLookup() {
+  let target = document.getElementById("target").value;
+  let output = document.getElementById("output");
+  output.textContent = "Fetching IP info...\n";
+
+  fetch("https://api.hackertarget.com/ipinfo/?q=" + target)
+    .then(res => res.text())
+    .then(data => output.textContent = data)
+    .catch(() => output.textContent = "Error fetching IP info");
+}
+</script>
+
+</body>
+</html>
