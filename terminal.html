@@ -74,19 +74,17 @@ input {
     <input id="cmd" autofocus onkeydown="run(event)">
   </div>
 </div>
-
-<script>
-/* ===== MATRIX RAIN ===== */
+  <script>
+/* ===== MATRIX RAIN (UNCHANGED) ===== */
 const canvas = document.getElementById("matrix");
 const ctx = canvas.getContext("2d");
-
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
 const letters = "アカサタナハマヤラワ0123456789";
 const fontSize = 16;
 const columns = canvas.width / fontSize;
-const drops = Array.from({length: columns}).fill(1);
+const drops = Array.from({ length: columns }).fill(1);
 
 function drawMatrix() {
   ctx.fillStyle = "rgba(0,0,0,0.05)";
@@ -95,18 +93,31 @@ function drawMatrix() {
   ctx.font = fontSize + "px monospace";
 
   drops.forEach((y, i) => {
-    const text = letters[Math.floor(Math.random()*letters.length)];
-    ctx.fillText(text, i*fontSize, y*fontSize);
-    if (y*fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
+    const text = letters[Math.floor(Math.random() * letters.length)];
+    ctx.fillText(text, i * fontSize, y * fontSize);
+    if (y * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
     drops[i]++;
   });
 }
 setInterval(drawMatrix, 35);
 
-/* ===== TERMINAL LOGIC ===== */
-let points = 0;
-let taskStep = 0;
+/* ===== TERMINAL SYSTEM ===== */
 const terminal = document.getElementById("terminal");
+let cwd = "/home/root";
+
+const fileSystem = {
+  "/": ["home", "etc", "var"],
+  "/home": ["root"],
+  "/home/root": ["notes.txt", "tools.txt", "projects"],
+  "/home/root/projects": ["ctf.txt"],
+  "/etc": ["passwd", "hosts"],
+};
+
+const fileContents = {
+  "notes.txt": "XSS -> input validation\nSQLi -> prepared statements\n",
+  "tools.txt": "nmap\nburp\nmetasploit\n",
+  "ctf.txt": "FLAG{cyberarena_terminal_master}"
+};
 
 function print(text) {
   const div = document.createElement("div");
@@ -120,63 +131,73 @@ function run(e) {
   if (e.key === "Enter") {
     const input = document.getElementById("cmd");
     const cmd = input.value.trim();
-    print(`<span class="prompt">root@cyberarena:~$</span> ${cmd}`);
+    print(`<span class="prompt">root@cyberarena:${cwd}$</span> ${cmd}`);
     input.value = "";
     handle(cmd);
   }
 }
 
 function handle(cmd) {
+
+  /* ===== BASIC COMMANDS ===== */
   if (cmd === "help") {
     print(`
-Commands:
-<br>start-task
-<br>whois domain
-<br>subdomain domain
-<br>score
+Available Commands:
+<br>ls
+<br>cd folder
+<br>pwd
+<br>cat file
+<br>nmap target
+<br>whoami
 <br>clear
     `);
   }
 
-  else if (cmd === "start-task") {
-    taskStep = 1;
-    print("🧠 TASK 1: Find WHOIS info of google.com");
-    print("👉 Use: whois google.com");
+  else if (cmd === "ls") {
+    const list = fileSystem[cwd];
+    print(list ? list.join("  ") : "empty");
   }
 
-  else if (cmd.startsWith("whois ")) {
-    const t = cmd.split(" ")[1];
-    fetch("https://api.hackertarget.com/whois/?q=" + t)
-      .then(r => r.text())
-      .then(d => {
-        print("<pre>"+d+"</pre>");
-        if (taskStep === 1 && t === "google.com") {
-          points += 10;
-          taskStep = 2;
-          print("✅ Task 1 completed (+10 points)");
-          print("🧠 TASK 2: Enumerate subdomains of github.com");
-          print("👉 Use: subdomain github.com");
-        }
-      });
+  else if (cmd.startsWith("cd ")) {
+    const dir = cmd.split(" ")[1];
+    const newPath = cwd + "/" + dir;
+    if (fileSystem[newPath]) {
+      cwd = newPath;
+    } else {
+      print("cd: no such file or directory");
+    }
   }
 
-  else if (cmd.startsWith("subdomain ")) {
-    const t = cmd.split(" ")[1];
-    fetch("https://api.hackertarget.com/hostsearch/?q=" + t)
-      .then(r => r.text())
-      .then(d => {
-        print("<pre>"+d+"</pre>");
-        if (taskStep === 2 && t === "github.com") {
-          points += 15;
-          taskStep = 0;
-          print("✅ Task 2 completed (+15 points)");
-          print("🎉 Mission completed!");
-        }
-      });
+  else if (cmd === "pwd") {
+    print(cwd);
   }
 
-  else if (cmd === "score") {
-    print("🏆 Your Score: " + points);
+  else if (cmd.startsWith("cat ")) {
+    const file = cmd.split(" ")[1];
+    if (fileContents[file]) {
+      print(`<pre>${fileContents[file]}</pre>`);
+    } else {
+      print("cat: file not found");
+    }
+  }
+
+  else if (cmd === "whoami") {
+    print("root");
+  }
+
+  /* ===== HACKING TOOL SIMULATION ===== */
+  else if (cmd.startsWith("nmap ")) {
+    const target = cmd.split(" ")[1];
+    print("Starting Nmap scan...");
+    setTimeout(() => {
+      print(`
+PORT     STATE SERVICE
+22/tcp   open  ssh
+80/tcp   open  http
+443/tcp  open  https
+Target: ${target}
+      `);
+    }, 1000);
   }
 
   else if (cmd === "clear") {
@@ -185,17 +206,18 @@ Commands:
       <div class="line">Terminal cleared.</div>
       <br>
       <div class="line">
-        <span class="prompt">root@cyberarena:~$</span>
+        <span class="prompt">root@cyberarena:${cwd}$</span>
         <input id="cmd" autofocus onkeydown="run(event)">
       </div>
     `;
   }
 
   else {
-    print("❌ Unknown command. Type help");
+    print("command not found");
   }
 }
-</script>
+  </script>
+
 
 </body>
 </html>
