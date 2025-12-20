@@ -32,6 +32,19 @@
 <p><a href="terminal.html">💻 Command Line Simulator</a></p>
 <p><a href="guess.html">😎 Guess the Number Game</a></p>
 <p><a href="task.html">📜 Cybersecurity Tasks</a></p>
-
+<script>
+document.querySelectorAll('.gestureBtn').forEach(btn => {
+  btn.addEventListener('mousemove', (e) => {
+    const r = btn.getBoundingClientRect();
+    const x = e.clientX - r.left - r.width / 2;
+    const y = e.clientY - r.top - r.height / 2;
+    btn.style.transform = `rotateX(${-y/10}deg) rotateY(${x/10}deg)`;
+  });
+  btn.addEventListener('mouseleave', () => {
+    btn.style.transform = 'rotateX(0) rotateY(0)';
+  });
+});
+</script>
+  
 </body>
 </html>
