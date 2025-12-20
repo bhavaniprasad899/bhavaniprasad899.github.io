@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Level 2 – Web Attacker</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body{
+  background:black;
+  color:#00ffcc;
+  font-family:monospace;
+  text-align:center;
+  padding:30px;
+}
+
+h1{
+  text-shadow:0 0 15px red;
+}
+
+.question{
+  border:1px solid #00ffcc;
+  padding:20px;
+  margin:20px auto;
+  max-width:600px;
+  box-shadow:0 0 15px #00ffcc;
+}
+
+button{
+  display:block;
+  width:100%;
+  margin:8px 0;
+  padding:10px;
+  background:black;
+  color:#00ffcc;
+  border:1px solid #00ffcc;
+  cursor:pointer;
+}
+
+button:hover{
+  background:#001111;
+}
+
+.correct{
+  color:#00ff00;
+}
+.wrong{
+  color:red;
+}
+</style>
+</head>
+
+<body>
+
+<h1>🔵 Level 2 – Web Attacker</h1>
+<p>Answer all questions to strengthen your web hacking basics 😈</p>
+
+<!-- Q1 -->
+<div class="question">
+  <p>1️⃣ What does XSS stand for?</p>
+  <button onclick="correct(this)">Cross Site Scripting</button>
+  <button onclick="wrong(this)">Extra Secure System</button>
+  <button onclick="wrong(this)">XML Style Sheet</button>
+</div>
+
+<!-- Q2 -->
+<div class="question">
+  <p>2️⃣ Which vulnerability allows database access?</p>
+  <button onclick="wrong(this)">XSS</button>
+  <button onclick="correct(this)">SQL Injection</button>
+  <button onclick="wrong(this)">CSRF</button>
+</div>
+
+<!-- Q3 -->
+<div class="question">
+  <p>3️⃣ Which symbol is commonly used in SQL Injection?</p>
+  <button onclick="correct(this)">' (Single Quote)</button>
+  <button onclick="wrong(this)">&</button>
+  <button onclick="wrong(this)">@</button>
+</div>
+
+<!-- Q4 -->
+<div class="question">
+  <p>4️⃣ Which attack steals cookies?</p>
+  <button onclick="correct(this)">XSS</button>
+  <button onclick="wrong(this)">DDoS</button>
+  <button onclick="wrong(this)">Brute Force</button>
+</div>
+
+<!-- Q5 -->
+<div class="question">
+  <p>5️⃣ Which HTTP method sends data in URL?</p>
+  <button onclick="correct(this)">GET</button>
+  <button onclick="wrong(this)">POST</button>
+  <button onclick="wrong(this)">PUT</button>
+</div>
+
+<br>
+<a href="task.html" style="color:#00ffcc;">⬅ Back to Levels</a>
+
+<script>
+function correct(btn){
+  btn.classList.add("correct");
+  btn.innerHTML = "✔ Correct";
+  disable(btn);
+}
+
+function wrong(btn){
+  btn.classList.add("wrong");
+  btn.innerHTML = "✖ Wrong";
+  disable(btn);
+}
+
+function disable(btn){
+  let buttons = btn.parentElement.querySelectorAll("button");
+  buttons.forEach(b => b.disabled = true);
+}
+</script>
+
+</body>
+</html>
