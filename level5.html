@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>CyberArena - Level 5</title>
+<style>
+  body {
+    font-family: 'Courier New', Courier, monospace;
+    background: #0d1117;
+    color: #c9d1d9;
+    margin: 0;
+    padding: 20px;
+  }
+  h1 {
+    text-align: center;
+    color: #58a6ff;
+    margin-bottom: 10px;
+  }
+  #score {
+    font-size: 1.2rem;
+    text-align: center;
+    margin-bottom: 25px;
+    color: #1db954; /* happy green */
+  }
+  .question {
+    background: #161b22;
+    padding: 15px;
+    margin-bottom: 15px;
+    border-radius: 8px;
+    border: 1px solid #30363d;
+  }
+  .question h3 {
+    margin-top: 0;
+    color: #79c0ff;
+  }
+  .options label {
+    display: block;
+    margin: 8px 0;
+    cursor: pointer;
+    transition: color 0.3s ease;
+  }
+  .options input[type="radio"] {
+    margin-right: 10px;
+    cursor: pointer;
+  }
+  .options label:hover {
+    color: #58a6ff;
+  }
+  #submitBtn {
+    background-color: #238636;
+    border: none;
+    padding: 12px 30px;
+    font-size: 1.1rem;
+    border-radius: 8px;
+    color: white;
+    cursor: pointer;
+    display: block;
+    margin: 30px auto 0;
+    transition: background-color 0.3s ease;
+  }
+  #submitBtn:hover {
+    background-color: #2ea043;
+  }
+  #resultMessage {
+    text-align: center;
+    font-size: 1.4rem;
+    margin-top: 20px;
+    min-height: 40px;
+  }
+</style>
+</head>
+<body>
+
+<h1>CyberArena - Level 5</h1>
+<div id="score">Score: 0 / 15</div>
+
+<form id="quizForm">
+  <!-- Questions will be inserted here by JavaScript -->
+</form>
+
+<button id="submitBtn">Submit Answers</button>
+<div id="resultMessage"></div>
+
+<script>
+  const questions = [
+    {
+      q: "What does XSS stand for?",
+      options: [
+        "Cross-Site Scripting",
+        "Cross Server Script",
+        "Executable Script Source",
+        "Cross-Site Source"
+      ],
+      answer: 0
+    },
+    {
+      q: "Which port is commonly used for HTTP?",
+      options: ["21", "22", "80", "443"],
+      answer: 2
+    },
+    {
+      q: "What tool is often used for network scanning?",
+      options: ["Nmap", "Metasploit", "Wireshark", "Burp Suite"],
+      answer: 0
+    },
+    {
+      q: "What type of attack tries many passwords quickly?",
+      options: ["Phishing", "Brute Force", "SQL Injection", "Spoofing"],
+      answer: 1
+    },
+    {
+      q: "Which protocol is secure for browsing?",
+      options: ["HTTP", "FTP", "HTTPS", "TELNET"],
+      answer: 2
+    },
+    {
+      q: "What does SQLi stand for?",
+      options: [
+        "Structured Query Language Injection",
+        "Server Query Language Injection",
+        "Secure Query Logic Injection",
+        "Simple Query Language Injection"
+      ],
+      answer: 0
+    },
+    {
+      q: "Which tool intercepts and manipulates web traffic?",
+      options: ["Wireshark", "Burp Suite", "Nmap", "John the Ripper"],
+      answer: 1
+    },
+    {
+      q: "What is the main purpose of a firewall?",
+      options: [
+        "Encrypt data",
+        "Block unauthorized access",
+        "Scan viruses",
+        "Manage passwords"
+      ],
+      answer: 1
+    },
+    {
+      q: "What is a 'phishing' attack?",
+      options: [
+        "Physical theft of device",
+        "Social engineering to steal info",
+        "Brute force password attack",
+        "Malware installation"
+      ],
+      answer: 1
+    },
+    {
+      q: "Which one is a strong password?",
+      options: [
+        "password123",
+        "Qwerty",
+        "P@55w0rd!2025",
+        "123456"
+      ],
+      answer: 2
+    },
+    {
+      q: "What is a common sign of a fake website?",
+      options: [
+        "Secure HTTPS lock icon",
+        "Typos and grammatical errors",
+        "Professional design",
+        "Contact info available"
+      ],
+      answer: 1
+    },
+    {
+      q: "Which command is used to check active network connections on Linux?",
+      options: ["netstat", "ping", "ifconfig", "traceroute"],
+      answer: 0
+    },
+    {
+      q: "What is 'social engineering' in cybersecurity?",
+      options: [
+        "Manipulating people to get info",
+        "Writing encryption algorithms",
+        "Analyzing network packets",
+        "Scanning for vulnerabilities"
+      ],
+      answer: 0
+    },
+    {
+      q: "Which port does HTTPS use by default?",
+      options: ["80", "443", "21", "25"],
+      answer: 1
+    },
+    {
+      q: "What does VPN stand for?",
+      options: [
+        "Virtual Private Network",
+        "Verified Protected Node",
+        "Variable Protocol Network",
+        "Virtual Public Network"
+      ],
+      answer: 0
+    }
+  ];
+
+  const form = document.getElementById("quizForm");
+  const scoreDisplay = document.getElementById("score");
+  const submitBtn = document.getElementById("submitBtn");
+  const resultMessage = document.getElementById("resultMessage");
+
+  // Render questions
+  questions.forEach((q, idx) => {
+    const questionDiv = document.createElement("div");
+    questionDiv.classList.add("question");
+
+    let optionsHTML = "";
+    q.options.forEach((option, i) => {
+      optionsHTML += `
+        <label>
+          <input type="radio" name="q${idx}" value="${i}" />
+          ${option}
+        </label>`;
+    });
+
+    questionDiv.innerHTML = `<h3>Q${idx + 1}. ${q.q}</h3><div class="options">${optionsHTML}</div>`;
+    form.appendChild(questionDiv);
+  });
+
+  submitBtn.addEventListener("click", () => {
+    let score = 0;
+    let unanswered = 0;
+
+    for (let i = 0; i < questions.length; i++) {
+      const selected = form[`q${i}`].value;
+      if (selected === undefined || selected === "") {
+        unanswered++;
+        continue;
+      }
+      if (parseInt(selected) === questions[i].answer) {
+        score++;
+      }
+    }
+
+    if (unanswered > 0) {
+      resultMessage.style.color = "#ffa500"; // orange for warning
+      resultMessage.textContent = `Please answer all questions! You left ${unanswered} unanswered.`;
+      return;
+    }
+
+    scoreDisplay.textContent = `Score: ${score} / ${questions.length}`;
+
+    if (score === questions.length) {
+      resultMessage.style.color = "#1db954";
+      resultMessage.textContent = `🎉 Amazing! Perfect score! You're a Cyber Ninja! 😄`;
+    } else if (score >= questions.length * 0.7) {
+      resultMessage.style.color = "#1db954";
+      resultMessage.textContent = `👍 Great job! Keep it up! You scored ${score} out of ${questions.length}.`;
+    } else if (score >= questions.length * 0.4) {
+      resultMessage.style.color = "#ffcc00";
+      resultMessage.textContent = `🙂 Not bad! Keep learning and improving. Score: ${score} / ${questions.length}`;
+    } else {
+      resultMessage.style.color = "#ff4444";
+      resultMessage.textContent = `😞 Keep practicing! You scored ${score} out of ${questions.length}. Don't give up!`;
+    }
+
+    // Scroll to message smoothly
+    resultMessage.scrollIntoView({behavior: 'smooth'});
+
+    // Disable form and button after submit
+    submitBtn.disabled = true;
+    const allRadios = form.querySelectorAll("input[type=radio]");
+    allRadios.forEach(radio => radio.disabled = true);
+  });
+</script>
+
+</body>
+</html>
