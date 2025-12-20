@@ -1,1 +1,39 @@
 
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Guess Game - CyberArena</title>
+</head>
+
+<body style="background:#0d1117;color:#e6edf3;font-family:Arial;text-align:center;">
+
+<nav style="padding:15px;background:#111;">
+  <a href="index.html" style="color:#00ff9c;margin:10px;">Home</a>
+  <a href="terminal.html" style="color:#00ff9c;margin:10px;">Terminal</a>
+  <a href="guess.html" style="color:#00ff9c;margin:10px;">Guess Game</a>
+  <a href="task.html" style="color:#00ff9c;margin:10px;">Tasks</a>
+</nav>
+
+<h2>😎 Guess the Number Game</h2>
+
+<p>I'm thinking of a number between 1 and 100</p>
+
+<input type="number" id="num">
+<button onclick="check()">Guess</button>
+
+<p id="result"></p>
+
+<script>
+let secret = Math.floor(Math.random()*100)+1;
+
+function check(){
+  let g = document.getElementById("num").value;
+  let r = document.getElementById("result");
+  if(g == secret) r.innerHTML = "🎉 Correct!";
+  else if(g < secret) r.innerHTML = "⬇ Too low";
+  else r.innerHTML = "⬆ Too high";
+}
+</script>
+
+</body>
+</html>
