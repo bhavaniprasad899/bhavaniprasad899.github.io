@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Level 1 – Hacker Basics</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+body{
+  background:black;
+  color:#00ffcc;
+  font-family:monospace;
+  padding:30px;
+}
+.question{
+  margin-bottom:30px;
+  border:1px solid #00ffcc;
+  padding:20px;
+}
+button{
+  margin-top:10px;
+  padding:10px;
+  background:black;
+  border:1px solid red;
+  color:red;
+  cursor:pointer;
+}
+button:hover{
+  background:red;
+  color:black;
+}
+.correct{color:lime;}
+.wrong{color:red;}
+</style>
+</head>
+
+<body>
+
+<h1>🟢 Level 1 – Hacker Basics</h1>
+
+<div class="question">
+<p>1️⃣ Which password is weakest?</p>
+<button onclick="check(this,false)">Qwerty@123</button><br>
+<button onclick="check(this,true)">123456</button><br>
+<button onclick="check(this,false)">A9$kLm!2</button>
+</div>
+
+<div class="question">
+<p>2️⃣ Which URL is phishing?</p>
+<button onclick="check(this,true)">http://paypa1.com/login</button><br>
+<button onclick="check(this,false)">https://paypal.com</button>
+</div>
+
+<div class="question">
+<p>3️⃣ Which Linux command lists files?</p>
+<button onclick="check(this,true)">ls</button><br>
+<button onclick="check(this,false)">rm</button>
+</div>
+
+<br>
+<a href="task.html">⬅ Back to Levels</a>
+
+<script>
+function check(btn, correct){
+  if(correct){
+    btn.className="correct";
+    btn.innerHTML+=" ✔ Correct";
+  }else{
+    btn.className="wrong";
+    btn.innerHTML+=" ✖ Wrong";
+  }
+  btn.disabled=true;
+}
+</script>
+
+</body>
+</html>
