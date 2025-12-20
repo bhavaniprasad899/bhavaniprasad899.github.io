@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Level 3 – Command Line Hacking</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+  body {
+    background: black;
+    color: #00ff00;
+    font-family: monospace;
+    padding: 30px;
+    text-align: center;
+  }
+  h1 {
+    text-shadow: 0 0 20px #00ff00;
+  }
+  .question-container {
+    border: 1px solid #00ff00;
+    padding: 20px;
+    margin: 20px auto;
+    max-width: 700px;
+    box-shadow: 0 0 20px #00ff00;
+    min-height: 180px;
+  }
+  .question-text {
+    font-size: 1.2em;
+    margin-bottom: 15px;
+  }
+  button.option-btn {
+    display: block;
+    width: 100%;
+    margin: 8px 0;
+    padding: 12px;
+    background: black;
+    color: #00ff00;
+    border: 1px solid #00ff00;
+    cursor: pointer;
+    font-family: monospace;
+    font-size: 1em;
+    transition: background 0.3s;
+  }
+  button.option-btn:hover:not(:disabled) {
+    background: #003300;
+  }
+  button.correct {
+    background: #004400;
+    color: #aaffaa;
+    cursor: default;
+  }
+  button.wrong {
+    background: #660000;
+    color: #ffaaaa;
+    cursor: default;
+  }
+  #next-btn {
+    margin-top: 25px;
+    padding: 12px 30px;
+    font-size: 1.1em;
+    cursor: pointer;
+    background: #00ff00;
+    border: none;
+    color: black;
+    font-weight: bold;
+    box-shadow: 0 0 15px #00ff00;
+    transition: background 0.3s;
+  }
+  #next-btn:hover {
+    background: #00cc00;
+  }
+  #score {
+    font-size: 1.2em;
+    margin-top: 15px;
+    text-shadow: 0 0 8px #00ff00;
+  }
+  a.back-link {
+    color: #00ff00;
+    text-decoration: none;
+    margin-top: 30px;
+    display: inline-block;
+    font-weight: bold;
+  }
+</style>
+</head>
+<body>
+
+<h1>🟡 Level 3 – Command Line Hacking</h1>
+<p>Answer the questions below. Questions will appear randomly. Good luck, hacker! 😈</p>
+
+<div class="question-container">
+  <div class="question-text" id="question"></div>
+  <div id="options"></div>
+</div>
+
+<button id="next-btn" disabled>Next Question ➡️</button>
+<div id="score"></div>
+
+<a href="task.html" class="back-link">⬅ Back to Levels</a>
+
+<script>
+  const questions = [
+    {
+      q: "Which command lists all files, including hidden ones?",
+      options: ["ls -a", "ls -l", "ls -h"],
+      answer: "ls -a"
+    },
+    {
+      q: "What does the 'chmod' command do?",
+      options: ["Change file permissions", "Change owner", "Change directory"],
+      answer: "Change file permissions"
+    },
+    {
+      q: "Which command is used to display the current directory?",
+      options: ["pwd", "cd", "ls"],
+      answer: "pwd"
+    },
+    {
+      q: "What does 'sudo' allow you to do?",
+      options: ["Run commands as root", "Exit terminal", "List processes"],
+      answer: "Run commands as root"
+    },
+    {
+      q: "How do you change directories in the terminal?",
+      options: ["cd", "mv", "rm"],
+      answer: "cd"
+    },
+    {
+      q: "Which command removes files?",
+      options: ["rm", "mv", "cp"],
+      answer: "rm"
+    },
+    {
+      q: "What does the 'grep' command do?",
+      options: ["Search text", "Print text", "Change permissions"],
+      answer: "Search text"
+    },
+    {
+      q: "How to view the contents of a file?",
+      options: ["cat", "touch", "head"],
+      answer: "cat"
+    },
+    {
+      q: "What command shows running processes?",
+      options: ["ps", "kill", "top"],
+      answer: "ps"
+    },
+    {
+      q: "How to copy a file in Linux?",
+      options: ["cp", "mv", "rm"],
+      answer: "cp"
+    },
+    {
+      q: "Which command creates a new directory?",
+      options: ["mkdir", "rmdir", "touch"],
+      answer: "mkdir"
+    },
+    {
+      q: "What does the 'whoami' command show?",
+      options: ["Current user", "System time", "File list"],
+      answer: "Current user"
+    }
+  ];
+
+  let shuffledQuestions = [];
+  let currentIndex = 0;
+  let score = 0;
+
+  function shuffleArray(arr) {
+    let array = arr.slice();
+    for (let i = array.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+  }
+
+  function loadQuestion() {
+    if(currentIndex >= shuffledQuestions.length){
+      showResult();
+      return;
+    }
+
+    const questionObj = shuffledQuestions[currentIndex];
+    const questionEl = document.getElementById("question");
+    const optionsEl = document.getElementById("options");
+    const nextBtn = document.getElementById("next-btn");
+
+    questionEl.textContent = `${currentIndex + 1}. ${questionObj.q}`;
+    optionsEl.innerHTML = "";
+
+    questionObj.options.forEach(option => {
+      const btn = document.createElement("button");
+      btn.textContent = option;
+      btn.classList.add("option-btn");
+      btn.onclick = () => selectAnswer(btn, option === questionObj.answer);
+      optionsEl.appendChild(btn);
+    });
+
+    nextBtn.disabled = true;
+  }
+
+  function selectAnswer(button, isCorrect) {
+    const optionsEl = document.getElementById("options");
+    const buttons = optionsEl.querySelectorAll("button");
+    buttons.forEach(btn => btn.disabled = true);
+
+    if (isCorrect) {
+      button.classList.add("correct");
+      score++;
+    } else {
+      button.classList.add("wrong");
+      // highlight correct answer
+      buttons.forEach(btn => {
+        if (btn.textContent === shuffledQuestions[currentIndex].answer) {
+          btn.classList.add("correct");
+        }
+      });
+    }
+    document.getElementById("next-btn").disabled = false;
+  }
+
+  function showResult() {
+    const container = document.querySelector(".question-container");
+    container.innerHTML = `<h2>Your Score: ${score} / ${shuffledQuestions.length}</h2>`;
+    document.getElementById("next-btn").style.display = "none";
+  }
+
+  document.getElementById("next-btn").addEventListener("click", () => {
+    currentIndex++;
+    loadQuestion();
+  });
+
+  // Initialize quiz
+  shuffledQuestions = shuffleArray(questions).slice(0, 10);
+  loadQuestion();
+</script>
+
+</body>
+</html>
