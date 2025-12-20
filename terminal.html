@@ -1,185 +1,189 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>CyberArena – Command Line Simulator</title>
-  <link rel="stylesheet" href="style.css">
+  <title>CyberArena – 3D Hacker Terminal</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <style>
     body {
-      background: #0d1117;
-      color: #00ff9c;
-      font-family: monospace;
       margin: 0;
+      height: 100vh;
+      background: radial-gradient(circle at top, #020409, #000);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: monospace;
+      perspective: 1200px;
+      color: #00ffcc;
+    }
+
+    .terminal-3d {
+      width: 90%;
+      max-width: 900px;
+      height: 85vh;
+      background: linear-gradient(145deg, #020a13, #000);
+      border-radius: 15px;
+      box-shadow:
+        0 0 25px #00ffcc55,
+        inset 0 0 25px #000;
+      transform: rotateX(12deg);
+      animation: float 6s ease-in-out infinite;
       padding: 20px;
+      overflow: hidden;
     }
 
-    h2 {
+    @keyframes float {
+      0%, 100% { transform: rotateX(12deg) translateY(0); }
+      50% { transform: rotateX(12deg) translateY(-10px); }
+    }
+
+    .header {
       color: #58a6ff;
+      text-align: center;
+      font-weight: bold;
+      margin-bottom: 10px;
+      text-shadow: 0 0 10px #58a6ff;
     }
 
-    #terminal {
-      background: black;
+    .screen {
+      background: #000;
+      height: 100%;
       padding: 15px;
-      border-radius: 8px;
-      height: 420px;
+      border-radius: 10px;
       overflow-y: auto;
-      box-shadow: 0 0 15px #00ff9c55;
+      box-shadow: inset 0 0 15px #00ffcc33;
     }
 
     .line {
-      margin: 4px 0;
+      margin: 6px 0;
     }
 
     .prompt {
-      color: #00ff9c;
+      color: #00ff00;
     }
 
     input {
-      background: black;
-      color: #00ff9c;
+      background: transparent;
       border: none;
       outline: none;
-      width: 80%;
+      color: #00ffcc;
       font-family: monospace;
       font-size: 16px;
+      width: 90%;
     }
 
-    .hint {
-      color: #f0db4f;
+    .cursor {
+      display: inline-block;
+      width: 10px;
+      height: 18px;
+      background: #00ffcc;
+      animation: blink 1s infinite;
+      margin-left: 3px;
     }
 
-    .error {
-      color: #ff5555;
+    @keyframes blink {
+      50% { opacity: 0; }
     }
-
-    .success {
-      color: #00ff9c;
-    }
-    <nav class="nav3d">
-  <a href="index.html">Home</a>
-  <a href="task.html">Tasks</a>
-  <a href="guess.html">Guess Game</a>
-  <a href="terminal.html">Terminal</a>
-</nav>
-    <button class="gestureBtn">💻 Launch Terminal</button>
-    
   </style>
 </head>
 
 <body>
 
-<h2>💻 CyberArena Command Line Simulator</h2>
-<p>Try commands like: <b>ls, cd, cat, nmap, whois, sqlmap</b></p>
-
-<div id="terminal"></div>
-
-<div class="line">
-  <span class="prompt">student@cyberarena:~$</span>
-  <input type="text" id="commandInput" autofocus onkeydown="runCommand(event)">
+<div class="terminal-3d">
+  <div class="header">☠ CYBERARENA :: OFFENSIVE TERMINAL ☠</div>
+  <div class="screen" id="screen">
+    <div class="line">Initializing CyberArena OS...</div>
+    <div class="line">Loading modules ██████████ 100%</div>
+    <div class="line">Type <b>help</b> to begin.</div>
+    <br>
+    <div class="line">
+      <span class="prompt">root@cyberarena:~$</span>
+      <input id="command" autofocus onkeydown="runCommand(event)">
+      <span class="cursor"></span>
+    </div>
+  </div>
 </div>
 
 <script>
-  const terminal = document.getElementById("terminal");
+function runCommand(e) {
+  if (e.key === "Enter") {
+    let input = document.getElementById("command");
+    let cmd = input.value.trim();
+    let screen = document.getElementById("screen");
 
-  let currentDir = "home";
+    let line = document.createElement("div");
+    line.className = "line";
+    line.innerHTML = `<span class="prompt">root@cyberarena:~$</span> ${cmd}`;
+    screen.appendChild(line);
 
-  const fileSystem = {
-    home: ["readme.txt", "tools", "ctf"],
-    tools: ["nmap.txt", "sqlmap.txt"],
-    ctf: ["flag.txt"]
-  };
+    processCommand(cmd, screen);
 
-  function print(text, className = "") {
-    const div = document.createElement("div");
-    div.className = "line " + className;
-    div.innerHTML = text;
-    terminal.appendChild(div);
-    terminal.scrollTop = terminal.scrollHeight;
+    input.value = "";
+    screen.scrollTop = screen.scrollHeight;
+  }
+}
+
+function processCommand(cmd, screen) {
+  let out = document.createElement("div");
+  out.className = "line";
+
+  if (cmd === "help") {
+    out.innerHTML = `
+      Commands available:
+      <br>whois domain
+      <br>subdomain domain
+      <br>ipinfo ip
+      <br>clear
+    `;
+  }
+  else if (cmd.startsWith("whois ")) {
+    let target = cmd.split(" ")[1];
+    out.textContent = "Scanning WHOIS database...";
+    screen.appendChild(out);
+    fetch("https://api.hackertarget.com/whois/?q=" + target)
+      .then(r => r.text())
+      .then(d => out.textContent = d);
+    return;
+  }
+  else if (cmd.startsWith("subdomain ")) {
+    let target = cmd.split(" ")[1];
+    out.textContent = "Enumerating subdomains...";
+    screen.appendChild(out);
+    fetch("https://api.hackertarget.com/hostsearch/?q=" + target)
+      .then(r => r.text())
+      .then(d => out.textContent = d);
+    return;
+  }
+  else if (cmd.startsWith("ipinfo ")) {
+    let target = cmd.split(" ")[1];
+    out.textContent = "Fetching IP intelligence...";
+    screen.appendChild(out);
+    fetch("https://api.hackertarget.com/ipinfo/?q=" + target)
+      .then(r => r.text())
+      .then(d => out.textContent = d);
+    return;
+  }
+  else if (cmd === "clear") {
+    screen.innerHTML = `
+      <div class="line">Terminal cleared.</div>
+      <br>
+      <div class="line">
+        <span class="prompt">root@cyberarena:~$</span>
+        <input id="command" autofocus onkeydown="runCommand(event)">
+        <span class="cursor"></span>
+      </div>
+    `;
+    return;
+  }
+  else {
+    out.textContent = "Command not found. Type 'help'";
   }
 
-  function runCommand(e) {
-    if (e.key !== "Enter") return;
-
-    const input = e.target.value.trim();
-    e.target.value = "";
-
-    print(`<span class="prompt">student@cyberarena:${currentDir}$</span> ${input}`);
-
-    const cmd = input.split(" ");
-
-    switch (cmd[0]) {
-
-      case "help":
-        print("Available commands: ls, cd, cat, nmap, whois, sqlmap, clear, hint");
-        break;
-
-      case "ls":
-        print(fileSystem[currentDir].join("  "));
-        break;
-
-      case "cd":
-        if (fileSystem[cmd[1]]) {
-          currentDir = cmd[1];
-          print("Directory changed to " + currentDir, "success");
-        } else {
-          print("Directory not found", "error");
-        }
-        break;
-
-      case "cat":
-        if (cmd[1] === "readme.txt") {
-          print("Welcome to CyberArena CLI 😄 Learn hacking the legal way!");
-        } else if (cmd[1] === "flag.txt") {
-          print("🎉 CTF FLAG FOUND: cyberarena{first_cli_flag}");
-        } else {
-          print("File not found", "error");
-        }
-        break;
-
-      case "nmap":
-        print("Starting Nmap scan...");
-        print("PORT 80   open   http");
-        print("PORT 22   open   ssh");
-        break;
-
-      case "whois":
-        print("Domain Name: cyberarena.local");
-        print("Owner: CyberArena Labs");
-        break;
-
-      case "sqlmap":
-        print("Testing SQL Injection...");
-        print("VULNERABLE PARAMETER FOUND 😈", "success");
-        break;
-
-      case "clear":
-        terminal.innerHTML = "";
-        break;
-
-      case "hint":
-        print("💡 Try exploring folders using ls and cd", "hint");
-        break;
-
-      default:
-        print("Command not found. Type help", "error");
-    }
-  }
-
-  print("Welcome to CyberArena CLI ⚔️⚓");
-  print("For beginner✈️");
-document.querySelectorAll('.gestureBtn').forEach(btn => {
-  btn.addEventListener('mousemove', (e) => {
-    const r = btn.getBoundingClientRect();
-    const x = e.clientX - r.left - r.width / 2;
-    const y = e.clientY - r.top - r.height / 2;
-    btn.style.transform = `rotateX(${-y/10}deg) rotateY(${x/10}deg)`;
-  });
-  btn.addEventListener('mouseleave', () => {
-    btn.style.transform = 'rotateX(0) rotateY(0)';
-  });
-});
+  screen.appendChild(out);
+}
 </script>
-  
+
 </body>
 </html>
+
+      
