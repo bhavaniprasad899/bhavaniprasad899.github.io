@@ -36,8 +36,6 @@ function check(){
   else if(g < secret) r.innerHTML = "⬇ Too low";
   else r.innerHTML = "⬆ Too high";
 }
-</script>
-<script>
 document.querySelectorAll('.gestureBtn').forEach(btn => {
   btn.addEventListener('mousemove', (e) => {
     const r = btn.getBoundingClientRect();
