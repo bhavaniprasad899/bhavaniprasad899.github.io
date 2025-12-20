@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>CyberArena - Level 4 Challenge ⚡</title>
+<style>
+  body {
+    font-family: monospace;
+    background: #0d1117;
+    color: #e6edf3;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+  }
+  #quiz-container {
+    background: #161b22;
+    padding: 20px;
+    border-radius: 10px;
+    width: 90%;
+    max-width: 600px;
+    box-shadow: 0 0 15px #58a6ff;
+  }
+  h1 {
+    text-align: center;
+    margin-bottom: 15px;
+    color: #58a6ff;
+  }
+  .question {
+    font-size: 1.2rem;
+    margin-bottom: 15px;
+  }
+  .options button {
+    display: block;
+    width: 100%;
+    margin: 7px 0;
+    padding: 10px;
+    background: #21262d;
+    border: none;
+    border-radius: 5px;
+    color: #e6edf3;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background 0.3s;
+  }
+  .options button:hover {
+    background: #58a6ff;
+    color: #0d1117;
+  }
+  .options button.correct {
+    background: #2ea043;
+    color: white;
+    cursor: default;
+  }
+  .options button.wrong {
+    background: #d73a49;
+    color: white;
+    cursor: default;
+  }
+  #next-btn {
+    margin-top: 20px;
+    padding: 10px 20px;
+    font-size: 1.1rem;
+    background: #58a6ff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    color: #0d1117;
+    display: none;
+  }
+  #timer {
+    font-size: 1.2rem;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 15px;
+    color: #ffdd57;
+  }
+  #scoreboard {
+    margin-top: 20px;
+    font-size: 1.3rem;
+    text-align: center;
+    color: #58a6ff;
+  }
+</style>
+</head>
+<body>
+
+<div id="quiz-container">
+  <h1>Level 4: Cyber Challenge ⚡</h1>
+  <div id="timer">Time left: <span id="time">30</span>s</div>
+  <div class="question" id="question">Question text here</div>
+  <div class="options" id="options"></div>
+  <button id="next-btn">Next Question</button>
+  <div id="scoreboard"></div>
+</div>
+
+<script>
+  const questions = [
+    {
+      q: "What is the main purpose of XSS attacks?",
+      options: ["Stealing cookies", "Data encryption", "Server maintenance", "Database backup"],
+      answer: 0
+    },
+    {
+      q: "Which tool is used for network scanning?",
+      options: ["Nmap", "Photoshop", "Wireshark", "Chrome"],
+      answer: 0
+    },
+    {
+      q: "What does SQLi stand for?",
+      options: ["SQL Injection", "Secure Query Language", "Server Query Log", "System Query Input"],
+      answer: 0
+    },
+    {
+      q: "Which port does HTTP use by default?",
+      options: ["80", "22", "443", "21"],
+      answer: 0
+    },
+    {
+      q: "What is the command to list files in Linux?",
+      options: ["ls", "cd", "pwd", "rm"],
+      answer: 0
+    },
+    {
+      q: "What is phishing?",
+      options: ["Tricking users to reveal info", "Data encryption", "System upgrade", "Firewall configuration"],
+      answer: 0
+    },
+    {
+      q: "Which tool helps intercept web traffic?",
+      options: ["Burp Suite", "Vim", "Notepad", "Excel"],
+      answer: 0
+    },
+    {
+      q: "What is a firewall?",
+      options: ["Security barrier", "Web server", "Database", "Operating system"],
+      answer: 0
+    },
+    {
+      q: "What does VPN stand for?",
+      options: ["Virtual Private Network", "Verified Personal Network", "Virtual Public Node", "Variable Protection Net"],
+      answer: 0
+    },
+    {
+      q: "Which protocol is secure for web browsing?",
+      options: ["HTTPS", "HTTP", "FTP", "SMTP"],
+      answer: 0
+    }
+  ];
+
+  const timePerQuestion = 30; // seconds
+  let currentQuestion = 0;
+  let score = 0;
+  let timer;
+  let timeLeft = timePerQuestion;
+
+  // Load saved score from localStorage
+  if(localStorage.getItem("level4_score")) {
+    score = parseInt(localStorage.getItem("level4_score"), 10);
+  }
+
+  const questionEl = document.getElementById("question");
+  const optionsEl = document.getElementById("options");
+  const nextBtn = document.getElementById("next-btn");
+  const timerEl = document.getElementById("time");
+  const scoreboardEl = document.getElementById("scoreboard");
+
+  function startTimer() {
+    timeLeft = timePerQuestion;
+    timerEl.textContent = timeLeft;
+    timer = setInterval(() => {
+      timeLeft--;
+      timerEl.textContent = timeLeft;
+      if (timeLeft <= 0) {
+        clearInterval(timer);
+        disableOptions();
+        nextBtn.style.display = "block";
+      }
+    }, 1000);
+  }
+
+  function loadQuestion() {
+    clearInterval(timer);
+    nextBtn.style.display = "none";
+
+    if(currentQuestion >= questions.length) {
+      showScore();
+      return;
+    }
+
+    startTimer();
+
+    const q = questions[currentQuestion];
+    questionEl.textContent = `${currentQuestion + 1}. ${q.q}`;
+    optionsEl.innerHTML = "";
+
+    q.options.forEach((option, index) => {
+      const btn = document.createElement("button");
+      btn.textContent = option;
+      btn.onclick = () => selectAnswer(index);
+      optionsEl.appendChild(btn);
+    });
+  }
+
+  function selectAnswer(selectedIndex) {
+    clearInterval(timer);
+    disableOptions();
+
+    const correctIndex = questions[currentQuestion].answer;
+
+    if(selectedIndex === correctIndex) {
+      score++;
+      localStorage.setItem("level4_score", score);
+      optionsEl.children[selectedIndex].classList.add("correct");
+    } else {
+      optionsEl.children[selectedIndex].classList.add("wrong");
+      optionsEl.children[correctIndex].classList.add("correct");
+    }
+
+    nextBtn.style.display = "block";
+  }
+
+  function disableOptions() {
+    Array.from(optionsEl.children).forEach(btn => {
+      btn.disabled = true;
+      btn.style.cursor = "default";
+    });
+  }
+
+  nextBtn.addEventListener("click", () => {
+    currentQuestion++;
+    loadQuestion();
+  });
+
+  function showScore() {
+    questionEl.textContent = "Quiz Completed! 🎉";
+    optionsEl.innerHTML = "";
+    nextBtn.style.display = "none";
+    timerEl.textContent = "";
+
+    scoreboardEl.textContent = `Your score: ${score} / ${questions.length}`;
+
+    // Optionally clear score or keep saved
+    // localStorage.removeItem("level4_score");
+  }
+
+  loadQuestion();
+</script>
+
+</body>
+</html>
