@@ -64,14 +64,14 @@
 
 <!-- ABOUT -->
 <section id="about" style="background:#010409;">
-  <h2>🧠 About CyberArena</h2>
-  <p>CyberArena is a fun cybersecurity learning platform 🎮💻</p>
+  <h2>About CyberArena</h2>
+  <p>CyberArena is a cybersecurity learning platform </p>
 </section>
 
 <!-- SERVICES -->
 <section id="services">
-  <h2>🛠️ Our Services</h2>
-  <p>Games • Challenges • Hacking Practice • Awareness</p>
+  <h2> Our Services</h2>
+  <p>Games🎮 • Challenges⚔️ • Hacking Practice💻 • Awareness</p>
 </section>
 
 <!-- PASSWORD CHECKER -->
@@ -147,7 +147,7 @@ guessBtn.onclick=()=>{
  if(g===n){bp+=10;localStorage.setItem('BP',bp);
  pointsDisplay.textContent=`💰 BP: ${bp}`;
  guessResult.textContent="Correct 🎉";resetGame.style.display="inline";}
- else guessResult.textContent=g<n?"Low":"High";
+ else guessResult.textContent=g<n?"Too Low":"Too High";
 }
 resetGame.onclick=()=>location.reload();
 
