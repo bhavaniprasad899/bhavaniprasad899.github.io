@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>CyberArena - Level 6: Ultimate Hacker Quiz 😎</title>
+<style>
+  body {
+    background: #0d1117;
+    color: #58a6ff;
+    font-family: 'Courier New', Courier, monospace;
+    padding: 20px;
+    max-width: 900px;
+    margin: auto;
+  }
+  h1 {
+    text-align: center;
+    color: #39d353;
+  }
+  .question {
+    margin: 20px 0;
+    padding: 15px;
+    background: #161b22;
+    border-radius: 8px;
+    box-shadow: 0 0 10px #39d353aa;
+  }
+  label {
+    display: block;
+    padding: 8px 0;
+    cursor: pointer;
+    user-select: none;
+    transition: background 0.3s;
+  }
+  label:hover {
+    background: #39d353aa;
+    color: #0d1117;
+  }
+  input[type="radio"] {
+    margin-right: 10px;
+  }
+  button {
+    display: block;
+    margin: 25px auto;
+    background: #39d353;
+    color: #0d1117;
+    border: none;
+    padding: 15px 30px;
+    font-size: 18px;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: background 0.4s;
+  }
+  button:hover {
+    background: #2ea043;
+  }
+  #result {
+    margin-top: 30px;
+    font-size: 22px;
+    text-align: center;
+    color: #39d353;
+  }
+</style>
+</head>
+<body>
+
+<h1>Level 6: Ultimate Hacker Quiz 😎</h1>
+<form id="quizForm">
+  <!-- Questions will be injected here -->
+</form>
+
+<button id="submitBtn">Submit Answers & Get Points! 🚀</button>
+
+<div id="result"></div>
+
+<script>
+  // 20 questions with answer & options
+  const questions = [
+    {
+      question: "What does XSS stand for in cybersecurity?",
+      options: ["Cross-Site Scripting", "Cross Server Scripting", "Cross Secure Socket", "None of the above"],
+      answer: "Cross-Site Scripting"
+    },
+    {
+      question: "Which port does HTTP use by default?",
+      options: ["80", "443", "21", "25"],
+      answer: "80"
+    },
+    {
+      question: "What is the main purpose of a firewall?",
+      options: ["Block unauthorized access", "Speed up internet", "Backup data", "Encrypt data"],
+      answer: "Block unauthorized access"
+    },
+    {
+      question: "Which protocol is secure for sending emails?",
+      options: ["SMTP", "POP3", "IMAP", "SMTPS"],
+      answer: "SMTPS"
+    },
+    {
+      question: "What kind of attack is SQL Injection?",
+      options: ["Code Injection", "Phishing", "Denial of Service", "Man-in-the-Middle"],
+      answer: "Code Injection"
+    },
+    {
+      question: "What tool is commonly used for network scanning?",
+      options: ["Nmap", "Wireshark", "Burp Suite", "Metasploit"],
+      answer: "Nmap"
+    },
+    {
+      question: "Which of these is a hashing algorithm?",
+      options: ["MD5", "AES", "RSA", "DES"],
+      answer: "MD5"
+    },
+    {
+      question: "In penetration testing, what does the term 'pivoting' mean?",
+      options: ["Using one compromised system to attack others", "Stealing passwords", "Creating phishing emails", "Encrypting files"],
+      answer: "Using one compromised system to attack others"
+    },
+    {
+      question: "Which language is primarily used to write exploits?",
+      options: ["Python", "HTML", "CSS", "SQL"],
+      answer: "Python"
+    },
+    {
+      question: "What does VPN stand for?",
+      options: ["Virtual Private Network", "Variable Packet Node", "Visual Protocol Network", "Verified Public Network"],
+      answer: "Virtual Private Network"
+    },
+    {
+      question: "Which of these is a common tool for web vulnerability scanning?",
+      options: ["Nikto", "Metasploit", "Nmap", "John the Ripper"],
+      answer: "Nikto"
+    },
+    {
+      question: "What is phishing?",
+      options: ["A social engineering attack to steal info", "Malware infection", "Physical theft", "Password cracking"],
+      answer: "A social engineering attack to steal info"
+    },
+    {
+      question: "What is the difference between symmetric and asymmetric encryption?",
+      options: [
+        "Symmetric uses same key; asymmetric uses public/private keys",
+        "Symmetric is slower than asymmetric",
+        "Symmetric is for emails; asymmetric is for websites",
+        "No difference"
+      ],
+      answer: "Symmetric uses same key; asymmetric uses public/private keys"
+    },
+    {
+      question: "Which one is NOT a Linux command?",
+      options: ["dir", "ls", "cd", "grep"],
+      answer: "dir"
+    },
+    {
+      question: "What is the purpose of the tool Burp Suite?",
+      options: ["Web app security testing", "Network scanning", "Malware analysis", "Password cracking"],
+      answer: "Web app security testing"
+    },
+    {
+      question: "Which attack involves overwhelming a system with traffic?",
+      options: ["DDoS", "Phishing", "Spoofing", "Brute Force"],
+      answer: "DDoS"
+    },
+    {
+      question: "Which layer of the OSI model is responsible for routing?",
+      options: ["Network", "Data Link", "Transport", "Physical"],
+      answer: "Network"
+    },
+    {
+      question: "What is social engineering?",
+      options: ["Manipulating people to give info", "Using software exploits", "Hardware hacking", "Network scanning"],
+      answer: "Manipulating people to give info"
+    },
+    {
+      question: "What is a zero-day vulnerability?",
+      options: ["An unknown software flaw exploited before patching", "A patched bug", "An old virus", "A type of firewall"],
+      answer: "An unknown software flaw exploited before patching"
+    },
+    {
+      question: "Which of these is NOT a cyber attack type?",
+      options: ["Wormhole", "Ransomware", "Trojan", "Spyware"],
+      answer: "Wormhole"
+    }
+  ];
+
+  const form = document.getElementById('quizForm');
+  const submitBtn = document.getElementById('submitBtn');
+  const resultDiv = document.getElementById('result');
+
+  // Utility: shuffle array (Fisher-Yates)
+  function shuffle(array) {
+    let currentIndex = array.length, randomIndex;
+
+    while (currentIndex !== 0) {
+      randomIndex = Math.floor(Math.random() * currentIndex);
+      currentIndex--;
+
+      // Swap
+      [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
+    }
+    return array;
+  }
+
+  // Render questions with randomized options
+  function renderQuiz() {
+    form.innerHTML = '';
+    questions.forEach((q, idx) => {
+      // shuffle options for this question
+      const shuffledOptions = shuffle([...q.options]);
+
+      // create question container
+      const qDiv = document.createElement('div');
+      qDiv.classList.add('question');
+      qDiv.innerHTML = `<strong>Q${idx + 1}:</strong> ${q.question}`;
+
+      // add options as radio buttons
+      shuffledOptions.forEach(option => {
+        const optionId = `q${idx}_option_${option.replace(/\s+/g, '')}`;
+        const label = document.createElement('label');
+        label.htmlFor = optionId;
+        label.innerHTML = `<input type="radio" name="q${idx}" id="${optionId}" value="${option}" required> ${option}`;
+        qDiv.appendChild(label);
+      });
+
+      form.appendChild(qDiv);
+    });
+  }
+
+  // On submit check answers and show points
+  submitBtn.addEventListener('click', function(event) {
+    event.preventDefault();
+
+    let score = 0;
+    let total = questions.length;
+
+    // check if all questions answered
+    for(let i=0; i<total; i++) {
+      const selected = form.querySelector(`input[name="q${i}"]:checked`);
+      if (!selected) {
+        alert(`Please answer Question ${i+1} to continue!`);
+        return;
+      }
+    }
+
+    // Calculate score
+    for(let i=0; i<total; i++) {
+      const selected = form.querySelector(`input[name="q${i}"]:checked`).value;
+      if(selected === questions[i].answer) {
+        score++;
+      }
+    }
+
+    // Fun messages based on score
+    let msg = '';
+    if(score === total) {
+      msg = `🔥 Perfect score! You're a Cyber Ninja! 🥷💥`;
+    } else if(score >= total * 0.8) {
+      msg = `😎 Great job! You got ${score} out of ${total} right! Keep hacking! 💻`;
+    } else if(score >= total * 0.5) {
+      msg = `🙂 Not bad! You scored ${score} out of ${total}. Keep learning! 📚`;
+    } else {
+      msg = `😅 You got ${score} out of ${total}. Don't worry, practice makes perfect! 💪`;
+    }
+
+    resultDiv.textContent = msg;
+  });
+
+  // Initialize quiz on page load
+  renderQuiz();
+</script>
+
+</body>
+</html>
