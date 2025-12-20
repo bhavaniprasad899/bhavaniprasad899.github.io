@@ -1,122 +1,164 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<meta charset="UTF-8">
-<title>CyberArena - Command Line Simulator</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CyberArena – Command Line Simulator</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<style>
-body {
-    background: #0d1117;
-    color: #00ff9c;
-    font-family: monospace;
-    padding: 20px;
-}
+  <style>
+    body {
+      background: #0d1117;
+      color: #00ff9c;
+      font-family: monospace;
+      margin: 0;
+      padding: 20px;
+    }
 
-#terminal {
-    max-width: 800px;
-    margin: auto;
-    border: 2px solid #00ff9c;
-    padding: 15px;
-    border-radius: 8px;
-}
+    h2 {
+      color: #58a6ff;
+    }
 
-input {
-    width: 100%;
-    background: transparent;
-    border: none;
-    outline: none;
-    color: #00ff9c;
-    font-family: monospace;
-    font-size: 16px;
-}
+    #terminal {
+      background: black;
+      padding: 15px;
+      border-radius: 8px;
+      height: 420px;
+      overflow-y: auto;
+      box-shadow: 0 0 15px #00ff9c55;
+    }
 
-.output {
-    margin-bottom: 10px;
-    white-space: pre-wrap;
-}
-</style>
+    .line {
+      margin: 4px 0;
+    }
+
+    .prompt {
+      color: #00ff9c;
+    }
+
+    input {
+      background: black;
+      color: #00ff9c;
+      border: none;
+      outline: none;
+      width: 80%;
+      font-family: monospace;
+      font-size: 16px;
+    }
+
+    .hint {
+      color: #f0db4f;
+    }
+
+    .error {
+      color: #ff5555;
+    }
+
+    .success {
+      color: #00ff9c;
+    }
+  </style>
 </head>
 
 <body>
 
-<h2 align="center">💻 CyberArena Command Line Simulator</h2>
+<h2>💻 CyberArena Command Line Simulator</h2>
+<p>Try commands like: <b>ls, cd, cat, nmap, whois, sqlmap</b></p>
 
-<div id="terminal">
-    <div id="output"></div>
-    <span>cyber@arena:~$ </span>
-    <input type="text" id="command" autofocus>
+<div id="terminal"></div>
+
+<div class="line">
+  <span class="prompt">student@cyberarena:~$</span>
+  <input type="text" id="commandInput" autofocus onkeydown="runCommand(event)">
 </div>
 
 <script>
-const output = document.getElementById("output");
-const commandInput = document.getElementById("command");
+  const terminal = document.getElementById("terminal");
 
-commandInput.addEventListener("keydown", function(e) {
-    if (e.key === "Enter") {
-        let cmd = commandInput.value.trim();
-        printCommand(cmd);
-        runCommand(cmd);
-        commandInput.value = "";
-    }
-});
+  let currentDir = "home";
 
-function printCommand(cmd) {
-    output.innerHTML += `<div class="output">cyber@arena:~$ ${cmd}</div>`;
-}
+  const fileSystem = {
+    home: ["readme.txt", "tools", "ctf"],
+    tools: ["nmap.txt", "sqlmap.txt"],
+    ctf: ["flag.txt"]
+  };
 
-function runCommand(cmd) {
-    let response = "";
-
-    switch(cmd.toLowerCase()) {
-        case "help":
-            response = `
-Available Commands:
-- ls
-- pwd
-- whoami
-- nmap
-- sqlmap
-- clear
-- hack
-`;
-            break;
-
-        case "ls":
-            response = "projects  tools  secrets.txt";
-            break;
-
-        case "pwd":
-            response = "/home/cyberarena";
-            break;
-
-        case "whoami":
-            response = "ethical_hacker";
-            break;
-
-        case "nmap":
-            response = "Starting Nmap...\nOpen ports: 80, 443\nTarget looks vulnerable 👀";
-            break;
-
-        case "sqlmap":
-            response = "SQL Injection detected!\nDatabase dumped successfully 😈";
-            break;
-
-        case "hack":
-            response = "Hacking started...\nAccess Granted 🔓🔥";
-            break;
-
-        case "clear":
-            output.innerHTML = "";
-            return;
-
-        default:
-            response = "Command not found 😕 | Type 'help'";
-    }
-
-    output.innerHTML += `<div class="output">${response}</div>`;
+  function print(text, className = "") {
+    const div = document.createElement("div");
+    div.className = "line " + className;
+    div.innerHTML = text;
+    terminal.appendChild(div);
     terminal.scrollTop = terminal.scrollHeight;
-}
+  }
+
+  function runCommand(e) {
+    if (e.key !== "Enter") return;
+
+    const input = e.target.value.trim();
+    e.target.value = "";
+
+    print(`<span class="prompt">student@cyberarena:${currentDir}$</span> ${input}`);
+
+    const cmd = input.split(" ");
+
+    switch (cmd[0]) {
+
+      case "help":
+        print("Available commands: ls, cd, cat, nmap, whois, sqlmap, clear, hint");
+        break;
+
+      case "ls":
+        print(fileSystem[currentDir].join("  "));
+        break;
+
+      case "cd":
+        if (fileSystem[cmd[1]]) {
+          currentDir = cmd[1];
+          print("Directory changed to " + currentDir, "success");
+        } else {
+          print("Directory not found", "error");
+        }
+        break;
+
+      case "cat":
+        if (cmd[1] === "readme.txt") {
+          print("Welcome to CyberArena CLI 😄 Learn hacking the legal way!");
+        } else if (cmd[1] === "flag.txt") {
+          print("🎉 CTF FLAG FOUND: cyberarena{first_cli_flag}");
+        } else {
+          print("File not found", "error");
+        }
+        break;
+
+      case "nmap":
+        print("Starting Nmap scan...");
+        print("PORT 80   open   http");
+        print("PORT 22   open   ssh");
+        break;
+
+      case "whois":
+        print("Domain Name: cyberarena.local");
+        print("Owner: CyberArena Labs");
+        break;
+
+      case "sqlmap":
+        print("Testing SQL Injection...");
+        print("VULNERABLE PARAMETER FOUND 😈", "success");
+        break;
+
+      case "clear":
+        terminal.innerHTML = "";
+        break;
+
+      case "hint":
+        print("💡 Try exploring folders using ls and cd", "hint");
+        break;
+
+      default:
+        print("Command not found. Type help", "error");
+    }
+  }
+
+  print("Welcome to CyberArena CLI 😜");
+  print("Type 'help' to begin 🚀");
 </script>
 
 </body>
