@@ -1,46 +1,212 @@
+
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>CyberArena - Home</title>
-  <link rel="stylesheet" href="style.css">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<title>CyberArena | Hacker Training Ground</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+/* ===== GLOBAL ===== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Courier New", monospace;
+}
+
+body {
+  background: black;
+  color: #00ffcc;
+  overflow-x: hidden;
+}
+
+/* ===== MATRIX BACKGROUND ===== */
+canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: -1;
+}
+
+/* ===== NAVBAR ===== */
+nav {
+  display: flex;
+  justify-content: space-between;
+  padding: 15px 30px;
+  background: rgba(0,0,0,0.7);
+  border-bottom: 1px solid #00ffcc;
+}
+
+nav h1 {
+  color: #00ffcc;
+  text-shadow: 0 0 10px #00ffcc;
+}
+
+nav a {
+  color: #00ffcc;
+  margin-left: 20px;
+  text-decoration: none;
+}
+
+nav a:hover {
+  color: red;
+}
+
+/* ===== HERO ===== */
+.hero {
+  text-align: center;
+  padding: 120px 20px;
+}
+
+.hero h2 {
+  font-size: 3rem;
+  text-shadow: 0 0 20px red;
+}
+
+.hero p {
+  margin-top: 15px;
+  color: #aaa;
+}
+
+.hero button {
+  margin-top: 30px;
+  padding: 15px 30px;
+  background: transparent;
+  border: 2px solid red;
+  color: red;
+  cursor: pointer;
+  font-size: 1.1rem;
+  box-shadow: 0 0 20px red;
+}
+
+.hero button:hover {
+  background: red;
+  color: black;
+}
+
+/* ===== 3D CARDS ===== */
+.cards {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  padding: 80px 20px;
+  flex-wrap: wrap;
+}
+
+.card {
+  background: rgba(0,0,0,0.8);
+  width: 260px;
+  padding: 30px;
+  border: 1px solid #00ffcc;
+  box-shadow: 0 0 20px #00ffcc;
+  transform-style: preserve-3d;
+  transition: 0.4s;
+}
+
+.card:hover {
+  transform: rotateY(15deg) rotateX(10deg) scale(1.05);
+  box-shadow: 0 0 40px red;
+}
+
+.card h3 {
+  margin-bottom: 15px;
+  color: red;
+}
+
+/* ===== FOOTER ===== */
+footer {
+  text-align: center;
+  padding: 20px;
+  border-top: 1px solid #00ffcc;
+  color: #666;
+}
+</style>
 </head>
 
-<body style="background:#0d1117;color:#e6edf3;font-family:Arial;text-align:center;">
+<body>
 
-<!-- NAV BAR -->
-<nav class="nav3d">
-  <a href="index.html">Home</a>
+<!-- MATRIX CANVAS -->
+<canvas id="matrix"></canvas>
+
+<!-- NAVBAR -->
+<nav>
+  <h1>⚡ CyberArena</h1>
+  <div>
+    <a href="index.html">Home</a>
+    <a href="terminal.html">Terminal</a>
     <a href="task.html">Tasks</a>
-  <a href="guess.html">Guess Game</a>
-  <a href="terminal.html">🖥️Terminal</a>
-  <a href="whois.html">🌐 WHOIS Lookup</a>
-  
+    <a href="guess.html">Games</a>
+  </div>
 </nav>
-<div class="card3d">
-  <h3>🛡️ Learn Cybersecurity</h3>
-  <p>Games + Tasks + Terminal</p>
-  <button class="gestureBtn">Start Learning</button>
-</div>
 
-  
+<!-- HERO -->
+<section class="hero">
+  <h2>ENTER THE HACKER DIMENSION</h2>
+  <p>Learn | Hack | Play | Dominate Cybersecurity</p>
+  <button onclick="location.href='terminal.html'">Launch Terminal</button>
+</section>
 
-<h1>🔥 Welcome to CyberArena 🔐</h1>
-<p>Play 🎮 | Learn 📘 | Hack 💻 | Secure 🛡️</p>
+<!-- 3D CARDS -->
+<section class="cards">
+  <div class="card">
+    <h3>💻 Hacker Terminal</h3>
+    <p>Practice Linux & hacking commands.</p>
+  </div>
 
-  <script>
-document.querySelectorAll('.gestureBtn').forEach(btn => {
-  btn.addEventListener('mousemove', (e) => {
-    const r = btn.getBoundingClientRect();
-    const x = e.clientX - r.left - r.width / 2;
-    const y = e.clientY - r.top - r.height / 2;
-    btn.style.transform = `rotateX(${-y/10}deg) rotateY(${x/10}deg)`;
-  });
-  btn.addEventListener('mouseleave', () => {
-    btn.style.transform = 'rotateX(0) rotateY(0)';
-  });
-});
+  <div class="card">
+    <h3>🎯 Cyber Tasks</h3>
+    <p>CTF-style challenges for real hackers.</p>
+  </div>
+
+  <div class="card">
+    <h3>🎮 Cyber Games</h3>
+    <p>Play & earn points while learning security.</p>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  © 2025 CyberArena | Built by Bhavani Prasad 😎
+</footer>
+
+<!-- MATRIX SCRIPT -->
+<script>
+const canvas = document.getElementById("matrix");
+const ctx = canvas.getContext("2d");
+
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+const letters = "01";
+const fontSize = 16;
+const columns = canvas.width / fontSize;
+const drops = [];
+
+for (let i = 0; i < columns; i++) {
+  drops[i] = 1;
+}
+
+function drawMatrix() {
+  ctx.fillStyle = "rgba(0,0,0,0.05)";
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  ctx.fillStyle = "#00ffcc";
+  ctx.font = fontSize + "px monospace";
+
+  for (let i = 0; i < drops.length; i++) {
+    const text = letters[Math.floor(Math.random() * letters.length)];
+    ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+    if (drops[i] * fontSize > canvas.height && Math.random() > 0.975)
+      drops[i] = 0;
+
+    drops[i]++;
+  }
+}
+
+setInterval(drawMatrix, 33);
 </script>
-  
+
 </body>
 </html>
