@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>CyberArena – CHECK EMAIL</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body {
+  background: black;
+  color: #00ff00;
+  font-family: monospace;
+  text-align: center;
+  padding: 40px;
+}
+
+input {
+  padding: 10px;
+  width: 280px;
+  font-size: 16px;
+  background: #111;
+  color: #0f0;
+  border: 1px solid #0f0;
+}
+
+button {
+  padding: 10px 20px;
+  margin-top: 15px;
+  font-size: 16px;
+  background: #0f0;
+  border: none;
+  cursor: pointer;
+}
+
+#result {
+  margin-top: 30px;
+  font-size: 18px;
+}
+</style>
+</head>
+
+<body>
+
+<h1>☠️CHECK EMAIL  </h1>
+<p>Check if your email was leaked in a data breach</p>
+
+<input type="email" id="email" placeholder="Enter your email">
+<br>
+<button onclick="checkPwned()">Check</button>
+
+<div id="result"></div>
+
+<script>
+const breachedEmails = [
+  "test@gmail.com",
+  "admin@yahoo.com",
+  "hacker@evil.com",
+  "demo@breach.com",
+  "hacker666629@gmail.com"
+];
+
+function checkPwned() {
+  const email = document.getElementById("email").value.toLowerCase();
+  const result = document.getElementById("result");
+
+  if (!email) {
+    result.innerHTML = "⚠️ Enter a valid email";
+    return;
+  }
+
+  if (breachedEmails.includes(email)) {
+    result.innerHTML = `
+      ❌ <b>PWNED!</b><br><br>
+      This email was found in a data breach 💀<br>
+      🔓 Change your password immediately<br>
+      🔐 Enable 2FA
+    `;
+  } else {
+    result.innerHTML = `
+      ✅ <b>SAFE</b><br><br>
+      No breach found 😎<br>
+      Still, stay alert!
+    `;
+  }
+}
+</script>
+
+</body>
+</html>
