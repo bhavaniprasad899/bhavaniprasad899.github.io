@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>CyberArena | Choose Your Level</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+body{
+  background:black;
+  color:#00ffcc;
+  font-family:monospace;
+  text-align:center;
+}
+h1{
+  text-shadow:0 0 20px red;
+}
+.levels{
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
+  gap:20px;
+  margin-top:40px;
+}
+.level{
+  width:220px;
+  padding:20px;
+  border:1px solid #00ffcc;
+  box-shadow:0 0 20px #00ffcc;
+  cursor:pointer;
+  transition:0.3s;
+}
+.level:hover{
+  transform:scale(1.1);
+  box-shadow:0 0 30px red;
+}
+a{
+  color:#00ffcc;
+  text-decoration:none;
+}
+</style>
+</head>
+
+<body>
+
+<h1>🧠 CyberArena – Select Your Mission</h1>
+
+<div class="levels">
+  <a href="level1.html"><div class="level">🟢 Level 1<br>Hacker Basics</div></a>
+  <a href="level2.html"><div class="level">🔵 Level 2<br>Web Attacker</div></a>
+  <a href="level3.html"><div class="level">🟡 Level 3<br>Command Line</div></a>
+  <a href="level4.html"><div class="level">🟠 Level 4<br>CTF Logic</div></a>
+  <a href="level5.html"><div class="level">🔴 Level 5<br>Attack Simulation</div></a>
+  <a href="level6.html"><div class="level">🟣 Level 6<br>Advanced Cyber</div></a>
+</div>
+
+<br><br>
+<a href="index.html">⬅ Back to Home</a>
+
+</body>
+</html>
