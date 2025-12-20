@@ -1,169 +1,30 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <title>CyberArena – Play & Learn Cybersecurity</title>
+  <title>CyberArena - Home</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <style>
-    body {
-      font-family: Arial;
-      background:#0d1117;
-      color:#e6edf3;
-      margin:0;
-      text-align:center;
-    }
-    nav {
-      background:#161b22;
-      padding:15px;
-    }
-    nav a {
-      margin:15px;
-      color:#58a6ff;
-      text-decoration:none;
-    }
-    section {
-      padding:50px 20px;
-    }
-    .card {
-      background:#161b22;
-      padding:20px;
-      border-radius:8px;
-      max-width:420px;
-      margin:40px auto;
-    }
-    button {
-      background:#58a6ff;
-      color:white;
-      border:none;
-      padding:10px 15px;
-      cursor:pointer;
-      border-radius:5px;
-    }
-    footer {
-      background:#161b22;
-      padding:15px;
-    }
-  </style>
 </head>
 
-<body>
+<body style="background:#0d1117;color:#e6edf3;font-family:Arial;text-align:center;">
 
-<!-- NAVBAR -->
-<nav>
-  <a href="#about">About</a>
-  <a href="#services">Services</a>
-  <a href="#contact">Contact</a>
+<!-- NAV BAR -->
+<nav style="padding:15px;background:#111;">
+  <a href="index.html" style="color:#00ff9c;margin:10px;">Home</a>
+  <a href="terminal.html" style="color:#00ff9c;margin:10px;">Terminal</a>
+  <a href="guess.html" style="color:#00ff9c;margin:10px;">Guess Game</a>
+  <a href="task.html" style="color:#00ff9c;margin:10px;">Tasks</a>
 </nav>
 
-<!-- HERO -->
-<section>
-  <h1>⚔️ Welcome to CyberArena</h1>
-  <p>Play • Learn • Hack • Secure 😎</p>
-</section>
+<h1>🔥 Welcome to CyberArena 🔐</h1>
+<p>Play 🎮 | Learn 📘 | Hack 💻 | Secure 🛡️</p>
 
-<!-- ABOUT -->
-<section id="about" style="background:#010409;">
-  <h2>About CyberArena</h2>
-  <p>CyberArena is a cybersecurity learning platform </p>
-</section>
+<hr>
 
-<!-- SERVICES -->
-<section id="services">
-  <h2> Our Services</h2>
-  <p>Games🎮 • Challenges⚔️ • Hacking Practice💻 • Awareness</p>
-</section>
+<h3>Choose a section</h3>
 
-<!-- PASSWORD CHECKER -->
-<div class="card">
-  <h2>Password Strength Checker 🥶</h2>
-  <input type="password" id="pwdInput" placeholder="Enter password" style="width:100%;padding:10px;">
-  <div id="strengthMsg"></div>
-</div>
-
-<!-- QUOTE -->
-<div class="card">
-  <h2>Cyber Quote ⚓</h2>
-  <button id="quoteBtn">Show Quote</button>
-  <p id="quoteText"></p>
-</div>
-
-<!-- GUESS GAME -->
-<div class="card">
-  <h2>Guess the Number 😎</h2>
-  <p id="pointsDisplay">💰 BP: 0</p>
-  <input type="number" id="guessInput" placeholder="1–100">
-  <button id="guessBtn">Guess</button>
-  <p id="guessResult"></p>
-  <button id="resetGame" style="display:none;">Restart</button>
-</div>
-
-<!-- TASK -->
-<div class="card">
-  <h2>Cyber Task</h2>
-  <button id="getTaskBtn">Get Task</button>
-  <p id="taskCode"></p>
-  <p id="taskDesc"></p>
-</div>
-
-<!-- CONTACT -->
-<section id="contact" style="background:#010409;">
-  <h2>📞 Contact</h2>
-  <p>Email me on LinkedIn 😄</p>
-</section>
-
-<footer>
-  © 2025 CyberArena | Built by Bhavani Prasad 😎
-</footer>
-
-<script>
-/* PASSWORD */
-pwdInput.oninput = () => {
-  let v=pwdInput.value,s=0;
-  if(v.length>=8)s++;
-  if(/[A-Z]/.test(v))s++;
-  if(/[0-9]/.test(v))s++;
-  if(/[^A-Za-z0-9]/.test(v))s++;
-  strengthMsg.textContent =
-    s<=1?'Weak 🔴':s==2?'Moderate 🟠':s==3?'Strong 🟢':'Very Strong 💪';
-}
-
-/* QUOTE */
-const quotes=[
- "Security is a process – Bruce Schneier",
- "Hack to understand – Anonymous",
- "Detect & Respond is key"
-];
-quoteBtn.onclick=()=>quoteText.textContent=
- quotes[Math.floor(Math.random()*quotes.length)];
-
-/* GUESS GAME */
-let n=Math.floor(Math.random()*100)+1,a=0;
-let bp=+localStorage.getItem('BP')||0;
-pointsDisplay.textContent=`💰 BP: ${bp}`;
-guessBtn.onclick=()=>{
- a++;
- let g=+guessInput.value;
- if(g===n){bp+=10;localStorage.setItem('BP',bp);
- pointsDisplay.textContent=`💰 BP: ${bp}`;
- guessResult.textContent="Correct 🎉";resetGame.style.display="inline";}
- else guessResult.textContent=g<n?"Too Low":"Too High";
-}
-resetGame.onclick=()=>location.reload();
-
-/* TASK */
-const tasks=[
- ["TASK001","Find XSS"],
- ["TASK002","Explain SQLi"],
- ["TASK003","Scan ports"]
-];
-getTaskBtn.onclick=()=>{
- let t=tasks[Math.floor(Math.random()*tasks.length)];
- taskCode.textContent=t[0];
- taskDesc.textContent=t[1];
-}
-</script>
+<p><a href="terminal.html">💻 Command Line Simulator</a></p>
+<p><a href="guess.html">😎 Guess the Number Game</a></p>
+<p><a href="task.html">📜 Cybersecurity Tasks</a></p>
 
 </body>
 </html>
-
