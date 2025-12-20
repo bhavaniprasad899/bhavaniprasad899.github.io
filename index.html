@@ -1,336 +1,169 @@
-<!DOCT<body style="font-family: Arial; background:#0d1117; color:#e6edf3; margin:0;">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>CyberArena – Play & Learn Cybersecurity</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<!-- 🔹 NAVBAR -->
-<nav style="background:#161b22; padding:15px; text-align:center;">
-  <a href="#about" style="margin:15px; color:#58a6ff; text-decoration:none;">About</a>
-  <a href="#services" style="margin:15px; color:#58a6ff; text-decoration:none;">Services</a>
-  <a href="#contact" style="margin:15px; color:#58a6ff; text-decoration:none;">Contact</a>
+  <style>
+    body {
+      font-family: Arial;
+      background:#0d1117;
+      color:#e6edf3;
+      margin:0;
+      text-align:center;
+    }
+    nav {
+      background:#161b22;
+      padding:15px;
+    }
+    nav a {
+      margin:15px;
+      color:#58a6ff;
+      text-decoration:none;
+    }
+    section {
+      padding:50px 20px;
+    }
+    .card {
+      background:#161b22;
+      padding:20px;
+      border-radius:8px;
+      max-width:420px;
+      margin:40px auto;
+    }
+    button {
+      background:#58a6ff;
+      color:white;
+      border:none;
+      padding:10px 15px;
+      cursor:pointer;
+      border-radius:5px;
+    }
+    footer {
+      background:#161b22;
+      padding:15px;
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<nav>
+  <a href="#about">About</a>
+  <a href="#services">Services</a>
+  <a href="#contact">Contact</a>
 </nav>
 
-<!-- 🔹 HERO -->
-<section style="padding:60px 20px; text-align:center;">
-  <h1 style="color:#58a6ff;">⚔️ Welcome to CyberArena</h1>
+<!-- HERO -->
+<section>
+  <h1>⚔️ Welcome to CyberArena</h1>
   <p>Play • Learn • Hack • Secure 😎</p>
 </section>
 
-<!-- 🔹 ABOUT -->
-<section id="about" style="padding:50px 20px; background:#010409;">
-  <h2 style="color:#58a6ff;">🧠 About CyberArena</h2>
-  <p>
-    CyberArena is a cybersecurity learning platform designed for students,
-    ethical hackers, and beginners who want to learn hacking in a fun and
-    practical way 🎮💻.
-  </p>
-  <p>
-    Here you can play mini-games, solve cyber challenges, learn real-world
-    attacks like XSS, SQL Injection, phishing, and improve your skills safely 🚀.
-  </p>
+<!-- ABOUT -->
+<section id="about" style="background:#010409;">
+  <h2>🧠 About CyberArena</h2>
+  <p>CyberArena is a fun cybersecurity learning platform 🎮💻</p>
 </section>
 
-<!-- 🔹 SERVICES -->
-<section id="services" style="padding:50px 20px;">
-  <h2 style="color:#58a6ff;">🛠️ Our Services</h2>
-
-  <ul style="list-style:none; padding:0;">
-    <li>🎮 Cybersecurity Games & Challenges</li>
-    <li>🧪 Hands-on Hacking Practice (Legal & Safe)</li>
-    <li>📚 Beginner to Advanced Cyber Lessons</li>
-    <li>🏆 Points, Levels & Rewards System</li>
-    <li>🛡️ Awareness on Scams, Phishing & Fake Sites</li>
-  </ul>
+<!-- SERVICES -->
+<section id="services">
+  <h2>🛠️ Our Services</h2>
+  <p>Games • Challenges • Hacking Practice • Awareness</p>
 </section>
 
-<!-- 🔹 CONTACT -->
-<section id="contact" style="padding:50px 20px; background:#010409;">
-  <h2 style="color:#58a6ff;">📞 Contact Us</h2>
+<!-- PASSWORD CHECKER -->
+<div class="card">
+  <h2>Password Strength Checker 🥶</h2>
+  <input type="password" id="pwdInput" placeholder="Enter password" style="width:100%;padding:10px;">
+  <div id="strengthMsg"></div>
+</div>
 
-  <p>Have questions or want to collaborate? 😄</p>
+<!-- QUOTE -->
+<div class="card">
+  <h2>Cyber Quote ⚓</h2>
+  <button id="quoteBtn">Show Quote</button>
+  <p id="quoteText"></p>
+</div>
 
-  <form style="max-width:400px;">
-    <input type="text" placeholder="Your Name" required
-      style="width:100%; padding:10px; margin-bottom:10px;">
-    <input type="email" placeholder="Your Email" required
-      style="width:100%; padding:10px; margin-bottom:10px;">
-    <textarea placeholder="Your Message" required
-      style="width:100%; padding:10px; margin-bottom:10px;"></textarea>
-    <button type="submit"
-      style="background:#238636; color:white; padding:10px 20px; border:none; cursor:pointer;">
-      Send Message 🚀
-    </button>
-  </form>
+<!-- GUESS GAME -->
+<div class="card">
+  <h2>Guess the Number 😎</h2>
+  <p id="pointsDisplay">💰 BP: 0</p>
+  <input type="number" id="guessInput" placeholder="1–100">
+  <button id="guessBtn">Guess</button>
+  <p id="guessResult"></p>
+  <button id="resetGame" style="display:none;">Restart</button>
+</div>
+
+<!-- TASK -->
+<div class="card">
+  <h2>Cyber Task</h2>
+  <button id="getTaskBtn">Get Task</button>
+  <p id="taskCode"></p>
+  <p id="taskDesc"></p>
+</div>
+
+<!-- CONTACT -->
+<section id="contact" style="background:#010409;">
+  <h2>📞 Contact</h2>
+  <p>Email me on LinkedIn 😄</p>
 </section>
 
-<!-- 🔹 FOOTER -->
-<footer style="background:#161b22; text-align:center; padding:15px;">
-  <p>© 2025 CyberArena | Built by Bhavani Prasad 😎</p>
+<footer>
+  © 2025 CyberArena | Built by Bhavani Prasad 😎
 </footer>
 
-</body>
-YPE html>
-<html>
-<head>
-  <title>CyberArena – Play & Learn Cybersecurity</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <style>
-    body {
-      
-  </style>
-</head>
-<body>
-  <!-- Hamburger icon -->
-  <div id="menuToggle" aria-label="Open menu" tabindex="0" role="button">
-    <span></span>
-    <span></span>
-    <span></span>
-  </div>
-
-  <!-- Side menu -->
-  <div id="sideMenu" aria-hidden="true">
-    <div class="closeBtn" id="closeBtn" aria-label="Close menu" role="button" tabindex="0">&times;</div>
-    <div class="logo">🔥 CyberArena 🔐</div>
-    <nav>
-      <a href="index.html">Home</a>
-      <a href="about.html">About</a>
-      <a href="services.html">Services</a>
-      <a href="contact.html">Contact</a>
-    </nav>
-  </div>
-
-  <!-- Overlay -->
-  <div id="overlay"></div>
-
-  <h1>🔥 Welcome to CyberArena 🔐</h1>
-  <h3>Play 🎮• Learn ✍️• Hack💻 • Secure⚔️</h3>
-  <p>cybersecurity learning platform</p>
-  <p>Created by <b>Bhavani Prasad</b></p>
-  <div style="margin-top:40px; max-width:400px; margin-left:auto; margin-right:auto; text-align:left; background:#161b22; padding:20px; border-radius:8px;">
-  <h2>Password Strength Checker 🥶</h2>
-  <input type="password" id="pwdInput" placeholder="Enter your password" style="width:100%; padding:10px; font-size:16px; border-radius:4px; border:none; margin-bottom:10px;">
-  <div id="strengthMsg" style="font-weight:bold; font-size:18px;"></div>
-  </div>
-  <div style="margin-top:40px; max-width:400px; margin-left:auto; margin-right:auto; text-align:center; background:#161b22; padding:20px; border-radius:8px;">
-  <h2>Quote for a day move towards cybersecurity ⚓</h2>
-  <button id="quoteBtn" style="padding:10px 15px; font-size:16px; cursor:pointer; border:none; border-radius:4px; background:#58a6ff; color:#fff;">Show Quote</button>
-  <p id="quoteText" style="margin-top:15px; font-style: italic;"></p>
-  </div>
-  <div style="margin-top:40px; max-width:400px; margin-left:auto; margin-right:auto; background:#161b22; padding:20px; border-radius:8px; text-align:center; color:#e6edf3;">
-  <h2>Guess the Number Game😎</h2>
-    <p id="pointsDisplay" style="font-weight:bold; color:#58a6ff;">
-  💰 Points: 0
-    </p>   
-  <p>I'm thinking of a number between 1 and 100. Try to guess it!</p>
-  <input type="number" id="guessInput" placeholder="Enter your guess" style="padding:10px; width:60%; font-size:16px; border-radius:4px; border:none;">
-  <button id="guessBtn" style="padding:10px 15px; font-size:16px; margin-left:10px; cursor:pointer; border:none; border-radius:4px; background:#58a6ff; color:#fff;">Guess</button>
-  <p id="guessResult" style="margin-top:15px; font-weight:bold;"></p>
-  <button id="resetGame" style="margin-top:10px; padding:8px 12px; font-size:14px; cursor:pointer; border:none; border-radius:4px; background:#1f6feb; color:#fff; display:none;">Restart Game</button>
-  </div>
-  <div style="margin-top:40px; max-width:450px; margin:auto; background:#161b22; padding:20px; border-radius:8px; color:#e6edf3; text-align:center;">
-  <h2>Cybersecurity Task</h2>
-  <button id="getTaskBtn" style="padding:10px 20px; font-size:16px; background:#58a6ff; border:none; border-radius:5px; cursor:pointer; color:#fff;">Get My Task Code</button>
-  <p id="taskCode" style="margin-top:20px; font-size:20px; font-weight:bold;"></p>
-  <p id="taskDesc" style="margin-top:10px; font-size:16px;"></p>
-  </div>
-
-  <script>
-    const menuToggle = document.getElementById('menuToggle');
-    const sideMenu = document.getElementById('sideMenu');
-    const closeBtn = document.getElementById('closeBtn');
-    const overlay = document.getElementById('overlay');
-
-    function openMenu() {
-      sideMenu.classList.add('active');
-      overlay.classList.add('active');
-      sideMenu.setAttribute('aria-hidden', 'false');
-    }
-
-    function closeMenu() {
-      sideMenu.classList.remove('active');
-      overlay.classList.remove('active');
-      sideMenu.setAttribute('aria-hidden', 'true');
-    }
-
-    menuToggle.addEventListener('click', openMenu);
-    closeBtn.addEventListener('click', closeMenu);
-    overlay.addEventListener('click', closeMenu);
-
-    // Accessibility: allow keyboard to open/close menu
-    menuToggle.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault();
-        openMenu();
-      }
-    });
-    closeBtn.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault();
-        closeMenu();
-      }
-    });
-  const pwdInput = document.getElementById('pwdInput');
-  const strengthMsg = document.getElementById('strengthMsg');
-
-  pwdInput.addEventListener('input', () => {
-    const val = pwdInput.value;
-    let strength = 0;
-
-    if (val.length >= 8) strength++;
-    if (/[A-Z]/.test(val)) strength++;
-    if (/[0-9]/.test(val)) strength++;
-    if (/[^A-Za-z0-9]/.test(val)) strength++;
-
-    let msg = '';
-    let color = '';
-
-    switch(strength) {
-      case 0:
-      case 1:
-        msg = 'Weak 🔴';
-        color = '#ff4d4d';
-        break;
-      case 2:
-        msg = 'Moderate 🟠';
-        color = '#ffa500';
-        break;
-      case 3:
-        msg = 'Strong 🟢';
-        color = '#00cc44';
-        break;
-      case 4:
-        msg = 'Very Strong 💪🟢';
-        color = '#008000';
-        break;
-    }
-    strengthMsg.textContent = msg;
-    strengthMsg.style.color = color;
-  });
-  </script>
-  <script>
-    const quotes = [
-    "Security is not a product, but a process. – Bruce Schneier",
-    "The hacker mindset doesn’t actually see what’s on the screen. It imagines what’s behind the screen.",
-    "To hack is to understand. – Anonymous",
-    "Cybersecurity is much more than a matter of IT. – Stephane Nappo",
-    "You can't defend. You can't prevent. The only thing you can do is detect and respond. – Bruce Schneier"
-  ];
-
-  document.getElementById('quoteBtn').addEventListener('click', () => {
-    const idx = Math.floor(Math.random() * quotes.length);
-    document.getElementById('quoteText').textContent = quotes[idx];
-  });
-  </script>
 <script>
-(() => {
-  let secretNumber = Math.floor(Math.random() * 100) + 1;
-  let attempts = 0;
-  const maxAttempts = 3;
+/* PASSWORD */
+pwdInput.oninput = () => {
+  let v=pwdInput.value,s=0;
+  if(v.length>=8)s++;
+  if(/[A-Z]/.test(v))s++;
+  if(/[0-9]/.test(v))s++;
+  if(/[^A-Za-z0-9]/.test(v))s++;
+  strengthMsg.textContent =
+    s<=1?'Weak 🔴':s==2?'Moderate 🟠':s==3?'Strong 🟢':'Very Strong 💪';
+}
 
-  const guessInput = document.getElementById('guessInput');
-  const guessBtn = document.getElementById('guessBtn');
-  const guessResult = document.getElementById('guessResult');
-  const resetGame = document.getElementById('resetGame');
-  const pointsEl = document.getElementById('pointsDisplay');
+/* QUOTE */
+const quotes=[
+ "Security is a process – Bruce Schneier",
+ "Hack to understand – Anonymous",
+ "Detect & Respond is key"
+];
+quoteBtn.onclick=()=>quoteText.textContent=
+ quotes[Math.floor(Math.random()*quotes.length)];
 
-  let bp = parseInt(localStorage.getItem('BP_POINTS')) || 0;
-  pointsEl.textContent = `💰 BP: ${bp}`;
+/* GUESS GAME */
+let n=Math.floor(Math.random()*100)+1,a=0;
+let bp=+localStorage.getItem('BP')||0;
+pointsDisplay.textContent=`💰 BP: ${bp}`;
+guessBtn.onclick=()=>{
+ a++;
+ let g=+guessInput.value;
+ if(g===n){bp+=10;localStorage.setItem('BP',bp);
+ pointsDisplay.textContent=`💰 BP: ${bp}`;
+ guessResult.textContent="Correct 🎉";resetGame.style.display="inline";}
+ else guessResult.textContent=g<n?"Low":"High";
+}
+resetGame.onclick=()=>location.reload();
 
-  function reset() {
-    secretNumber = Math.floor(Math.random() * 100) + 1;
-    attempts = 0;
-    guessResult.textContent = '';
-    guessInput.value = '';
-    guessInput.disabled = false;
-    guessBtn.disabled = false;
-    resetGame.style.display = 'none';
-  }
-
-  guessBtn.addEventListener('click', () => {
-    const guess = Number(guessInput.value);
-
-    if (!guess || guess < 1 || guess > 100) {
-      guessResult.textContent = '❌ Enter a number between 1 and 100!';
-      guessResult.style.color = '#ff4d4d';
-      return;
-    }
-
-    attempts++;
-
-    if (guess === secretNumber) {
-      let earnedBP = 0;
-
-      if (attempts === 1) earnedBP = 10;
-      else if (attempts === 2) earnedBP = 5;
-      else earnedBP = 2;
-
-      bp += earnedBP;
-      localStorage.setItem('BP_POINTS', bp);
-
-      pointsEl.textContent = `💰 BP: ${bp}`;
-      guessResult.innerHTML = `🎉 Correct! +${earnedBP} BP earned 😎`;
-      guessResult.style.color = '#00cc44';
-
-      guessInput.disabled = true;
-      guessBtn.disabled = true;
-      resetGame.style.display = 'inline-block';
-
-    } else if (attempts >= maxAttempts) {
-      guessResult.innerHTML = `❌ Game Over! Number was <b>${secretNumber}</b>`;
-      guessResult.style.color = '#ff4d4d';
-
-      guessInput.disabled = true;
-      guessBtn.disabled = true;
-      resetGame.style.display = 'inline-block';
-
-    } else if (guess < secretNumber) {
-      guessResult.textContent = '⬇ Too low! Try again';
-      guessResult.style.color = '#ffa500';
-    } else {
-      guessResult.textContent = '⬆ Too high! Try again';
-      guessResult.style.color = '#ffa500';
-    }
-  });
-
-  resetGame.addEventListener('click', reset);
-})();
+/* TASK */
+const tasks=[
+ ["TASK001","Find XSS"],
+ ["TASK002","Explain SQLi"],
+ ["TASK003","Scan ports"]
+];
+getTaskBtn.onclick=()=>{
+ let t=tasks[Math.floor(Math.random()*tasks.length)];
+ taskCode.textContent=t[0];
+ taskDesc.textContent=t[1];
+}
 </script>
-<script>
-  (() => {
-    const tasks = [
-      {code: 'TASK001', desc: 'Find and report an XSS vulnerability on a demo site.'},
-      {code: 'TASK002', desc: 'Perform SQL Injection on a safe lab and explain the impact.'},
-      {code: 'TASK003', desc: 'Write a script to scan open ports using Nmap.'},
-      {code: 'TASK004', desc: 'Create a strong password policy and test it.'},
-      {code: 'TASK005', desc: 'Explore Burp Suite and capture HTTP requests.'},
-      {code: 'TASK006', desc: 'Set up a firewall and block unwanted IPs.'},
-      {code: 'TASK007', desc: 'Explain how phishing emails can be identified.'},
-      {code: 'TASK008', desc: 'Use Wireshark to analyze network traffic.'},
-      {code: 'TASK009', desc: 'Write a report on a recent cybersecurity breach.'},
-      {code: 'TASK010', desc: 'Build a simple phishing detection script in Python.'}
-    ];
 
-    const btn = document.getElementById('getTaskBtn');
-    const codeEl = document.getElementById('taskCode');
-    const descEl = document.getElementById('taskDesc');
-    let assignedTasks = JSON.parse(localStorage.getItem('assignedTasks')) || [];
-
-    function getUniqueTask() {
-    
-      const availableTasks = tasks.filter(t => !assignedTasks.includes(t.code));
-
-      if(availableTasks.length === 0){
-        codeEl.textContent = 'All tasks assigned!';
-        descEl.textContent = 'Please check back later for more tasks.';
-        return;
-      }
-      const randomTask = availableTasks[Math.floor(Math.random() * availableTasks.length)];
-      assignedTasks.push(randomTask.code);
-      localStorage.setItem('assignedTasks', JSON.stringify(assignedTasks));
-      codeEl.textContent = `Your Task Code: ${randomTask.code}`;
-      descEl.textContent = randomTask.desc;
-    }
-
-    btn.addEventListener('click', getUniqueTask)
-  })();
-</script>
-  
 </body>
 </html>
+
