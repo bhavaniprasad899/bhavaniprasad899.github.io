@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>CyberArena - Command Line Simulator</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body {
+    background: #0d1117;
+    color: #00ff9c;
+    font-family: monospace;
+    padding: 20px;
+}
+
+#terminal {
+    max-width: 800px;
+    margin: auto;
+    border: 2px solid #00ff9c;
+    padding: 15px;
+    border-radius: 8px;
+}
+
+input {
+    width: 100%;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: #00ff9c;
+    font-family: monospace;
+    font-size: 16px;
+}
+
+.output {
+    margin-bottom: 10px;
+    white-space: pre-wrap;
+}
+</style>
+</head>
+
+<body>
+
+<h2 align="center">💻 CyberArena Command Line Simulator</h2>
+
+<div id="terminal">
+    <div id="output"></div>
+    <span>cyber@arena:~$ </span>
+    <input type="text" id="command" autofocus>
+</div>
+
+<script>
+const output = document.getElementById("output");
+const commandInput = document.getElementById("command");
+
+commandInput.addEventListener("keydown", function(e) {
+    if (e.key === "Enter") {
+        let cmd = commandInput.value.trim();
+        printCommand(cmd);
+        runCommand(cmd);
+        commandInput.value = "";
+    }
+});
+
+function printCommand(cmd) {
+    output.innerHTML += `<div class="output">cyber@arena:~$ ${cmd}</div>`;
+}
+
+function runCommand(cmd) {
+    let response = "";
+
+    switch(cmd.toLowerCase()) {
+        case "help":
+            response = `
+Available Commands:
+- ls
+- pwd
+- whoami
+- nmap
+- sqlmap
+- clear
+- hack
+`;
+            break;
+
+        case "ls":
+            response = "projects  tools  secrets.txt";
+            break;
+
+        case "pwd":
+            response = "/home/cyberarena";
+            break;
+
+        case "whoami":
+            response = "ethical_hacker";
+            break;
+
+        case "nmap":
+            response = "Starting Nmap...\nOpen ports: 80, 443\nTarget looks vulnerable 👀";
+            break;
+
+        case "sqlmap":
+            response = "SQL Injection detected!\nDatabase dumped successfully 😈";
+            break;
+
+        case "hack":
+            response = "Hacking started...\nAccess Granted 🔓🔥";
+            break;
+
+        case "clear":
+            output.innerHTML = "";
+            return;
+
+        default:
+            response = "Command not found 😕 | Type 'help'";
+    }
+
+    output.innerHTML += `<div class="output">${response}</div>`;
+    terminal.scrollTop = terminal.scrollHeight;
+}
+</script>
+
+</body>
+</html>
