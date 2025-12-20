@@ -62,7 +62,31 @@ input {
 <body>
 
 <canvas id="matrix"></canvas>
+<!-- LOGIN SCREEN -->
+<div class="terminal" id="loginBox">
+  <div class="header">🔐 CYBERARENA ACCESS LOGIN 🔐</div>
 
+  <div class="line">Username:</div>
+  <input id="username" placeholder="hacker">
+
+  <div class="line">Password:</div>
+  <input id="password" type="password" placeholder="••••••">
+
+  <br><br>
+  <button onclick="login()" style="
+    background:black;
+    color:#00ff00;
+    border:1px solid #00ff00;
+    padding:10px;
+    width:100%;
+    font-family:monospace;
+  ">
+    LOGIN
+  </button>
+
+  <div class="line" id="loginMsg"></div>
+</div>
+  
 <div class="terminal" id="terminal">
   <div class="header">☠ CYBERARENA :: MATRIX HACKER TERMINAL ☠</div>
   <div class="line">Booting Offensive Lab...</div>
