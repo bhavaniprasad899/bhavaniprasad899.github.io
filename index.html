@@ -347,6 +347,47 @@ footer {
     <h3>OFFENSIVE ☠️⚔️</h3>
     <p>Attacking </p>
   </div>
+  <!-- OFFENSIVE DETAILS PANEL -->
+<div id="offensivePanel" class="offensive-panel">
+
+  <h2>☠ OFFENSIVE SECURITY (ETHICAL HACKING)</h2>
+
+  <p class="desc">
+    Offensive Security focuses on attacking systems legally to find vulnerabilities
+    before real hackers exploit them.
+  </p>
+
+  <h3>⚔ PHASES OF OFFENSIVE SECURITY</h3>
+  <ul>
+    <li>🔍 Reconnaissance (Information Gathering)</li>
+    <li>📡 Scanning & Enumeration</li>
+    <li>💣 Exploitation</li>
+    <li>🧠 Post Exploitation</li>
+    <li>📄 Reporting</li>
+  </ul>
+
+  <h3>👨‍💻 OFFENSIVE ROLES</h3>
+  <ul>
+    <li>Ethical Hacker</li>
+    <li>Penetration Tester</li>
+    <li>Red Team Engineer</li>
+    <li>Bug Bounty Hunter</li>
+  </ul>
+
+  <h3>🧰 OFFENSIVE TOOLS</h3>
+  <div class="tool-buttons">
+    <button onclick="showTool('nmap')">Nmap</button>
+    <button onclick="showTool('burp')">Burp Suite</button>
+    <button onclick="showTool('meta')">Metasploit</button>
+    <button onclick="showTool('sqlmap')">SQLMap</button>
+    <button onclick="showTool('wfuzz')">Wfuzz</button>
+  </div>
+
+  <div id="toolInfo" class="tool-info"></div>
+
+  <button class="close-btn" onclick="closeOffensive()">❌ Close</button>
+</div>
+  
 
   <div class="card">
     <h3> DEFENSIVE 🛡️🔐</h3>
