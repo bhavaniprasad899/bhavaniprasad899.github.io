@@ -301,6 +301,58 @@ footer {
   box-shadow: 0 0 20px red;
   color: #00ffcc;
 }
+  .offensive-panel {
+  display: none;
+  position: fixed;
+  top: 5%;
+  left: 5%;
+  width: 90%;
+  height: 90%;
+  background: rgba(0,0,0,0.95);
+  border: 2px solid #00ff88;
+  box-shadow: 0 0 30px #00ff88;
+  color: #00ff88;
+  padding: 20px;
+  overflow-y: auto;
+  z-index: 9999;
+  animation: slideUp 0.5s ease;
+}
+
+@keyframes slideUp {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
+}
+
+.tool-buttons button {
+  background: black;
+  border: 1px solid red;
+  color: red;
+  padding: 10px;
+  margin: 5px;
+  cursor: pointer;
+  box-shadow: 0 0 10px red;
+}
+
+.tool-buttons button:hover {
+  background: red;
+  color: black;
+}
+
+.tool-info {
+  margin-top: 20px;
+  padding: 15px;
+  border: 1px solid #00ff88;
+  box-shadow: 0 0 15px #00ff88;
+}
+
+.close-btn {
+  background: red;
+  color: black;
+  padding: 10px;
+  border: none;
+  margin-top: 20px;
+}
+  
   </style>
 </head>
 
@@ -534,6 +586,37 @@ function showRole(role) {
 
   <div id="roleContent"></div>
 </div>
+  <script>
+function openOffensive() {
+  document.getElementById("offensivePanel").style.display = "block";
+}
+
+function closeOffensive() {
+  document.getElementById("offensivePanel").style.display = "none";
+}
+
+function showTool(tool) {
+  let info = "";
+
+  if (tool === "nmap") {
+    info = "🔍 Nmap: Network scanning, port scanning, service detection. Learn TCP/IP, ports, OS detection.";
+  }
+  if (tool === "burp") {
+    info = "🧪 Burp Suite: Web application testing, intercepting requests, XSS, SQLi testing.";
+  }
+  if (tool === "meta") {
+    info = "💣 Metasploit: Exploitation framework, payloads, reverse shells, post-exploitation.";
+  }
+  if (tool === "sqlmap") {
+    info = "💉 SQLMap: Automated SQL injection detection & database dumping.";
+  }
+  if (tool === "wfuzz") {
+    info = "⚡ Wfuzz: Directory brute force, parameter fuzzing.";
+  }
+
+  document.getElementById("toolInfo").innerText = info;
+}
+  </script>
   
 </body>
 </html>
