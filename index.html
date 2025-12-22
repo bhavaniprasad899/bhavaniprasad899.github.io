@@ -227,7 +227,80 @@ footer {
   cursor: pointer;
   color: red;
 }
-  
+  /* ===== CYBER ROLE BUTTON ===== */
+.role-btn-container {
+  text-align: center;
+  margin-top: 40px;
+}
+
+.role-btn {
+  padding: 18px 40px;
+  font-size: 18px;
+  font-weight: bold;
+  background: red;
+  color: black;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 0 20px red;
+  animation: blink 2s infinite;
+  transform: perspective(500px) translateZ(20px);
+}
+
+@keyframes blink {
+  0% {
+    background: red;
+    box-shadow: 0 0 25px red;
+  }
+  50% {
+    background: #00ff66;
+    box-shadow: 0 0 25px #00ff66;
+  }
+  100% {
+    background: red;
+    box-shadow: 0 0 25px red;
+  }
+}
+  /* ===== ROLES PANEL ===== */
+.roles-panel {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.97);
+  display: none;
+  padding: 60px 20px;
+  z-index: 2000;
+  text-align: center;
+}
+
+.roles-panel h2 {
+  color: red;
+  margin-bottom: 30px;
+}
+
+.roles-panel button {
+  margin: 10px;
+  padding: 12px 25px;
+  background: black;
+  border: 1px solid #00ffcc;
+  color: #00ffcc;
+  cursor: pointer;
+  box-shadow: 0 0 15px #00ffcc;
+}
+
+.roles-panel button:hover {
+  background: red;
+  color: black;
+}
+
+#roleContent {
+  margin-top: 30px;
+  padding: 20px;
+  border: 1px solid red;
+  box-shadow: 0 0 20px red;
+  color: #00ffcc;
+}
   </style>
 </head>
 
@@ -285,7 +358,12 @@ footer {
     <p>Play & earn points while learning security.</p>
   </div>
 </section>
-
+  
+<!-- CYBER ROLES BUTTON -->
+<div class="role-btn-container">
+  <button class="role-btn" onclick="openRoles()">⚡ CYBER SECURITY ROLES ⚡</button>
+</div>
+  
 <!-- FOOTER -->
 <footer>
   © 2025 CyberArena | Built by Bhavani Prasad 😎
@@ -341,5 +419,85 @@ function toggleMenu() {
   menu.classList.toggle("active");
 }
 </script>
+  <script>
+function openRoles() {
+  document.getElementById("rolesPanel").style.display = "block";
+}
+
+function closeRoles() {
+  document.getElementById("rolesPanel").style.display = "none";
+}
+
+function showRole(role) {
+  let content = "";
+
+  if (role === "ethical") {
+    content = `
+    <h3>😇 Ethical Hacker</h3>
+    <p>Purpose: Find vulnerabilities legally.</p>
+    <p>Learn: Linux, Networking, Web, OWASP Top 10</p>
+    <p>Tools: Nmap, Burp Suite, Metasploit</p>`;
+  }
+
+  if (role === "blackhat") {
+    content = `
+    <h3>☠️ Black Hat (Ethical Learning)</h3>
+    <p>Learn attacker mindset for defense.</p>
+    <p>Used ONLY in labs & legal environments.</p>
+    <p>Skills: Exploits, Malware concepts, Bypassing security</p>`;
+  }
+
+  if (role === "soc") {
+    content = `
+    <h3>🛡️ SOC Analyst</h3>
+    <p>Purpose: Monitor & defend systems.</p>
+    <p>Learn: Logs, SIEM, Incident Response</p>
+    <p>Tools: Splunk, Wazuh, ELK</p>`;
+  }
+
+  if (role === "pentester") {
+    content = `
+    <h3>🎯 Penetration Tester</h3>
+    <p>Simulated attacks to improve security.</p>
+    <p>Learn: Web, Network, Active Directory</p>
+    <p>Tools: Nmap, Metasploit, BloodHound</p>`;
+  }
+
+  if (role === "bug") {
+    content = `
+    <h3>🐞 Bug Bounty Hunter</h3>
+    <p>Find bugs & earn rewards.</p>
+    <p>Learn: XSS, IDOR, SQLi</p>
+    <p>Platforms: HackerOne, Bugcrowd</p>`;
+  }
+
+  if (role === "blue") {
+    content = `
+    <h3>🔵 Blue Team</h3>
+    <p>Defensive cybersecurity role.</p>
+    <p>Learn: Detection, Hardening, Monitoring</p>
+    <p>Tools: SIEM, EDR, Firewalls</p>`;
+  }
+
+  document.getElementById("roleContent").innerHTML = content;
+}
+  </script>
+  
+  <!-- CYBER ROLES PANEL -->
+<div id="rolesPanel" class="roles-panel">
+  <span class="closeBtn" onclick="closeRoles()">✖</span>
+
+  <h2>⚡ CYBER SECURITY ROLES ⚡</h2>
+
+  <button onclick="showRole('ethical')">😇 Ethical Hacker</button>
+  <button onclick="showRole('blackhat')">☠️ Black Hat (Ethical Learning)</button>
+  <button onclick="showRole('soc')">🛡️ SOC Analyst</button>
+  <button onclick="showRole('pentester')">🎯 Penetration Tester</button>
+  <button onclick="showRole('bug')">🐞 Bug Bounty Hunter</button>
+  <button onclick="showRole('blue')">🔵 Blue Team</button>
+
+  <div id="roleContent"></div>
+</div>
+  
 </body>
 </html>
