@@ -648,10 +648,14 @@ function toggleMenu() {
   menu.classList.toggle("active");
 }
 </script>
-
 <script>
   // Roles panel open/close and content
   function openRoles() {
+    // CLOSE other UI elements
+    document.getElementById("slideMenu").classList.remove("active");
+    if (typeof closeOffensive === "function") closeOffensive();
+    if (typeof closeDefensive === "function") closeDefensive();
+
     document.getElementById("rolesPanel").style.display = "block";
   }
 
@@ -713,6 +717,7 @@ function toggleMenu() {
     document.getElementById("roleContent").innerHTML = content;
   }
 </script>
+     
 
 <script>
   // Offensive panel open/close and tools info
