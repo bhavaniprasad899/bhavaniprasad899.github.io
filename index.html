@@ -82,6 +82,9 @@ nav a:hover {
 .hero button:hover {
   background: red;
   color: black;
+  transform: scale(1.08);
+  box-shadow: 0 0 40px red;
+  transition: 0.3s ease;
 }
 
 /* ===== 3D CARDS ===== */
@@ -361,12 +364,39 @@ footer {
   text-shadow: 0 0 8px #00ff00;
   z-index: 9999;
   }
+  .logo {
+  font-size: 24px;
+}
+
+.glow-text {
+  color: #00ffcc;
+  text-shadow: 
+    0 0 5px #00ffcc,
+    0 0 15px #00ffcc,
+    0 0 30px #00ffcc;
+  letter-spacing: 3px;
+}
+  #loader {
+  position: fixed;
+  inset: 0;
+  background: black;
+  color: #00ffcc;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10000;
+  font-size: 18px;
+  }
+  
   
   </style>
 </head>
 
 <body>
-
+<div id="loader">
+  <p id="loaderText"></p>
+</div>
+  
   <h5><div id="clock"></div></h5>
   <audio id="menuSound">
   <source src="menu-open.mp3" type="audio/mpeg">
@@ -376,7 +406,9 @@ footer {
 <canvas id="matrix"></canvas>
 <!-- NAVBAR -->
 <nav>
-  <h1>⚡CyberArena</h1>
+  <h1 class="logo">
+  🔐 <span class="glow-text">CYBERARENA</span>
+  </h1>
   <div class="hamburger" onclick="toggleMenu()">
     ☰
   </div>
@@ -653,6 +685,22 @@ function updateClock() {
 }
 setInterval(updateClock, 1000);
 updateClock();
+  </script>
+  <script>
+const text = "Initializing CyberArena Secure Modules...";
+let i = 0;
+const loaderText = document.getElementById("loaderText");
+
+const loaderInterval = setInterval(() => {
+  loaderText.textContent += text[i];
+  i++;
+  if (i === text.length) {
+    clearInterval(loaderInterval);
+    setTimeout(() => {
+      document.getElementById("loader").style.display = "none";
+    }, 700);
+  }
+}, 50);
   </script>
   
 </body>
