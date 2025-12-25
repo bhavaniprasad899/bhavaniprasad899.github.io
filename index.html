@@ -717,6 +717,11 @@ function toggleMenu() {
 <script>
   // Offensive panel open/close and tools info
   function openOffensive() {
+    // CLOSE other UI elements
+    document.getElementById("slideMenu").classList.remove("active");
+    if (typeof closeDefensive === "function") closeDefensive();
+    if (typeof closeRoles === "function") closeRoles();
+
     document.getElementById("offensivePanel").style.display = "block";
   }
 
@@ -746,7 +751,7 @@ function toggleMenu() {
     document.getElementById("toolInfo").innerText = info;
   }
 </script>
-
+     
 <script>
   // Clock update every second
   function updateClock() {
