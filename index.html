@@ -785,6 +785,9 @@ function toggleMenu() {
 </script>
 <script>
   function openDefensive() {
+       document.getElementById("slideMenu").classList.remove("active");
+  if (typeof closeOffensive === "function") closeOffensive();
+  if (typeof closeRoles === "function")closeRoles();
     document.getElementById("defensivePanel").style.display = "block";
   }
 
