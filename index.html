@@ -6,20 +6,14 @@
 <title>CyberArena | Hacker Training Ground</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-<!-- Google AdSense required script -->
+<!-- AdSense script -->
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1818168737556134"
      crossorigin="anonymous"></script>
+
+<!-- Link to external CSS -->
+<link rel="stylesheet" href="style.css" />
 </head>
-<ins class="adsbygoogle"
-    style="display:block"
-    data-ad-client="ca-pub-1818168737556134"
-    data-ad-slot="5371896461"
-    data-ad-format="auto"
-    data-full-width-responsive="true"></ins>
-<script>
-    (adsbygoogle = window.adsbygoogle || []).push({});
-</script>
-     
+
 <body>
 
 <!-- LOADER -->
@@ -60,7 +54,7 @@
   <button onclick="location.href='terminal.html'">Launch Terminal</button>
 
   <!-- AdSense Ad Unit -->
-  <div style="margin-top:30px">
+  <div class="ad-container">
     <ins class="adsbygoogle"
       style="display:block"
       data-ad-client="ca-pub-1818168737556134"
@@ -80,14 +74,14 @@
 </section>
 
 <!-- OFFENSIVE PANEL -->
-<div id="offensivePanel" class="offensive-panel">
+<div id="offensivePanel" class="panel">
   <span class="closeBtn" onclick="closeOffensive()">✖</span>
   <h2>OFFENSIVE SECURITY</h2>
   <p>Legal hacking to find vulnerabilities.</p>
 </div>
 
 <!-- ROLES PANEL -->
-<div id="rolesPanel" class="roles-panel">
+<div id="rolesPanel" class="panel">
   <span class="closeBtn" onclick="closeRoles()">✖</span>
   <h2>CYBER SECURITY ROLES</h2>
   <p>Ethical Hacker, Pentester, SOC, Bug Bounty</p>
@@ -99,23 +93,29 @@
 
 <!-- SCRIPTS -->
 <script>
-  // MATRIX background canvas code here (can keep in separate JS if you want)
+  // Matrix effect
   const canvas = document.getElementById("matrix");
   const ctx = canvas.getContext("2d");
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
   const letters = "01";
-  const drops = Array(Math.floor(canvas.width / 16)).fill(1);
-  setInterval(() => {
+  const fontSize = 16;
+  const columns = canvas.width / fontSize;
+  const drops = [];
+  for (let i = 0; i < columns; i++) drops[i] = 1;
+  function drawMatrix() {
     ctx.fillStyle = "rgba(0,0,0,0.05)";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
     ctx.fillStyle = "#00ffcc";
-    ctx.font = "16px monospace";
-    drops.forEach((y, i) => {
-      ctx.fillText(letters[Math.random() > 0.5 ? 1 : 0], i * 16, y * 16);
-      drops[i] = y * 16 > canvas.height && Math.random() > 0.95 ? 0 : y + 1;
-    });
-  }, 33);
+    ctx.font = fontSize + "px monospace";
+    for (let i = 0; i < drops.length; i++) {
+      const text = letters[Math.floor(Math.random() * letters.length)];
+      ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+      if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
+      drops[i]++;
+    }
+  }
+  setInterval(drawMatrix, 33);
 
   // Menu toggle with sound
   function toggleMenu() {
@@ -148,10 +148,10 @@
   setInterval(updateClock, 1000);
   updateClock();
 
-  // Year in footer
+  // Set footer year
   document.getElementById("year").textContent = new Date().getFullYear();
 
-  // Loader text animation
+  // Loader animation
   const text = "Initializing CyberArena Secure Modules...";
   let i = 0;
   const loaderText = document.getElementById("loaderText");
@@ -168,4 +168,3 @@
 
 </body>
 </html>
-
