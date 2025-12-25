@@ -228,23 +228,33 @@
     color: #a0f5e5;
   }
 
-  /* ===== OFFENSIVE PANEL ===== */
-  .offensive-panel {
-    position: fixed;
-    top: 60px;
-    right: 20px;
-    width: 320px;
-    max-height: 80vh;
-    overflow-y: auto;
-    background: #0d1117ee;
-    border: 1px solid #00ffccaa;
-    border-radius: 15px;
-    padding: 20px;
-    box-shadow: 0 0 20px #00ffccaa;
-    color: #00ffcc;
-    display: none;
-    z-index: 30;
+  /* ===== OFFENSIVE PANEL (INLINE FIXED) ===== */
+.offensive-panel {
+  position: relative;      
+  width: 100%;
+  max-width: 600px;
+  margin: 20px auto 0;
+  background: #0d1117ee;
+  border: 1px solid #00ffccaa;
+  border-radius: 15px;
+  padding: 20px;
+  box-shadow: 0 0 20px #00ffccaa;
+  color: #00ffcc;
+  display: none;
+  animation: slideDown 0.4s ease;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
   }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+     
 
   .offensive-panel h2,
   .offensive-panel h3 {
