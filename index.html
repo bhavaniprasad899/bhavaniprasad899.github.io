@@ -631,18 +631,22 @@
 </script>
 
 <script>
-  // Menu toggle + sound
-  function toggleMenu() {
-    const menu = document.getElementById("slideMenu");
-    const sound = document.getElementById("menuSound");
+function toggleMenu() {
+  const menu = document.getElementById("slideMenu");
+  const sound = document.getElementById("menuSound");
 
-    if (!menu.classList.contains("active")) {
-      sound.currentTime = 0;
-      sound.play();
-    }
+  // CLOSE other panels
+  closeOffensive();
+  closeDefensive();
+  closeRoles();
 
-    menu.classList.toggle("active");
+  if (!menu.classList.contains("active")) {
+    sound.currentTime = 0;
+    sound.play();
   }
+
+  menu.classList.toggle("active");
+}
 </script>
 
 <script>
