@@ -1,38 +1,21 @@
-  /* ================================
-   CYBERARENA – MASTER CSS
-   Author: Bhavani Prasad
-   ================================ */
-
-/* ===== RESET & BASE ===== */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
+/* ===== GLOBAL ===== */
 body {
+  margin: 0;
+  font-family: Arial, sans-serif;
   background: black;
   color: #00ffcc;
-  font-family: "Courier New", monospace;
   overflow-x: hidden;
 }
 
-/* ===== MATRIX BACKGROUND ===== */
-canvas {
+/* ===== MATRIX ===== */
+#matrix {
   position: fixed;
-  inset: 0;
+  top: 0;
+  left: 0;
   z-index: -1;
-}
-
-/* ===== CLOCK ===== */
-#clock {
-  position: fixed;
-  top: 15px;
-  left: 20px;
-  font-size: 18px;
-  color: #00ff00;
-  text-shadow: 0 0 8px #00ff00;
-  z-index: 9999;
+  pointer-events: none;
+  width: 100vw;
+  height: 100vh;
 }
 
 /* ===== LOADER ===== */
@@ -40,269 +23,174 @@ canvas {
   position: fixed;
   inset: 0;
   background: black;
-  color: #00ffcc;
   display: flex;
-  justify-content: center;
   align-items: center;
-  z-index: 10000;
+  justify-content: center;
+  z-index: 9999;
+}
+#loaderText {
+  color: #00ffcc;
   font-size: 18px;
+  font-family: monospace;
+}
+
+/* ===== CLOCK ===== */
+#clock {
+  position: fixed;
+  top: 10px;
+  right: 15px;
+  color: #00ffcc;
+  font-size: 14px;
+  font-family: monospace;
 }
 
 /* ===== NAVBAR ===== */
 nav {
   display: flex;
   justify-content: space-between;
-  align-items: center;
   padding: 15px 30px;
-  background: rgba(0,0,0,0.8);
-  border-bottom: 1px solid #00ffcc;
+  background: #010101cc;
+  position: fixed;
+  width: 100%;
+  top: 0;
+  z-index: 1001;
 }
-
 .logo {
-  font-size: 24px;
+  font-size: 22px;
+  font-weight: bold;
 }
-
-.glow-text {
-  color: #00ffcc;
-  letter-spacing: 3px;
-  text-shadow:
-    0 0 5px #00ffcc,
-    0 0 15px #00ffcc,
-    0 0 30px #00ffcc;
-}
-
 .hamburger {
-  font-size: 26px;
   cursor: pointer;
-  color: #00ffcc;
+  font-size: 22px;
 }
 
 /* ===== SLIDE MENU ===== */
 #slideMenu {
   position: fixed;
+  right: -260px;
   top: 0;
-  right: -300px;
-  width: 300px;
+  width: 260px;
   height: 100%;
-  background: rgba(0,0,0,0.97);
-  border-left: 2px solid red;
-  box-shadow: -10px 0 30px red;
-  padding-top: 80px;
-  transition: 0.4s ease;
-  z-index: 1000;
+  background: #020202;
+  padding: 20px;
+  transition: 0.4s;
+  z-index: 1100;
+  overflow-y: auto;
 }
-
 #slideMenu.active {
   right: 0;
 }
-
 #slideMenu a {
   display: block;
-  padding: 15px 30px;
   color: #00ffcc;
   text-decoration: none;
-  font-size: 18px;
-  border-bottom: 1px solid #003333;
+  margin: 15px 0;
+  font-weight: 600;
 }
-
-#slideMenu a:hover {
-  background: red;
-  color: black;
-}
-
 .closeBtn {
-  position: absolute;
-  top: 20px;
-  right: 25px;
-  font-size: 24px;
   cursor: pointer;
   color: red;
+  font-size: 24px;
+  display: block;
+  margin-bottom: 10px;
 }
 
 /* ===== HERO ===== */
 .hero {
   text-align: center;
-  padding: 120px 20px;
+  padding: 140px 20px 60px;
 }
-
 .hero h2 {
-  font-size: 3rem;
-  text-shadow: 0 0 20px red;
+  font-size: 36px;
+  margin-bottom: 10px;
+  font-weight: 900;
 }
-
 .hero p {
-  margin-top: 15px;
-  color: #aaa;
+  font-size: 18px;
+  margin-bottom: 20px;
+  font-weight: 600;
 }
-
 .hero button {
-  margin-top: 30px;
-  padding: 15px 30px;
-  background: transparent;
-  border: 2px solid #00ffcc;
-  color: #00ffcc;
+  background: #00ffcc;
+  border: none;
+  padding: 12px 25px;
   cursor: pointer;
-  font-size: 1.1rem;
-  box-shadow: 0 0 20px #00ffcc;
-  transition: 0.3s;
+  font-weight: bold;
+  border-radius: 5px;
+  transition: background 0.3s ease;
+}
+.hero button:hover {
+  background: #00cc99;
 }
 
-.hero button:hover {
-  background: #00ffcc;
-  color: black;
-  box-shadow: 0 0 40px #00ffcc;
-  transform: scale(1.08);
+/* ===== Ad Container ===== */
+.ad-container {
+  max-width: 600px;
+  margin: 20px auto 0;
 }
 
 /* ===== CARDS ===== */
 .cards {
   display: flex;
   justify-content: center;
-  gap: 30px;
-  padding: 80px 20px;
+  gap: 20px;
   flex-wrap: wrap;
+  margin-bottom: 40px;
 }
-
 .card {
-  background: rgba(0,0,0,0.8);
-  width: 260px;
-  padding: 30px;
+  background: #020202;
   border: 1px solid #00ffcc;
-  box-shadow: 0 0 20px #00ffcc;
-  transition: 0.4s;
+  padding: 25px 40px;
+  width: 160px;
   cursor: pointer;
+  font-weight: 700;
+  font-size: 20px;
+  text-align: center;
+  border-radius: 8px;
+  transition: background 0.3s ease, transform 0.3s ease;
+  user-select: none;
 }
-
 .card:hover {
-  transform: rotateY(15deg) rotateX(10deg) scale(1.05);
-  box-shadow: 0 0 40px #00ffcc;
+  background: #004d40;
+  transform: translateY(-5px);
 }
 
-.card h3 {
-  margin-bottom: 15px;
-  color: red;
-}
-
-/* ===== CYBER ROLE BUTTON ===== */
-.role-btn-container {
-  text-align: center;
-  margin-top: 40px;
-}
-
-.role-btn {
-  padding: 18px 40px;
-  font-size: 18px;
-  font-weight: bold;
-  background: red;
-  color: black;
-  border: none;
-  cursor: pointer;
-  box-shadow: 0 0 20px red;
-  animation: blink 2s infinite;
-}
-
-@keyframes blink {
-  0% { background: red; }
-  50% { background: #00ff66; }
-  100% { background: red; }
-}
-
-/* ===== ROLES PANEL ===== */
-.roles-panel {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.97);
-  display: none;
-  padding: 60px 20px;
-  z-index: 2000;
-  text-align: center;
-}
-
-.roles-panel h2 {
-  color: red;
-  margin-bottom: 30px;
-}
-
-.roles-panel button {
-  margin: 10px;
-  padding: 12px 25px;
-  background: black;
-  border: 1px solid #00ffcc;
-  color: #00ffcc;
-  cursor: pointer;
-  box-shadow: 0 0 15px #00ffcc;
-}
-
-.roles-panel button:hover {
-  background: #00ffcc;
-  color: black;
-}
-
-#roleContent {
-  margin-top: 30px;
-  padding: 20px;
-  border: 1px solid #00ffcc;
-  box-shadow: 0 0 20px red;
-}
-
-/* ===== OFFENSIVE PANEL ===== */
-.offensive-panel {
+/* ===== PANELS ===== */
+.panel {
   display: none;
   position: fixed;
-  inset: 5%;
-  background: rgba(0,0,0,0.95);
-  border: 2px solid #00ff88;
-  box-shadow: 0 0 30px #00ff88;
-  color: #00ff88;
-  padding: 20px;
+  inset: 10% 15%;
+  background: #010101dd;
+  border: 2px solid #00ffcc;
+  padding: 25px 30px;
   overflow-y: auto;
-  z-index: 9999;
-  animation: slideUp 0.5s ease;
+  z-index: 1200;
+  border-radius: 10px;
+  color: #00ffcc;
+  font-family: monospace;
 }
-
-@keyframes slideUp {
-  from { transform: translateY(100%); }
-  to { transform: translateY(0); }
+.panel h2 {
+  margin-top: 0;
+  font-weight: 900;
 }
-
-.tool-buttons button {
-  background: black;
-  border: 1px solid red;
-  color: red;
-  padding: 10px;
-  margin: 5px;
+.panel .closeBtn {
+  position: absolute;
+  top: 12px;
+  right: 20px;
+  font-size: 28px;
+  color: #ff4444;
   cursor: pointer;
-  box-shadow: 0 0 10px red;
-}
-
-.tool-buttons button:hover {
-  background: red;
-  color: black;
-}
-
-.tool-info {
-  margin-top: 20px;
-  padding: 15px;
-  border: 1px solid #00ff88;
-  box-shadow: 0 0 15px #00ff88;
-}
-
-.close-btn {
-  background: red;
-  color: black;
-  padding: 10px;
-  border: none;
-  margin-top: 20px;
 }
 
 /* ===== FOOTER ===== */
 footer {
   text-align: center;
-  padding: 25px;
-  background: linear-gradient(145deg, #001a12, #003d2a);
-  border-top: 2px solid #00ff66;
-  color: #00ff66;
-  font-size: 15px;
-  text-shadow: 0 0 10px #00ff66;
-       }
+  padding: 20px 15px;
+  border-top: 1px solid #00ffcc;
+  font-weight: 600;
+  position: relative;
+  z-index: 10;
+  background: #000000cc;
+  font-family: monospace;
+}
 
