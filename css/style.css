@@ -313,3 +313,130 @@ footer {
   }
 }
 
+  /* ===== ROLES PANEL ===== */
+.roles-panel {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.97);
+  display: none;
+  padding: 60px 20px;
+  z-index: 2000;
+  text-align: center;
+}
+
+.roles-panel h2 {
+  color: red;
+  margin-bottom: 30px;
+}
+
+.roles-panel button {
+  margin: 10px;
+  padding: 12px 25px;
+  background: black;
+  border: 1px solid #00ffcc;
+  color: #00ffcc;
+  cursor: pointer;
+  box-shadow: 0 0 15px #00ffcc;
+}
+
+.roles-panel button:hover {
+  background: #00ffcc;
+  color: black;
+}
+
+#roleContent {
+  margin-top: 30px;
+  padding: 20px;
+  border: 1px solid #00ffcc;
+  box-shadow: 0 0 20px red;
+  color: #00ffcc;
+}
+  .offensive-panel {
+  display: none;
+  position: fixed;
+  top: 5%;
+  left: 5%;
+  width: 90%;
+  height: 90%;
+  background: rgba(0,0,0,0.95);
+  border: 2px solid #00ff88;
+  box-shadow: 0 0 30px #00ff88;
+  color: #00ff88;
+  padding: 20px;
+  overflow-y: auto;
+  z-index: 9999;
+  animation: slideUp 0.5s ease;
+}
+
+@keyframes slideUp {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
+}
+
+.tool-buttons button {
+  background: black;
+  border: 1px solid red;
+  color: red;
+  padding: 10px;
+  margin: 5px;
+  cursor: pointer;
+  box-shadow: 0 0 10px red;
+}
+
+.tool-buttons button:hover {
+  background: red;
+  color: black;
+}
+
+.tool-info {
+  margin-top: 20px;
+  padding: 15px;
+  border: 1px solid #00ff88;
+  box-shadow: 0 0 15px #00ff88;
+}
+
+.close-btn {
+  background: red;
+  color: black;
+  padding: 10px;
+  border: none;
+  margin-top: 20px;
+}
+  #clock {
+  position: fixed;
+  top: 15px;
+  left: 20px;
+  font-family: monospace;
+  font-size: 18px;
+  color: #00ff00;
+  text-shadow: 0 0 8px #00ff00;
+  z-index: 9999;
+  }
+  .logo {
+  font-size: 24px;
+}
+
+.glow-text {
+  color: #00ffcc;
+  text-shadow: 
+    0 0 5px #00ffcc,
+    0 0 15px #00ffcc,
+    0 0 30px #00ffcc;
+  letter-spacing: 3px;
+}
+  #loader {
+  position: fixed;
+  inset: 0;
+  background: black;
+  color: #00ffcc;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10000;
+  font-size: 18px;
+  }
+  
+  </style>
