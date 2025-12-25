@@ -1,327 +1,716 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
+<meta charset="UTF-8" />
 <title>CyberArena | Hacker Training Ground</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="stylesheet" href="style.css">
-     
-<!-- AdSense script load in head -->
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<!-- AdSense script -->
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1818168737556134"
      crossorigin="anonymous"></script>
+
+<style>
+  /* ===== GLOBAL ===== */
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: monospace, Arial, sans-serif;
+  }
+
+  body {
+    background-color: #0d1117;
+    color: #e6edf3;
+    overflow-x: hidden;
+  }
+
+  a {
+    color: #00ffcc;
+    text-decoration: none;
+  }
+
+  a:hover {
+    text-decoration: underline;
+  }
+
+  /* ===== LOADER ===== */
+  #loader {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-color: #000;
+    color: #00ffcc;
+    font-size: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    font-weight: bold;
+  }
+
+  /* ===== MAIN CONTENT ===== */
+  #mainContent {
+    display: none;
+  }
+
+  /* ===== CLOCK ===== */
+  #clock {
+    font-size: 18px;
+    text-align: center;
+    margin: 10px 0;
+    color: #00ffcc;
+    letter-spacing: 2px;
+  }
+
+  /* ===== MATRIX CANVAS ===== */
+  #matrix {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: -1;
+    background-color: #000;
+  }
+
+  /* ===== NAVBAR ===== */
+  nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #0d1117cc;
+    padding: 10px 20px;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 10;
+    box-shadow: 0 0 15px #00ffcc88;
+  }
+
+  .logo {
+    font-size: 24px;
+    color: #00ffcc;
+    user-select: none;
+  }
+
+  .glow-text {
+    text-shadow:
+      0 0 5px #00ffc8,
+      0 0 10px #00ffc8,
+      0 0 15px #00ffc8,
+      0 0 20px #00ffc8,
+      0 0 25px #00ffc8,
+      0 0 30px #00ffc8;
+  }
+
+  .hamburger {
+    font-size: 28px;
+    color: #00ffcc;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  /* ===== SLIDE MENU ===== */
+  #slideMenu {
+    position: fixed;
+    top: 0;
+    right: -250px;
+    width: 250px;
+    height: 100vh;
+    background: #111820;
+    box-shadow: -5px 0 15px #00ffccaa;
+    padding-top: 60px;
+    transition: right 0.3s ease;
+    z-index: 20;
+    overflow-y: auto;
+  }
+
+  #slideMenu.active {
+    right: 0;
+  }
+
+  #slideMenu a {
+    display: block;
+    padding: 15px 25px;
+    color: #00ffcc;
+    border-bottom: 1px solid #00ffcc44;
+  }
+
+  #slideMenu a:hover {
+    background-color: #00ffcc11;
+  }
+
+  .closeBtn {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    font-size: 24px;
+    color: #00ffcc;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  /* ===== HERO ===== */
+  .hero {
+    padding: 100px 20px 40px;
+    text-align: center;
+  }
+
+  .hero h2 {
+    font-size: 36px;
+    color: #00ffcc;
+    margin-bottom: 10px;
+    text-shadow: 0 0 10px #00ffccbb;
+  }
+
+  .hero p {
+    font-size: 18px;
+    margin-bottom: 20px;
+    color: #a0f5e5;
+  }
+
+  .hero button {
+    background: #00ffcc;
+    border: none;
+    padding: 15px 30px;
+    font-size: 18px;
+    cursor: pointer;
+    color: #000;
+    border-radius: 8px;
+    box-shadow: 0 0 10px #00ffccaa;
+    transition: background-color 0.3s ease;
+  }
+
+  .hero button:hover {
+    background: #00ddb8;
+  }
+
+  /* ===== Ad Banner ===== */
+  .ad-banner {
+    margin-top: 20px;
+    min-height: 250px;
+  }
+
+  /* ===== 3D CARDS ===== */
+  .cards {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    margin: 40px 20px;
+    flex-wrap: wrap;
+  }
+
+  .card {
+    background: #161b22;
+    border-radius: 15px;
+    width: 260px;
+    padding: 20px;
+    box-shadow:
+      3px 3px 10px #00ffcc66,
+      -3px -3px 10px #00ffcc66;
+    color: #00ffcc;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    user-select: none;
+  }
+
+  .card:hover {
+    transform: translateY(-10px);
+    box-shadow:
+      5px 5px 15px #00ffcccc,
+      -5px -5px 15px #00ffcccc;
+  }
+
+  .card h3 {
+    margin-bottom: 10px;
+  }
+
+  .card p {
+    color: #a0f5e5;
+  }
+
+  /* ===== OFFENSIVE PANEL ===== */
+  .offensive-panel {
+    position: fixed;
+    top: 60px;
+    right: 20px;
+    width: 320px;
+    max-height: 80vh;
+    overflow-y: auto;
+    background: #0d1117ee;
+    border: 1px solid #00ffccaa;
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0 0 20px #00ffccaa;
+    color: #00ffcc;
+    display: none;
+    z-index: 30;
+  }
+
+  .offensive-panel h2,
+  .offensive-panel h3 {
+    margin-bottom: 10px;
+  }
+
+  .offensive-panel .desc {
+    margin-bottom: 20px;
+    color: #a0f5e5;
+  }
+
+  .offensive-panel ul {
+    margin-bottom: 20px;
+    list-style: none;
+  }
+
+  .offensive-panel ul li {
+    margin: 6px 0;
+  }
+
+  .tool-buttons button {
+    margin: 5px 5px 5px 0;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 8px;
+    background: #00ffcc;
+    color: #000;
+    cursor: pointer;
+    font-weight: bold;
+    user-select: none;
+    transition: background-color 0.3s ease;
+  }
+
+  .tool-buttons button:hover {
+    background: #00ddb8;
+  }
+
+  .tool-info {
+    margin-top: 10px;
+    color: #a0f5e5;
+    min-height: 40px;
+  }
+
+  .close-btn {
+    background: #ff4444;
+    border: none;
+    border-radius: 8px;
+    padding: 8px 12px;
+    color: #fff;
+    cursor: pointer;
+    font-weight: bold;
+    float: right;
+  }
+
+  /* ===== ROLE BUTTON & PANEL ===== */
+  .role-btn-container {
+    text-align: center;
+    margin: 30px 0;
+  }
+
+  .role-btn {
+    padding: 12px 25px;
+    font-size: 18px;
+    font-weight: bold;
+    border-radius: 12px;
+    background: #00ffcc;
+    border: none;
+    cursor: pointer;
+    color: #000;
+    box-shadow: 0 0 15px #00ffccaa;
+    user-select: none;
+    transition: background-color 0.3s ease;
+  }
+
+  .role-btn:hover {
+    background: #00ddb8;
+  }
+
+  .roles-panel {
+    position: fixed;
+    top: 80px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 350px;
+    max-height: 80vh;
+    overflow-y: auto;
+    background: #0d1117ee;
+    border: 1px solid #00ffccaa;
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0 0 20px #00ffccaa;
+    color: #00ffcc;
+    display: none;
+    z-index: 40;
+  }
+
+  .roles-panel h2 {
+    margin-bottom: 20px;
+    text-align: center;
+  }
+
+  .roles-panel button {
+    margin: 5px 5px 10px 0;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 8px;
+    background: #00ffcc;
+    color: #000;
+    cursor: pointer;
+    font-weight: bold;
+    user-select: none;
+    transition: background-color 0.3s ease;
+  }
+
+  .roles-panel button:hover {
+    background: #00ddb8;
+  }
+
+  #roleContent {
+    margin-top: 15px;
+    color: #a0f5e5;
+  }
+
+  .roles-panel .closeBtn {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    font-size: 24px;
+    color: #00ffcc;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  /* ===== FOOTER ===== */
+  footer {
+    text-align: center;
+    padding: 20px;
+    color: #00ffcc;
+    font-weight: bold;
+    user-select: none;
+  }
+</style>
 </head>
 
 <body>
+
 <div id="loader">
   <p id="loaderText"></p>
 </div>
-  
+
+<div id="mainContent" style="display:none;">
   <h5><div id="clock"></div></h5>
   <audio id="menuSound">
-  <source src="menu-open.mp3" type="audio/mpeg">
+    <source src="menu-open.mp3" type="audio/mpeg" />
   </audio>
 
-<!-- MATRIX CANVAS -->
-<canvas id="matrix"></canvas>
-<!-- NAVBAR -->
-<nav>
-  <h1 class="logo">
-  🔐 <span class="glow-text">CYBERARENA</span>
-  </h1>
-  <div class="hamburger" onclick="toggleMenu()">
-    ☰
-  </div>
-</nav>
+  <!-- MATRIX CANVAS -->
+  <canvas id="matrix"></canvas>
 
-<!-- SLIDE MENU -->
-<div id="slideMenu">
-  <span class="closeBtn" onclick="toggleMenu()">✖</span>
+  <!-- NAVBAR -->
+  <nav>
+    <h1 class="logo">
+      🔐 <span class="glow-text">CYBERARENA</span>
+    </h1>
+    <div class="hamburger" onclick="toggleMenu()">☰</div>
+  </nav>
 
-  <a href="index.html">🏠 Home</a>
-  <a href="terminal.html">💻 Terminal</a>
-  <a href="task.html">🎯 Tasks</a>
-  <a href="guess.html">🎮 Guess Game</a>
-  <a href="game.html">🕹️ Cyber Games</a>
-  <a href="whois.html">🌐 WHOIS</a>
-  <a href="emailcheck.html">📧 Email Check</a>
-  <a href="hackerthinking.html">☠️ TBH</a>
-  <a href="about.html">about</a>
-  <a href="contact.html">contact</a>
-  <a href="privacy.html">privacy</a>
-</div>
-  
-<!-- HERO -->
-<section class="hero">
-  <h2>BECOME ETHICAL HACKER</h2>
-  <p>Learn | PLAY | HACK | Cybersecurity</p>
-  <button onclick="location.href='terminal.html'">Launch Terminal</button>
-  
-  <!-- AdSense Ad Unit -->
-  <div class="ad-banner" style="width:100%; min-height:250px;">
-    <ins class="adsbygoogle"
-      style="display:block"
-      data-ad-client="ca-pub-1818168737556134"
-      data-ad-slot="5371896461"
-      data-ad-format="auto"
-      data-full-width-responsive="true"></ins>
-    <script>
-      (adsbygoogle = window.adsbygoogle || []).push({});
-    </script>
-  </div>
-</section>
-  
-
-<!-- 3D CARDS -->
-<section class="cards">
-  <div class="card" onclick="openOffensive()">
-    <h3>OFFENSIVE ☠️⚔️</h3>
-    <p>Attacking </p>
-  </div>
-  <!-- OFFENSIVE DETAILS PANEL -->
-<div id="offensivePanel" class="offensive-panel">
-
-  <h2>☠ OFFENSIVE SECURITY (ETHICAL HACKING)</h2>
-
-  <p class="desc">
-    Offensive Security focuses on attacking systems legally to find vulnerabilities
-    before real hackers exploit them.
-  </p>
-
-  <h3>⚔ PHASES OF OFFENSIVE SECURITY</h3>
-  <ul>
-    <li>🔍 Reconnaissance (Information Gathering)</li>
-    <li>📡 Scanning & Enumeration</li>
-    <li>💣 Exploitation</li>
-    <li>🧠 Post Exploitation</li>
-    <li>📄 Reporting</li>
-  </ul>
-
-  <h3>👨‍💻 OFFENSIVE ROLES</h3>
-  <ul>
-    <li>Ethical Hacker</li>
-    <li>Penetration Tester</li>
-    <li>Red Team Engineer</li>
-    <li>Bug Bounty Hunter</li>
-  </ul>
-
-  <h3>🧰 OFFENSIVE TOOLS</h3>
-  <div class="tool-buttons">
-    <button onclick="showTool('nmap')">Nmap</button>
-    <button onclick="showTool('burp')">Burp Suite</button>
-    <button onclick="showTool('meta')">Metasploit</button>
-    <button onclick="showTool('sqlmap')">SQLMap</button>
-    <button onclick="showTool('wfuzz')">Wfuzz</button>
+  <!-- SLIDE MENU -->
+  <div id="slideMenu">
+    <span class="closeBtn" onclick="toggleMenu()">✖</span>
+    <a href="index.html">🏠 Home</a>
+    <a href="terminal.html">💻 Terminal</a>
+    <a href="task.html">🎯 Tasks</a>
+    <a href="guess.html">🎮 Guess Game</a>
+    <a href="game.html">🕹️ Cyber Games</a>
+    <a href="whois.html">🌐 WHOIS</a>
+    <a href="emailcheck.html">📧 Email Check</a>
+    <a href="hackerthinking.html">☠️ TBH</a>
+    <a href="about.html">about</a>
+    <a href="contact.html">contact</a>
+    <a href="privacy.html">privacy</a>
   </div>
 
-  <div id="toolInfo" class="tool-info"></div>
+  <!-- HERO -->
+  <section class="hero">
+    <h2>BECOME ETHICAL HACKER</h2>
+    <p>Learn | PLAY | HACK | Cybersecurity</p>
+    <button onclick="location.href='terminal.html'">Launch Terminal</button>
 
-  <button class="close-btn" onclick="closeOffensive()">❌ Close</button>
-</div>
-  
+    <!-- AdSense Ad Unit -->
+    <div class="ad-banner" style="width:100%; min-height:250px;">
+      <ins class="adsbygoogle"
+        style="display:block"
+        data-ad-client="ca-pub-1818168737556134"
+        data-ad-slot="5371896461"
+        data-ad-format="auto"
+        data-full-width-responsive="true"></ins>
+      <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+      </script>
+    </div>
+  </section>
 
-  <div class="card">
-    <h3> DEFENSIVE 🛡️🔐</h3>
-    <p>Secure Data</p>
+  <!-- 3D CARDS -->
+  <section class="cards">
+    <div class="card" onclick="openOffensive()">
+      <h3>OFFENSIVE ☠️⚔️</h3>
+      <p>Attacking </p>
+    </div>
+
+    <!-- OFFENSIVE DETAILS PANEL -->
+    <div id="offensivePanel" class="offensive-panel">
+      <h2>☠ OFFENSIVE SECURITY (ETHICAL HACKING)</h2>
+      <p class="desc">
+        Offensive Security focuses on attacking systems legally to find vulnerabilities
+        before real hackers exploit them.
+      </p>
+
+      <h3>⚔ PHASES OF OFFENSIVE SECURITY</h3>
+      <ul>
+        <li>🔍 Reconnaissance (Information Gathering)</li>
+        <li>📡 Scanning & Enumeration</li>
+        <li>💣 Exploitation</li>
+        <li>🧠 Post Exploitation</li>
+        <li>📄 Reporting</li>
+      </ul>
+
+      <h3>👨‍💻 OFFENSIVE ROLES</h3>
+      <ul>
+        <li>Ethical Hacker</li>
+        <li>Penetration Tester</li>
+        <li>Red Team Engineer</li>
+        <li>Bug Bounty Hunter</li>
+      </ul>
+
+      <h3>🧰 OFFENSIVE TOOLS</h3>
+      <div class="tool-buttons">
+        <button onclick="showTool('nmap')">Nmap</button>
+        <button onclick="showTool('burp')">Burp Suite</button>
+        <button onclick="showTool('meta')">Metasploit</button>
+        <button onclick="showTool('sqlmap')">SQLMap</button>
+        <button onclick="showTool('wfuzz')">Wfuzz</button>
+      </div>
+
+      <div id="toolInfo" class="tool-info"></div>
+      <button class="close-btn" onclick="closeOffensive()">❌ Close</button>
+    </div>
+
+    <div class="card">
+      <h3> DEFENSIVE 🛡️🔐</h3>
+      <p>Secure Data</p>
+    </div>
+  </section>
+
+  <!-- CYBER ROLES BUTTON -->
+  <div class="role-btn-container">
+    <button class="role-btn" onclick="openRoles()">⚡ CYBER SECURITY ROLES ⚡</button>
   </div>
-</section>
-  
-<!-- CYBER ROLES BUTTON -->
-<div class="role-btn-container">
-  <button class="role-btn" onclick="openRoles()">⚡ CYBER SECURITY ROLES ⚡</button>
-</div>
-  
-<!-- FOOTER -->
-<footer>
-  © 2025 CyberArena | Built by Bhavani Prasad 😎
-</footer>
 
-<!-- MATRIX SCRIPT -->
-<script>
-const canvas = document.getElementById("matrix");
-const ctx = canvas.getContext("2d");
+  <!-- FOOTER -->
+  <footer>
+    © 2025 CyberArena | Built by Bhavani Prasad 😎
+  </footer>
 
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
-
-const letters = "01";
-const fontSize = 16;
-const columns = canvas.width / fontSize;
-const drops = [];
-
-for (let i = 0; i < columns; i++) {
-  drops[i] = 1;
-}
-
-function drawMatrix() {
-  ctx.fillStyle = "rgba(0,0,0,0.05)";
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-  ctx.fillStyle = "#00ffcc";
-  ctx.font = fontSize + "px monospace";
-
-  for (let i = 0; i < drops.length; i++) {
-    const text = letters[Math.floor(Math.random() * letters.length)];
-    ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-
-    if (drops[i] * fontSize > canvas.height && Math.random() > 0.975)
-      drops[i] = 0;
-
-    drops[i]++;
-  }
-}
-
-setInterval(drawMatrix, 33);
-</script>
-<script>
-function toggleMenu() {
-  const menu = document.getElementById("slideMenu");
-  const sound = document.getElementById("menuSound");
-
-  if (!menu.classList.contains("active")) {
-    sound.currentTime = 0;
-    sound.play();
-  }
-
-  menu.classList.toggle("active");
-}
-</script>
-  <script>
-function openRoles() {
-  document.getElementById("rolesPanel").style.display = "block";
-}
-
-function closeRoles() {
-  document.getElementById("rolesPanel").style.display = "none";
-}
-
-function showRole(role) {
-  let content = "";
-
-  if (role === "ethical") {
-    content = `
-    <h3>😇 Ethical Hacker</h3>
-    <p>Purpose: Find vulnerabilities legally.</p>
-    <p>Learn: Linux, Networking, Web, OWASP Top 10</p>
-    <p>Tools: Nmap, Burp Suite, Metasploit</p>`;
-  }
-
-  if (role === "blackhat") {
-    content = `
-    <h3>☠️ Black Hat (Ethical Learning)</h3>
-    <p>Learn attacker mindset for defense.</p>
-    <p>Used ONLY in labs & legal environments.</p>
-    <p>Skills: Exploits, Malware concepts, Bypassing security</p>`;
-  }
-
-  if (role === "soc") {
-    content = `
-    <h3>🛡️ SOC Analyst</h3>
-    <p>Purpose: Monitor & defend systems.</p>
-    <p>Learn: Logs, SIEM, Incident Response</p>
-    <p>Tools: Splunk, Wazuh, ELK</p>`;
-  }
-
-  if (role === "pentester") {
-    content = `
-    <h3>🎯 Penetration Tester</h3>
-    <p>Simulated attacks to improve security.</p>
-    <p>Learn: Web, Network, Active Directory</p>
-    <p>Tools: Nmap, Metasploit, BloodHound</p>`;
-  }
-
-  if (role === "bug") {
-    content = `
-    <h3>🐞 Bug Bounty Hunter</h3>
-    <p>Find bugs & earn rewards.</p>
-    <p>Learn: XSS, IDOR, SQLi</p>
-    <p>Platforms: HackerOne, Bugcrowd</p>`;
-  }
-
-  if (role === "blue") {
-    content = `
-    <h3>🔵 Blue Team</h3>
-    <p>Defensive cybersecurity role.</p>
-    <p>Learn: Detection, Hardening, Monitoring</p>
-    <p>Tools: SIEM, EDR, Firewalls</p>`;
-  }
-
-  document.getElementById("roleContent").innerHTML = content;
-}
-</script>
-  
   <!-- CYBER ROLES PANEL -->
-<div id="rolesPanel" class="roles-panel">
-  <span class="closeBtn" onclick="closeRoles()">✖</span>
+  <div id="rolesPanel" class="roles-panel">
+    <span class="closeBtn" onclick="closeRoles()">✖</span>
 
-  <h2>⚡ CYBER SECURITY ROLES ⚡</h2>
+    <h2>⚡ CYBER SECURITY ROLES ⚡</h2>
 
-  <button onclick="showRole('ethical')">😇 Ethical Hacker</button>
-  <button onclick="showRole('blackhat')">☠️ Black Hat (Ethical Learning)</button>
-  <button onclick="showRole('soc')">🛡️ SOC Analyst</button>
-  <button onclick="showRole('pentester')">🎯 Penetration Tester</button>
-  <button onclick="showRole('bug')">🐞 Bug Bounty Hunter</button>
-  <button onclick="showRole('blue')">🔵 Blue Team</button>
+    <button onclick="showRole('ethical')">😇 Ethical Hacker</button>
+    <button onclick="showRole('blackhat')">☠️ Black Hat (Ethical Learning)</button>
+    <button onclick="showRole('soc')">🛡️ SOC Analyst</button>
+    <button onclick="showRole('pentester')">🎯 Penetration Tester</button>
+    <button onclick="showRole('bug')">🐞 Bug Bounty Hunter</button>
+    <button onclick="showRole('blue')">🔵 Blue Team</button>
 
-  <div id="roleContent"></div>
+    <div id="roleContent"></div>
+  </div>
 </div>
+
+<!-- SCRIPTS -->
+
 <script>
-function openOffensive() {
-  document.getElementById("offensivePanel").style.display = "block";
-}
+  // MATRIX effect
+  const canvas = document.getElementById("matrix");
+  const ctx = canvas.getContext("2d");
 
-function closeOffensive() {
-  document.getElementById("offensivePanel").style.display = "none";
-}
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
 
-function showTool(tool) {
-  let info = "";
+  const letters = "01";
+  const fontSize = 16;
+  const columns = canvas.width / fontSize;
+  const drops = [];
 
-  if (tool === "nmap") {
-    info = "🔍 Nmap: Network scanning, port scanning, service detection. Learn TCP/IP, ports, OS detection.";
-  }
-  if (tool === "burp") {
-    info = "🧪 Burp Suite: Web application testing, intercepting requests, XSS, SQLi testing.";
-  }
-  if (tool === "meta") {
-    info = "💣 Metasploit: Exploitation framework, payloads, reverse shells, post-exploitation.";
-  }
-  if (tool === "sqlmap") {
-    info = "💉 SQLMap: Automated SQL injection detection & database dumping.";
-  }
-  if (tool === "wfuzz") {
-    info = "⚡ Wfuzz: Directory brute force, parameter fuzzing.";
+  for (let i = 0; i < columns; i++) {
+    drops[i] = 1;
   }
 
-  document.getElementById("toolInfo").innerText = info;
-}
+  function drawMatrix() {
+    ctx.fillStyle = "rgba(0,0,0,0.05)";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    ctx.fillStyle = "#00ffcc";
+    ctx.font = fontSize + "px monospace";
+
+    for (let i = 0; i < drops.length; i++) {
+      const text = letters[Math.floor(Math.random() * letters.length)];
+      ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+      if (drops[i] * fontSize > canvas.height && Math.random() > 0.975)
+        drops[i] = 0;
+
+      drops[i]++;
+    }
+  }
+
+  setInterval(drawMatrix, 33);
 </script>
+
 <script>
-function updateClock() {
-  const now = new Date();
-  const h = String(now.getHours()).padStart(2, '0');
-  const m = String(now.getMinutes()).padStart(2, '0');
-  const s = String(now.getSeconds()).padStart(2, '0');
-  document.getElementById("clock").textContent = h + ":" + m + ":" + s;
-}
-setInterval(updateClock, 1000);
-updateClock();
-</script>
-<script>
-const text = "Initializing CyberArena Secure Modules...";
-let i = 0;
-const loaderText = document.getElementById("loaderText");
+  // Menu toggle + sound
+  function toggleMenu() {
+    const menu = document.getElementById("slideMenu");
+    const sound = document.getElementById("menuSound");
 
-const loaderInterval = setInterval(() => {
-  loaderText.textContent += text[i];
-  i++;
-  if (i === text.length) {
-    clearInterval(loaderInterval);
-    setTimeout(() => {
-      document.getElementById("loader").style.display = "none";
-    }, 700);
+    if (!menu.classList.contains("active")) {
+      sound.currentTime = 0;
+      sound.play();
+    }
+
+    menu.classList.toggle("active");
   }
-}, 50);
 </script>
-  
+
+<script>
+  // Roles panel open/close and content
+  function openRoles() {
+    document.getElementById("rolesPanel").style.display = "block";
+  }
+
+  function closeRoles() {
+    document.getElementById("rolesPanel").style.display = "none";
+  }
+
+  function showRole(role) {
+    let content = "";
+
+    if (role === "ethical") {
+      content = `
+      <h3>😇 Ethical Hacker</h3>
+      <p>Purpose: Find vulnerabilities legally.</p>
+      <p>Learn: Linux, Networking, Web, OWASP Top 10</p>
+      <p>Tools: Nmap, Burp Suite, Metasploit</p>`;
+    }
+
+    if (role === "blackhat") {
+      content = `
+      <h3>☠️ Black Hat (Ethical Learning)</h3>
+      <p>Learn attacker mindset for defense.</p>
+      <p>Used ONLY in labs & legal environments.</p>
+      <p>Skills: Exploits, Malware concepts, Bypassing security</p>`;
+    }
+
+    if (role === "soc") {
+      content = `
+      <h3>🛡️ SOC Analyst</h3>
+      <p>Purpose: Monitor & defend systems.</p>
+      <p>Learn: Logs, SIEM, Incident Response</p>
+      <p>Tools: Splunk, Wazuh, ELK</p>`;
+    }
+
+    if (role === "pentester") {
+      content = `
+      <h3>🎯 Penetration Tester</h3>
+      <p>Simulated attacks to improve security.</p>
+      <p>Learn: Web, Network, Active Directory</p>
+      <p>Tools: Nmap, Metasploit, BloodHound</p>`;
+    }
+
+    if (role === "bug") {
+      content = `
+      <h3>🐞 Bug Bounty Hunter</h3>
+      <p>Find bugs & earn rewards.</p>
+      <p>Learn: XSS, IDOR, SQLi</p>
+      <p>Platforms: HackerOne, Bugcrowd</p>`;
+    }
+
+    if (role === "blue") {
+      content = `
+      <h3>🔵 Blue Team</h3>
+      <p>Defensive cybersecurity role.</p>
+      <p>Learn: Detection, Hardening, Monitoring</p>
+      <p>Tools: SIEM, EDR, Firewalls</p>`;
+    }
+
+    document.getElementById("roleContent").innerHTML = content;
+  }
+</script>
+
+<script>
+  // Offensive panel open/close and tools info
+  function openOffensive() {
+    document.getElementById("offensivePanel").style.display = "block";
+  }
+
+  function closeOffensive() {
+    document.getElementById("offensivePanel").style.display = "none";
+  }
+
+  function showTool(tool) {
+    let info = "";
+
+    if (tool === "nmap") {
+      info = "🔍 Nmap: Network scanning, port scanning, service detection. Learn TCP/IP, ports, OS detection.";
+    }
+    if (tool === "burp") {
+      info = "🧪 Burp Suite: Web application testing, intercepting requests, XSS, SQLi testing.";
+    }
+    if (tool === "meta") {
+      info = "💣 Metasploit: Exploitation framework, payloads, reverse shells, post-exploitation.";
+    }
+    if (tool === "sqlmap") {
+      info = "💉 SQLMap: Automated SQL injection detection & database dumping.";
+    }
+    if (tool === "wfuzz") {
+      info = "⚡ Wfuzz: Directory brute force, parameter fuzzing.";
+    }
+
+    document.getElementById("toolInfo").innerText = info;
+  }
+</script>
+
+<script>
+  // Clock update every second
+  function updateClock() {
+    const now = new Date();
+    const h = String(now.getHours()).padStart(2, "0");
+    const m = String(now.getMinutes()).padStart(2, "0");
+    const s = String(now.getSeconds()).padStart(2, "0");
+    document.getElementById("clock").textContent = h + ":" + m + ":" + s;
+  }
+  setInterval(updateClock, 1000);
+  updateClock();
+</script>
+
+<script>
+  // Loader text animation and show main content after
+  const text = "Initializing CyberArena Secure Modules...";
+  let i = 0;
+  const loaderText = document.getElementById("loaderText");
+
+  const loaderInterval = setInterval(() => {
+    loaderText.textContent += text[i];
+    i++;
+    if (i === text.length) {
+      clearInterval(loaderInterval);
+      setTimeout(() => {
+        document.getElementById("loader").style.display = "none";
+        document.getElementById("mainContent").style.display = "block";
+      }, 700);
+    }
+  }, 50);
+</script>
+
 </body>
 </html>
+
