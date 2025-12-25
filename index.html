@@ -274,6 +274,21 @@
   .offensive-panel ul li {
     margin: 6px 0;
   }
+     /* ===== DEFENSIVE PANEL (INLINE) ===== */
+.defensive-panel {
+  position: relative;
+  width: 100%;
+  max-width: 600px;
+  margin: 20px auto 0;
+  background: #0d1117ee;
+  border: 1px solid #00ffccaa;
+  border-radius: 15px;
+  padding: 20px;
+  box-shadow: 0 0 20px #00ffccaa;
+  color: #00ffcc;
+  display: none;
+  animation: slideDown 0.4s ease;
+}
 
   .tool-buttons button {
     margin: 5px 5px 5px 0;
@@ -502,10 +517,50 @@
       <button class="close-btn" onclick="closeOffensive()">❌ Close</button>
     </div>
 
-    <div class="card">
-      <h3> DEFENSIVE 🛡️🔐</h3>
-      <p>Secure Data</p>
-    </div>
+    <!-- DEFENSIVE CARD -->
+<div class="card" onclick="openDefensive()">
+  <h3>DEFENSIVE 🛡️🔐</h3>
+  <p>Protect & Monitor</p>
+</div>
+
+<!-- DEFENSIVE DETAILS PANEL -->
+<div id="defensivePanel" class="defensive-panel">
+  <h2>🛡️ DEFENSIVE SECURITY (BLUE TEAM)</h2>
+  <p class="desc">
+    Defensive Security focuses on protecting systems, detecting attacks,
+    monitoring logs, and responding to incidents in real time.
+  </p>
+
+  <h3>🧠 WHAT YOU LEARN (DEFENSIVE)</h3>
+  <ul>
+    <li>📘 Networking & Protocols</li>
+    <li>📊 Log Analysis & Monitoring</li>
+    <li>🚨 Incident Response</li>
+    <li>🛑 Malware Detection</li>
+    <li>🔐 System Hardening</li>
+  </ul>
+
+  <h3>👨‍💻 DEFENSIVE ROLES</h3>
+  <ul>
+    <li>SOC Analyst</li>
+    <li>Blue Team Engineer</li>
+    <li>Incident Responder</li>
+    <li>Cyber Defense Analyst</li>
+  </ul>
+
+  <h3>🧰 DEFENSIVE TOOLS</h3>
+  <div class="tool-buttons">
+    <button onclick="showDefTool('siem')">SIEM</button>
+    <button onclick="showDefTool('wazuh')">Wazuh</button>
+    <button onclick="showDefTool('splunk')">Splunk</button>
+    <button onclick="showDefTool('wireshark')">Wireshark</button>
+    <button onclick="showDefTool('firewall')">Firewall</button>
+  </div>
+
+  <div id="defToolInfo" class="tool-info"></div>
+  <button class="close-btn" onclick="closeDefensive()">❌ Close</button>
+</div>
+       
   </section>
 
   <!-- CYBER ROLES BUTTON -->
@@ -719,7 +774,38 @@
     }
   }, 50);
 </script>
+<script>
+  function openDefensive() {
+    document.getElementById("defensivePanel").style.display = "block";
+  }
 
+  function closeDefensive() {
+    document.getElementById("defensivePanel").style.display = "none";
+  }
+
+  function showDefTool(tool) {
+    let info = "";
+
+    if (tool === "siem") {
+      info = "📊 SIEM: Collects & analyzes logs to detect security incidents. Learn log analysis & alerting.";
+    }
+    if (tool === "wazuh") {
+      info = "🛡️ Wazuh: Host-based intrusion detection, file integrity monitoring, threat detection.";
+    }
+    if (tool === "splunk") {
+      info = "🔍 Splunk: Log searching, dashboards, real-time monitoring for SOC operations.";
+    }
+    if (tool === "wireshark") {
+      info = "📡 Wireshark: Network packet analysis to detect suspicious traffic.";
+    }
+    if (tool === "firewall") {
+      info = "🔥 Firewall: Controls incoming & outgoing traffic based on security rules.";
+    }
+
+    document.getElementById("defToolInfo").innerText = info;
+  }
+</script>
+     
 </body>
 </html>
 
