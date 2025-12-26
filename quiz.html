@@ -26,6 +26,15 @@ button:hover {
   background: #00ff99;
   color: black;
 }
+  .badge {
+  margin-top: 20px;
+  display: inline-block;
+  padding: 15px;
+  border-radius: 50%;
+  border: 2px solid #00ff99;
+  box-shadow: 0 0 20px #00ff99;
+  }
+  
 </style>
 </head>
 
@@ -54,8 +63,11 @@ let score = 0;
 
 function finish() {
   localStorage.setItem("level1Score", score);
-  document.getElementById("result").innerText =
-    "🔥 Your Score: " + score + "/2";
+  localStorage.setItem("quizCompleted", "yes");
+
+  document.getElementById("result").innerHTML =
+    "🔥 Your Score: " + score + "/2<br><br>" +
+    "🏆 <b>Level 1 Completed Badge Earned!</b>";
 }
 </script>
 
