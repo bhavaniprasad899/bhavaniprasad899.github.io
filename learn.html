@@ -53,10 +53,20 @@ body {
   START<br>BASICS
 </div>
   <div class="center-btn">
-  <div class="hacker-circle" onclick="location.href='level1-xss.html'">
-    LEVEL 1<br>XSS
+  <div class="hacker-circle" id="level1Btn">
+    LEVEL 1<br>WEB HACKING
   </div>
   </div>
+  <script>
+const level1Btn = document.getElementById("level1Btn");
+
+if (localStorage.getItem("basicsCompleted") === "yes") {
+  level1Btn.onclick = () => location.href = "level1-xss.html";
+} else {
+  level1Btn.style.opacity = "0.4";
+  level1Btn.onclick = () => alert("🔒 Complete Basics to unlock Level 1!");
+}
+  </script>
   
 
 </body>
