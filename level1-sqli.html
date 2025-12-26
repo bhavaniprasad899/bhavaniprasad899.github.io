@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>CyberArena | Level 1 - SQL Injection</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body {
+  margin: 0;
+  font-family: "Courier New", monospace;
+  background: radial-gradient(circle at top, #120202, #000);
+  color: #00ff99;
+}
+.container {
+  max-width: 900px;
+  margin: auto;
+  padding: 20px;
+}
+.card {
+  background: rgba(0,0,0,0.8);
+  border: 1px solid #00ff99;
+  border-radius: 10px;
+  padding: 20px;
+  margin: 20px 0;
+}
+input {
+  width: 100%;
+  padding: 10px;
+  background: black;
+  color: #00ff99;
+  border: 1px solid #00ff99;
+}
+button {
+  margin-top: 10px;
+  padding: 10px;
+  background: black;
+  color: #00ff99;
+  border: 1px solid #00ff99;
+}
+button:hover {
+  background: #00ff99;
+  color: black;
+}
+</style>
+</head>
+
+<body>
+<div class="container">
+
+<h1>💉 Level 1: SQL Injection</h1>
+
+<div class="card">
+<h2>📘 What is SQL Injection?</h2>
+<p>
+SQL Injection happens when user input is directly used in SQL queries
+without validation.
+</p>
+</div>
+
+<div class="card">
+<h2>🧪 Fake Login Demo (Safe)</h2>
+<p>Try username:</p>
+<code>' OR '1'='1</code>
+
+<input id="username" placeholder="Username">
+<input id="password" placeholder="Password">
+
+<button onclick="login()">Login</button>
+
+<p id="result"></p>
+</div>
+
+<div class="card">
+<h2>🛡 Prevention</h2>
+<ul>
+  <li>Prepared statements</li>
+  <li>Input sanitization</li>
+  <li>Least privilege</li>
+</ul>
+</div>
+
+<div class="card">
+<button onclick="location.href='level1-xss.html'">⬅ Back to XSS</button>
+<button onclick="location.href='quiz.html'">➡ Take Quiz</button>
+</div>
+
+</div>
+
+<script>
+function login() {
+  const user = document.getElementById("username").value;
+  if (user.includes("' OR '1'='1")) {
+    document.getElementById("result").innerText =
+      "⚠️ Login bypassed! SQL Injection successful 😈";
+  } else {
+    document.getElementById("result").innerText =
+      "❌ Login failed";
+  }
+}
+</script>
+
+</body>
+</html>
