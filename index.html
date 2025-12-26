@@ -411,6 +411,69 @@
     font-weight: bold;
     user-select: none;
   }
+     /* ===== LEARNING ORB ===== */
+.learning-orb-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 30px;
+}
+
+.learning-orb {
+  width: 220px;
+  height: 220px;
+  border-radius: 50%;
+  background: radial-gradient(circle at top, #00ff99, #003320);
+  border: 3px solid #00ff99;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-family: "Courier New", monospace;
+  font-size: 20px;
+  font-weight: bold;
+  color: black;
+  cursor: pointer;
+  box-shadow:
+    0 0 40px #00ff99,
+    inset 0 0 30px rgba(0,0,0,0.8);
+  animation: colorShift 2s infinite, pulse 2s infinite;
+  transition: transform 0.3s;
+}
+
+.learning-orb:hover {
+  transform: scale(1.08);
+}
+
+.learning-orb span {
+  line-height: 1.3;
+}
+
+/* ===== COLOR SWITCH ===== */
+@keyframes colorShift {
+  0% {
+    background: radial-gradient(circle at top, #00ff99, #003320);
+    border-color: #00ff99;
+    box-shadow: 0 0 40px #00ff99;
+  }
+  50% {
+    background: radial-gradient(circle at top, #ff0033, #330000);
+    border-color: #ff0033;
+    box-shadow: 0 0 40px #ff0033;
+  }
+  100% {
+    background: radial-gradient(circle at top, #00ff99, #003320);
+    border-color: #00ff99;
+    box-shadow: 0 0 40px #00ff99;
+  }
+}
+
+/* ===== PULSE EFFECT ===== */
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+     
 </style>
 </head>
 
@@ -457,9 +520,7 @@
     <h2>BECOME ETHICAL HACKER</h2>
     <p>Learn | PLAY | HACK | Cybersecurity</p>
     <button onclick="location.href='terminal.html'">Launch Terminal</button>
-       <button class="start-btn" onclick="location.href='learn.html'">
-🚀 Start Learning
-       </button>
+       
        
 
     <!-- AdSense Ad Unit -->
@@ -474,6 +535,12 @@
         (adsbygoogle = window.adsbygoogle || []).push({});
       </script>
     </div>
+       <div class="learning-orb-container">
+  <div class="learning-orb" onclick="location.href='learn.html'">
+    <span>START<br> LEARNING</span>
+  </div>
+       </div>
+       
   </section>
 
   <!-- 3D CARDS -->
