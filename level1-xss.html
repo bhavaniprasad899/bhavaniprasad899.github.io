@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>CyberArena | Level 1 - XSS</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+/* ===== HACKER THEME ===== */
+body {
+  margin: 0;
+  font-family: "Courier New", monospace;
+  background: radial-gradient(circle at top, #021b12, #000);
+  color: #00ff99;
+}
+
+/* MATRIX GRID */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(0,255,0,0.07) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,255,0,0.07) 1px, transparent 1px);
+  background-size: 20px 20px;
+  pointer-events: none;
+}
+
+.container {
+  max-width: 900px;
+  margin: auto;
+  padding: 20px;
+}
+
+h1, h2 {
+  color: #00ffcc;
+  text-shadow: 0 0 10px #00ff99;
+}
+
+.card {
+  background: rgba(0,0,0,0.8);
+  border: 1px solid #00ff99;
+  border-radius: 10px;
+  padding: 20px;
+  margin: 20px 0;
+  box-shadow: 0 0 15px rgba(0,255,153,0.2);
+}
+
+/* DEMO BOX */
+input {
+  width: 100%;
+  padding: 10px;
+  background: black;
+  color: #00ff99;
+  border: 1px solid #00ff99;
+  font-family: inherit;
+}
+
+.output {
+  margin-top: 10px;
+  padding: 10px;
+  border: 1px dashed #00ff99;
+}
+
+/* BUTTONS */
+button {
+  margin-top: 10px;
+  padding: 10px 15px;
+  background: black;
+  color: #00ff99;
+  border: 1px solid #00ff99;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #00ff99;
+  color: black;
+}
+</style>
+</head>
+
+<body>
+<div class="container">
+
+<h1>🚨 Level 1: Cross-Site Scripting (XSS)</h1>
+
+<div class="card">
+<h2>📘 What is XSS?</h2>
+<p>
+XSS is a vulnerability where attackers inject malicious JavaScript
+into a website that runs in other users’ browsers.
+</p>
+</div>
+
+<div class="card">
+<h2>⚠️ Why XSS is Dangerous?</h2>
+<ul>
+  <li>Steals cookies 🍪</li>
+  <li>Defaces websites</li>
+  <li>Hijacks user sessions</li>
+</ul>
+</div>
+
+<div class="card">
+<h2>🧪 Live XSS Demo (Safe)</h2>
+<p>Try typing this:</p>
+<code>&lt;script&gt;alert('XSS')&lt;/script&gt;</code>
+
+<input id="userInput" placeholder="Enter text here">
+
+<button onclick="runDemo()">Submit</button>
+
+<div class="output" id="outputBox"></div>
+</div>
+
+<div class="card">
+<h2>🛡 How to Prevent XSS?</h2>
+<ul>
+  <li>Input validation</li>
+  <li>Output encoding</li>
+  <li>Use CSP</li>
+</ul>
+</div>
+
+<div class="card">
+<button onclick="location.href='learn.html'">⬅ Back to Learn</button>
+<button onclick="alert('Next: SQL Injection 😈')">➡ Next Level</button>
+</div>
+
+</div>
+
+<script>
+function runDemo() {
+  const input = document.getElementById("userInput").value;
+  document.getElementById("outputBox").innerHTML = input;
+}
+</script>
+
+</body>
+</html>
