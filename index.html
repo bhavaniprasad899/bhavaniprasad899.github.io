@@ -930,14 +930,14 @@ function toggleMenu() {
 async function loadBTC() {
   try {
     const res = await fetch(
-      "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=inr,usdt"
+      "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=inr,usd"
     );
     const data = await res.json();
 
     document.getElementById("btc").innerHTML = `
       🪙 <b>Bitcoin (BTC)</b><br><br>
       ₹ ${data.bitcoin.inr.toLocaleString()} INR<br>
-      ${data.bitcoin.usdt} USDT
+      ${data.bitcoin.usd.toLocaleString()} USDT
     `;
   } catch (e) {
     document.getElementById("btc").innerText = "Bitcoin price unavailable";
@@ -945,8 +945,9 @@ async function loadBTC() {
 }
 
 loadBTC();
-setInterval(loadBTC, 3600000); // 1 HOUR
+setInterval(loadBTC, 3600000); // 1 hour
      </script>
+     
      <script>
 async function loadMetals() {
   const res = await fetch("https://data-asg.goldprice.org/dbXRates/INR");
@@ -958,12 +959,17 @@ async function loadMetals() {
   const goldPerGram = goldPerOunce / 31.1035;
   const silverPerGram = silverPerOunce / 31.1035;
 
+  const usdRate = 83; // Approx USD = USDT
+
+  const gold1kgUSDT = (goldPerGram * 1000) / usdRate;
+  const silver1kgUSDT = (silverPerGram * 1000) / usdRate;
+
   document.getElementById("gold").innerHTML = `
     🥇 <b>Gold</b><br><br>
     1g : ₹ ${goldPerGram.toFixed(2)}<br>
     10g : ₹ ${(goldPerGram * 10).toFixed(2)}<br>
     1kg : ₹ ${(goldPerGram * 1000).toFixed(2)}<br>
-    ≈ ${(goldPerGram / 83).toFixed(2)} USDT
+    ≈ ${gold1kgUSDT.toFixed(2)} USDT (1kg)
   `;
 
   document.getElementById("silver").innerHTML = `
@@ -971,14 +977,13 @@ async function loadMetals() {
     1g : ₹ ${silverPerGram.toFixed(2)}<br>
     10g : ₹ ${(silverPerGram * 10).toFixed(2)}<br>
     1kg : ₹ ${(silverPerGram * 1000).toFixed(2)}<br>
-    ≈ ${(silverPerGram / 83).toFixed(2)} USDT
+    ≈ ${silver1kgUSDT.toFixed(2)} USDT (1kg)
   `;
 }
 
 loadMetals();
 setInterval(loadMetals, 3600000); // 1 hour
      </script>
-     
      
 </body>
 </html>
