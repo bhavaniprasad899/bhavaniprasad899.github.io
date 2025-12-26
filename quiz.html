@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>CyberArena | Quiz</title>
+<style>
+body {
+  background: black;
+  color: #00ff99;
+  font-family: "Courier New", monospace;
+  text-align: center;
+}
+.card {
+  border: 1px solid #00ff99;
+  padding: 20px;
+  margin: 20px;
+}
+button {
+  display: block;
+  margin: 10px auto;
+  padding: 10px;
+  background: black;
+  color: #00ff99;
+  border: 1px solid #00ff99;
+}
+button:hover {
+  background: #00ff99;
+  color: black;
+}
+</style>
+</head>
+
+<body>
+
+<h1>🧠 Level 1 Quiz</h1>
+
+<div class="card">
+<p>1️⃣ What does XSS allow?</p>
+<button onclick="score++">Run JS in browser</button>
+<button>Run SQL query</button>
+</div>
+
+<div class="card">
+<p>2️⃣ SQL Injection affects?</p>
+<button onclick="score++">Database</button>
+<button>CSS</button>
+</div>
+
+<button onclick="finish()">Finish Quiz</button>
+
+<p id="result"></p>
+
+<script>
+let score = 0;
+
+function finish() {
+  localStorage.setItem("level1Score", score);
+  document.getElementById("result").innerText =
+    "🔥 Your Score: " + score + "/2";
+}
+</script>
+
+</body>
+</html>
