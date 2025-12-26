@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>CyberArena | Basics</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+/* ===== HACKER THEME ===== */
+body {
+  margin: 0;
+  font-family: "Courier New", monospace;
+  background: radial-gradient(circle at top, #0f2027, #000);
+  color: #00ff99;
+  line-height: 1.6;
+}
+
+/* MATRIX EFFECT */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(0,255,0,0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,255,0,0.08) 1px, transparent 1px);
+  background-size: 20px 20px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* CONTAINER */
+.container {
+  max-width: 900px;
+  margin: auto;
+  padding: 20px;
+  position: relative;
+  z-index: 1;
+}
+
+/* HEADINGS */
+h1, h2 {
+  color: #00ffcc;
+  text-shadow: 0 0 10px #00ff99;
+}
+
+/* CARDS */
+.card {
+  background: rgba(0, 0, 0, 0.75);
+  border: 1px solid #00ff99;
+  border-radius: 10px;
+  padding: 20px;
+  margin: 20px 0;
+  box-shadow: 0 0 20px rgba(0,255,153,0.2);
+}
+
+/* BUTTONS */
+button {
+  background: black;
+  color: #00ff99;
+  border: 1px solid #00ff99;
+  padding: 10px 15px;
+  margin: 5px 0;
+  cursor: pointer;
+  font-family: inherit;
+  border-radius: 6px;
+}
+
+button:hover {
+  background: #00ff99;
+  color: black;
+}
+
+/* QUIZ */
+.quiz button {
+  display: block;
+  width: 100%;
+  margin-top: 10px;
+}
+</style>
+</head>
+
+<body>
+<div class="container">
+
+<h1>🔰 Level 0: Cybersecurity Basics</h1>
+<p>Welcome to <b>CyberArena</b>. This is where your hacker journey begins 😈💻</p>
+
+<!-- SECTION 1 -->
+<div class="card">
+<h2>🧠 What is Ethical Hacking?</h2>
+<p>
+Ethical hacking means testing systems <b>legally</b> to find security weaknesses
+before real attackers do.
+</p>
+<p>
+✔ Done with permission<br>
+✔ Helps companies stay safe<br>
+❌ Illegal hacking = cybercrime
+</p>
+</div>
+
+<!-- SECTION 2 -->
+<div class="card">
+<h2>🌐 How Websites Work</h2>
+<p>
+1️⃣ You enter a website URL<br>
+2️⃣ Browser sends request to server<br>
+3️⃣ Server sends back HTML/CSS/JS<br>
+4️⃣ Browser displays the website
+</p>
+<p>
+<b>Domain</b> → Website name<br>
+<b>IP Address</b> → Server location<br>
+<b>Server</b> → Computer hosting the site
+</p>
+</div>
+
+<!-- SECTION 3 -->
+<div class="card">
+<h2>🔐 Security Basics</h2>
+<p>
+<b>Vulnerability</b> → Weakness in system<br>
+<b>Exploit</b> → Method to attack that weakness<br>
+<b>Patch</b> → Fix applied by developers
+</p>
+</div>
+
+<!-- QUIZ -->
+<div class="card quiz">
+<h2>🧪 Quick Quiz</h2>
+<p>Is ethical hacking legal?</p>
+
+<button onclick="alert('✅ Correct! Ethical hacking is legal with permission.')">
+Yes, with permission
+</button>
+
+<button onclick="alert('❌ Wrong! Ethical hacking is legal when authorized.')">
+No, never
+</button>
+</div>
+
+<!-- NAV -->
+<div class="card">
+<h2>🚀 What Next?</h2>
+<button onclick="location.href='learn.html'">⬅ Back to Learn Hub</button>
+<button onclick="alert('Coming Soon 😄😜')">➡ Web Hacking Level</button>
+</div>
+
+</div>
+</body>
+</html>
