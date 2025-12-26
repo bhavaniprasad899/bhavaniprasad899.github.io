@@ -99,6 +99,13 @@ function login() {
   }
 }
 </script>
-
+<script>
+function completeLevel1() {
+  localStorage.setItem("level1Completed", "yes");
+  alert("🔥 Level 1 Completed! Take the Quiz 😄😜");
+  location.href = "quiz.html";
+}
+</script>
+  
 </body>
 </html>
