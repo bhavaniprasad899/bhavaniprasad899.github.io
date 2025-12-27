@@ -495,6 +495,65 @@
   font-size: 12px;
   color: #777;
 }
+   #botBtn {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: #00ff99;
+  border: none;
+  font-size: 24px;
+  padding: 12px;
+  border-radius: 50%;
+  box-shadow: 0 0 20px #00ff99;
+  cursor: pointer;
+  z-index: 999;
+}
+
+#cyberBot {
+  position: fixed;
+  bottom: 80px;
+  right: 20px;
+  width: 300px;
+  background: #000;
+  border: 2px solid #00ff99;
+  display: none;
+  flex-direction: column;
+  font-family: monospace;
+  z-index: 999;
+}
+
+#botHeader {
+  background: #00ff99;
+  color: #000;
+  padding: 8px;
+  display: flex;
+  justify-content: space-between;
+}
+
+#botBody {
+  height: 220px;
+  padding: 8px;
+  overflow-y: auto;
+  color: #00ff99;
+}
+
+#botInput {
+  display: flex;
+}
+
+#botInput input {
+  flex: 1;
+  background: black;
+  border: none;
+  color: #00ff99;
+  padding: 6px;
+}
+
+#botInput button {
+  background: #00ff99;
+  border: none;
+  cursor: pointer;
+}
      
 </style>
 </head>
@@ -666,6 +725,18 @@
 </div>
        
   </section>
+     <!-- ===== CYBER BOT ===== -->
+<div id="cyberBot">
+  <div id="botHeader">🤖 CyberBot <span onclick="closeBot()">✖</span></div>
+  <div id="botBody"></div>
+  <div id="botInput">
+    <input type="text" id="userMsg" placeholder="Ask me about hacking..." />
+    <button onclick="sendMsg()">▶</button>
+  </div>
+</div>
+
+<button id="botBtn" onclick="openBot()">🤖</button>
+     
 
   <!-- CYBER ROLES BUTTON -->
   <div class="role-btn-container">
@@ -983,6 +1054,38 @@ async function loadMetals() {
 
 loadMetals();
 setInterval(loadMetals, 3600000); // 1 hour
+     </script>
+     <script>
+function openBot() {
+  document.getElementById("cyberBot").style.display = "flex";
+}
+
+function closeBot() {
+  document.getElementById("cyberBot").style.display = "none";
+}
+
+function sendMsg() {
+  let msg = document.getElementById("userMsg").value.toLowerCase();
+  let bot = document.getElementById("botBody");
+
+  if (!msg) return;
+
+  bot.innerHTML += `<div>> ${msg}</div>`;
+
+  let reply = "Command not recognized. Try: hacking, sql, tools";
+
+  if (msg.includes("hacking")) reply = "Hacking is finding & fixing security flaws ethically.";
+  if (msg.includes("sql")) reply = "SQL Injection allows attackers to manipulate databases.";
+  if (msg.includes("tools")) reply = "Start with Nmap, Burp Suite, Kali Linux.";
+  if (msg.includes("start")) reply = "Begin with networking, Linux, then web security.";
+
+  setTimeout(() => {
+    bot.innerHTML += `<div style="color:#0f0">CyberBot: ${reply}</div>`;
+    bot.scrollTop = bot.scrollHeight;
+  }, 500);
+
+  document.getElementById("userMsg").value = "";
+}
      </script>
      
 </body>
