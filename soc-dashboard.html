@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SOC Dashboard | CyberArena</title>
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { background:#0a0a0a; color:#e0e0e0; font-family:'Courier New',monospace; }
+    .container { max-width:1100px; margin:auto; padding:20px; }
+    h1 { color:#0ff; text-align:center; margin:30px 0; font-size:2.5em; text-shadow:0 0 10px #0ff; }
+    h2 { color:#0ff; margin:20px 0 10px; }
+    .hint-matrix { background:#111; border:1px solid #0ff; border-radius:10px; padding:20px; margin:20px 0; }
+    table { width:100%; border-collapse:collapse; margin:15px 0; }
+    th, td { border:1px solid #333; padding:8px 12px; text-align:left; }
+    th { background:#0ff; color:#000; }
+    td { font-size:0.85em; }
+    .critical { color:#f00; font-weight:bold; }
+    .high { color:#f80; }
+    .medium { color:#ff0; }
+    .low { color:#0f0; }
+    .alert-box { background:#1a0000; border:1px solid #f00; padding:15px; border-radius:6px; margin:10px 0; }
+    .alert-box h4 { color:#f00; margin-bottom:5px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <a href="index.html" style="color:#0ff; text-decoration:none; border:1px solid #0ff; padding:8px 20px; border-radius:6px;">&larr; Back</a>
+    <h1>🛡️ SOC Dashboard</h1>
+    <p style="text-align:center; color:#888;">Security Operations Center - Simulated Alert Feed & MITRE ATT&CK Mapping</p>
+
+    <!-- Active Alerts -->
+    <h2>🚨 Active Alerts (Last 24h)</h2>
+    <div id="alerts-container"></div>
+
+    <!-- MITRE ATT&CK Matrix -->
+    <h2>📋 MITRE ATT&CK Techniques Detected</h2>
+    <div class="hint-matrix">
+      <table>
+        <tr><th>Tactic</th><th>Technique</th><th>ID</th><th>Severity</th></tr>
+        <tr><td>Initial Access</td><td>Phishing</td><td>T1566</td><td class="high">High</td></tr>
+        <tr><td>Execution</td><td>Command & Scripting Interpreter</td><td>T1059</td><td class="high">High</td></tr>
+        <tr><td>Persistence</td><td>Create Account</td><td>T1136</td><td class="medium">Medium</td></tr>
+        <tr><td>Privilege Escalation</td><td>Process Injection</td><td>T1055</td><td class="critical">Critical</td></tr>
+        <tr><td>Defense Evasion</td><td>Obfuscated Files or Info</td><td>T1027</td><td class="medium">Medium</td></tr>
+        <tr><td>Credential Access</td><td>Brute Force</td><td>T1110</td><td class="high">High</td></tr>
+        <tr><td>Discovery</td><td>Network Share Discovery</td><td>T1135</td><td class="low">Low</td></tr>
+        <tr><td>Lateral Movement</td><td>Remote Desktop Protocol</td><td>T1021</td><td class="high">High</td></tr>
+        <tr><td>Collection</td><td>Data from Local System</td><td>T1005</td><td class="medium">Medium</td></tr>
+        <tr><td>Exfiltration</td><td>Exfiltration Over C2 Channel</td><td>T1041</td><td class="critical">Critical</td></tr>
+      </table>
+    </div>
+
+    <p style="text-align:center; color:#666; margin-top:20px;">Simulated SOC environment for educational purposes. Refresh page for new alerts.</p>
+  </div>
+
+  <script>
+    function generateAlerts() {
+      const alerts = [
+        { time: '2026-06-02 08:23:14', src: '192.168.1.105', dest: '10.0.0.50', type: 'Brute Force SSH', severity: 'HIGH', technique: 'T1110' },
+        { time: '2026-06-02 07:45:02', src: '10.0.0.12', dest: '10.0.0.1', type: 'DNS Tunneling Detected', severity: 'CRITICAL', technique: 'T1572' },
+        { time: '2026-06-02 06:30:55', src: '172.16.0.88', dest: '10.0.0.35', type: 'SQL Injection Attempt', severity: 'HIGH', technique: 'T1190' },
+        { time: '2026-06-02 05:12:33', src: '192.168.1.200', dest: '10.0.0.22', type: 'RDP Brute Force', severity: 'MEDIUM', technique: 'T1110' },
+        { time: '2026-06-02 04:00:01', src: '10.0.0.45', dest: '10.0.0.10', type: 'Malware Outbound C2', severity: 'CRITICAL', technique: 'T1071' },
+        { time: '2026-06-02 03:22:18', src: '10.0.0.67', dest: '10.0.0.1', type: 'Privilege Escalation (sudo)', severity: 'HIGH', technique: 'T1548' },
+        { time: '2026-06-02 02:15:44', src: '192.168.1.150', dest: '10.0.0.88', type: 'XSS Payload Detected', severity: 'MEDIUM', technique: 'T1189' },
+        { time: '2026-06-02 01:05:30', src: '10.0.0.33', dest: '10.0.0.5', type: 'Data Exfiltration (Large Outbound)', severity: 'CRITICAL', technique: 'T1041' },
+        { time: '2026-06-01 23:50:12', src: '172.16.0.12', dest: '10.0.0.44', type: 'Port Scan (Nmap)', severity: 'LOW', technique: 'T1046' },
+        { time: '2026-06-01 22:30:05', src: '192.168.1.88', dest: '10.0.0.77', type: 'Phishing Email Opened', severity: 'HIGH', technique: 'T1566' }
+      ];
+
+      const container = document.getElementById('alerts-container');
+      let html = '<table><tr><th>Timestamp</th><th>Source</th><th>Target</th><th>Alert Type</th><th>Severity</th><th>Technique</th></tr>';
+
+      alerts.forEach(a => {
+        const sevClass = a.severity === 'CRITICAL' ? 'critical' : a.severity === 'HIGH' ? 'high' : a.severity === 'MEDIUM' ? 'medium' : 'low';
+        html += `<tr>
+          <td>${a.time}</td>
+          <td>${a.src}</td>
+          <td>${a.dest}</td>
+          <td>${a.type}</td>
+          <td class="${sevClass}">${a.severity}</td>
+          <td>${a.technique}</td>
+        </tr>`;
+      });
+
+      html += '</table>';
+      html += '<div class="alert-box"><h4>🔴 CRITICAL: Active Incident</h4><p>Potential data exfiltration detected from 10.0.0.33 to external IP. <strong>IOC:</strong> 203.0.113.45 | <strong>Action:</strong> Isolate host & investigate.</p></div>';
+
+      container.innerHTML = html;
+    }
+
+    generateAlerts();
+  </script>
+</body>
+</html>
