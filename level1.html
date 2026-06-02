@@ -1,75 +1,153 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>Level 1 – Hacker Basics</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
-body{
-  background:black;
-  color:#00ffcc;
-  font-family:monospace;
-  padding:30px;
-}
-.question{
-  margin-bottom:30px;
-  border:1px solid #00ffcc;
-  padding:20px;
-}
-button{
-  margin-top:10px;
-  padding:10px;
-  background:black;
-  border:1px solid red;
-  color:red;
-  cursor:pointer;
-}
-button:hover{
-  background:red;
-  color:black;
-}
-.correct{color:lime;}
-.wrong{color:red;}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#0a0a0a;color:#0f0;font-family:'Courier New',monospace;min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:20px}
+.box{max-width:700px;width:100%;background:#111;border:2px solid #0f0;border-radius:10px;padding:30px;margin-top:20px;box-shadow:0 0 30px rgba(0,255,0,0.15)}
+h1{text-align:center;color:#0f0;font-size:26px;margin-bottom:5px;text-shadow:0 0 10px rgba(0,255,0,0.5)}
+h2{text-align:center;color:#0a0;font-size:14px;margin-bottom:20px;font-weight:normal}
+.mission{background:#0d0d0d;border:1px solid #0a5a0a;border-radius:6px;padding:15px;margin-bottom:20px;font-size:13px;line-height:1.6}
+.mission span{color:#ff0}
+.task{background:#0d0d0d;border:1px solid #0a5a0a;border-radius:6px;padding:20px;margin-bottom:15px}
+.task h3{color:#0ff;font-size:16px;margin-bottom:10px}
+.task p{color:#aaa;font-size:13px;margin-bottom:12px;line-height:1.5}
+.task input{width:100%;padding:10px;background:#1a1a1a;border:1px solid #0a5a0a;border-radius:4px;color:#0f0;font-family:'Courier New',monospace;font-size:14px;outline:none;margin-bottom:8px}
+.task input:focus{border-color:#0f0;box-shadow:0 0 8px rgba(0,255,0,0.2)}
+.task button{padding:8px 20px;background:#0f0;color:#000;border:none;border-radius:4px;font-family:'Courier New',monospace;font-weight:bold;font-size:14px;cursor:pointer}
+.task button:hover{background:#0c0;box-shadow:0 0 10px rgba(0,255,0,0.4)}
+.feedback{margin-top:8px;font-size:13px;padding:6px;border-radius:4px}
+.fb-correct{color:#0f0}.fb-wrong{color:#f44}.fb-hint{color:#ff0}
+.progress{display:flex;gap:8px;justify-content:center;margin-bottom:20px}
+.dot{width:14px;height:14px;border-radius:50%;background:#1a3a1a;border:1px solid #0a5a0a}
+.dot.done{background:#0f0;border-color:#0f0;box-shadow:0 0 6px #0f0}
+.dot.fail{background:#f44;border-color:#f44}
+.status-bar{display:flex;justify-content:space-between;padding:10px;background:#0d0d0d;border-radius:4px;margin-bottom:20px;font-size:12px;color:#888}
+.status-bar span{color:#0f0}
+.back{display:block;text-align:center;margin-top:20px;color:#0a5a0a;text-decoration:none;font-size:13px}
+.back:hover{color:#0f0}
 </style>
 </head>
-
 <body>
-
+<div class="box">
 <h1>🟢 Level 1 – Hacker Basics</h1>
+<h2>━━ Real Hacker Challenges ━━</h2>
 
-<div class="question">
-<p>1️⃣ Which password is weakest?</p>
-<button onclick="check(this,false)">Qwerty@123</button><br>
-<button onclick="check(this,true)">123456</button><br>
-<button onclick="check(this,false)">A9$kLm!2</button>
+<div class="status-bar">
+<div>Score: <span id="score">0</span>/5</div>
+<div>Challenge: <span id="current">1</span>/5</div>
 </div>
 
-<div class="question">
-<p>2️⃣ Which URL is phishing?</p>
-<button onclick="check(this,true)">http://paypa1.com/login</button><br>
-<button onclick="check(this,false)">https://paypal.com</button>
+<div class="progress" id="progress"></div>
+
+<div class="mission">
+<span>🎯 MISSION:</span> You're a rookie hacker. Complete all 5 challenges to prove you understand the basics. Each challenge requires you to DO something, not just guess.
 </div>
 
-<div class="question">
-<p>3️⃣ Which Linux command lists files?</p>
-<button onclick="check(this,true)">ls</button><br>
-<button onclick="check(this,false)">rm</button>
+<div id="challengeArea"></div>
+<a href="task.html" class="back">⬅ Back to Levels</a>
 </div>
-
-<br>
-<a href="task.html">⬅ Back to Levels</a>
 
 <script>
-function check(btn, correct){
-  if(correct){
-    btn.className="correct";
-    btn.innerHTML+=" ✔ Correct";
-  }else{
-    btn.className="wrong";
-    btn.innerHTML+=" ✖ Wrong";
-  }
-  btn.disabled=true;
+const challenges=[
+{
+title:'🔍 Challenge 1: Find the Hidden Info',
+desc:'Every webpage has hidden information in the source code. Right-click and "View Page Source" to find secrets. This page has a hidden flag. Inspect this page\'s HTML source to find the flag.',
+answer:'flag{view_source_is_easy}',
+hint:'Press Ctrl+U or right-click anywhere and select "View Page Source". Look in the HTML comments.'
+},
+{
+title:'🕵️ Challenge 2: Base64 Decoding',
+desc:'Hackers often hide data using Base64 encoding. Decode this message: <b>ZmxhZ3tiYXNlNjRfaXNfYmFzaWN9</b><br><br>Use an online decoder or your terminal: <span style="color:#0ff;">echo "ZmxhZ3tiYXNlNjRfaXNfYmFzaWN9" | base64 -d</span>',
+answer:'flag{base64_is_basic}',
+hint:'The text "ZmxhZ3tiYXNlNjRfaXNfYmFzaWN9" decodes to something starting with "flag{".'
+},
+{
+title:'🌐 Challenge 3: Read HTTP Headers',
+desc:'Every website sends HTTP headers. Use the terminal to see them:<br><br><span style="color:#0ff;">curl -I https://bhavaniprasad899.github.io</span><br><br>What is the value of the "server" header?',
+answer:'GitHub.com',
+hint:'Run curl -I https://bhavaniprasad899.github.io in the terminal page and look at the "server:" line.'
+},
+{
+title:'💻 Challenge 4: Simple Linux Command',
+desc:'In the terminal, Linux has a command to show the current directory path. Type it in the terminal.<br><br>What command shows your current directory?',
+answer:'pwd',
+hint:'It stands for "print working directory". 3 letters.'
+},
+{
+title:'🔐 Challenge 5: Hash Cracking (Easy)',
+desc:'A common password hash is MD5. This hash: <b>5f4dcc3b5aa765d61d8327deb882cf99</b> is a simple password.<br><br>What is the original password? (Hint: it\'s the most common password ever)',
+answer:'password',
+hint:'Google the hash or use an MD5 decoder website. It\'s the most used password in the world.'
 }
-</script>
+];
 
+let current=0;let score=0;let done=[false,false,false,false,false];
+const challengeArea=document.getElementById('challengeArea');
+const scoreEl=document.getElementById('score');
+const currentEl=document.getElementById('current');
+const progressEl=document.getElementById('progress');
+
+function renderProgress(){
+progressEl.innerHTML='';
+for(let i=0;i<challenges.length;i++){
+let d=document.createElement('div');d.className='dot';
+if(done[i]){d.className='dot done'}else if(done[i]===false&&i<current){d.className='dot fail'}
+progressEl.appendChild(d);
+}
+}
+
+function loadChallenge(idx){
+if(idx>=challenges.length){
+challengeArea.innerHTML=`
+<div style="text-align:center;padding:30px">
+<div style="font-size:50px;">🏆</div>
+<h2 style="color:#0f0;font-size:24px;margin:15px 0">ALL CHALLENGES COMPLETE!</h2>
+<p style="color:#aaa;font-size:14px">You scored ${score}/${challenges.length}</p>
+<p style="color:#0ff;font-size:16px;margin-top:15px">You've earned: ${score>=4?'🟢 HACKER BASIC BADGE':'🟡 Keep Practicing'}</p>
+</div>`;
+return;
+}
+const c=challenges[idx];
+currentEl.textContent=idx+1;
+challengeArea.innerHTML=`
+<div class="task">
+<h3>${c.title}</h3>
+<p>${c.desc}</p>
+<input type="text" id="ans" placeholder="Type your answer here..." autocomplete="off">
+<button id="subBtn">Submit</button>
+<div id="fb" class="feedback"></div>
+</div>`;
+document.getElementById('subBtn').addEventListener('click',()=>check(idx));
+document.getElementById('ans').addEventListener('keypress',(e)=>{if(e.key==='Enter')check(idx)});
+document.getElementById('ans').focus();
+}
+
+function check(idx){
+const input=document.getElementById('ans');
+const fb=document.getElementById('fb');
+const ans=input.value.trim().toLowerCase();
+const correct=challenges[idx].answer.toLowerCase();
+
+if(!ans){fb.textContent='⚠️ Type an answer first!';fb.className='feedback fb-hint';return}
+
+if(ans===correct){
+fb.textContent='Congratulations! 🥳 Well done!';fb.className='feedback fb-correct';
+done[idx]=true;score++;scoreEl.textContent=score;
+setTimeout(()=>{current++;loadChallenge(current);renderProgress()},1200);
+}else{
+fb.innerHTML='sorry man try again 😜😜. '+challenges[idx].hint;fb.className='feedback fb-wrong';
+done[idx]=false;
+setTimeout(()=>{current++;loadChallenge(current);renderProgress()},2000);
+}
+renderProgress();
+}
+
+renderProgress();
+loadChallenge(0);
+</script>
 </body>
 </html>
