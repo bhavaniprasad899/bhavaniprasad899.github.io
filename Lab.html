@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pentest Lab | CyberArena</title>
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { background:#0a0a0a; color:#e0e0e0; font-family:'Courier New',monospace; }
+    .container { max-width:1100px; margin:auto; padding:20px; }
+    h1 { color:#0f0; text-align:center; margin:30px 0; font-size:2.5em; text-shadow:0 0 10px #0f0; }
+    h2 { color:#0f0; margin:25px 0 15px; border-bottom:1px solid #0f0; padding-bottom:8px; }
+
+    .lab-card {
+      background:#111; border:1px solid #333; border-radius:10px; padding:25px; margin:20px 0;
+      box-shadow:0 0 15px rgba(0,255,0,0.05);
+    }
+    .lab-card h3 { color:#0f0; margin-bottom:10px; font-size:1.4em; }
+    .lab-card p { color:#aaa; margin-bottom:12px; line-height:1.5; }
+
+    input, textarea, select {
+      width:100%; padding:10px 14px; margin:8px 0; border:1px solid #333; border-radius:6px;
+      background:#1a1a1a; color:#0f0; font-family:'Courier New',monospace; font-size:0.95em;
+    }
+    input:focus, textarea:focus { outline:2px solid #0f0; border-color:#0f0; }
+    textarea { min-height:60px; resize:vertical; }
+
+    .btn {
+      padding:10px 25px; border:none; border-radius:6px; cursor:pointer; font-weight:bold;
+      font-family:'Courier New',monospace; font-size:0.95em; transition:0.3s;
+    }
+    .btn-green { background:#0a0; color:#fff; }
+    .btn-green:hover { background:#0c0; box-shadow:0 0 12px #0f0; }
+    .btn-red { background:#a00; color:#fff; }
+    .btn-red:hover { background:#c00; box-shadow:0 0 12px #f00; }
+    .btn-blue { background:#0055aa; color:#fff; }
+    .btn-blue:hover { background:#0066cc; box-shadow:0 0 12px #06f; }
+
+    .result-box {
+      background:#0d0d0d; border:1px solid #333; border-radius:6px; padding:15px; margin-top:10px;
+      min-height:40px; white-space:pre-wrap; font-family:'Courier New',monospace; color:#0f0;
+    }
+    .result-box.error { color:#f44; border-color:#f44; }
+    .result-box.success { color:#0f0; border-color:#0f0; }
+
+    .code-block {
+      background:#0a0a0a; border:1px solid #333; border-radius:6px; padding:15px; margin:10px 0;
+      font-family:'Courier New',monospace; color:#0f0; overflow-x:auto;
+    }
+    .hint { color:#ff0; font-size:0.85em; margin-top:4px; }
+
+    .nav-link { display:inline-block; color:#0f0; text-decoration:none; border:1px solid #0f0; padding:8px 20px; border-radius:6px; margin:10px 0; transition:0.3s; }
+    .nav-link:hover { background:#0f0; color:#000; }
+  </style>
+</head>
+<body>
+  <div class="container">
+
+    <a href="index.html" class="nav-link">&larr; Back to Home</a>
+    <h1>🔬 Pentest Lab</h1>
+    <p style="text-align:center; color:#888;">Hands-on hacking sandbox. Try real attack techniques safely.</p>
+
+    <!-- ====== LAB 1: SQL INJECTION ====== -->
+    <div class="lab-card">
+      <h3>💉 Lab 1: SQL Injection</h3>
+      <p>Try to bypass the login by injecting SQL. The simulated query is:<br>
+      <code style="color:#ff0;">SELECT * FROM users WHERE username='<strong>[input]</strong>' AND password='<strong>[input]</strong>';</code></p>
+
+      <input type="text" id="sql-user" placeholder="Username (e.g. admin' -- )" value="admin">
+      <input type="text" id="sql-pass" placeholder="Password (e.g. anything OR '1'='1)">
+      <button class="btn btn-green" onclick="sqlInject()">🚀 Execute Injection</button>
+      <div id="sql-result" class="result-box">Waiting for input...</div>
+      <p class="hint">💡 Try: <code>admin' --</code> as username, anything as password. Or: <code>' OR '1'='1</code> in both fields.</p>
+      <div class="code-block">
+// SQLi payload examples:
+1. admin' --
+2. ' OR '1'='1
+3. admin' OR '1'='1' --
+4. '; DROP TABLE users; --
+      </div>
+    </div>
+
+    <!-- ====== LAB 2: XSS ====== -->
+    <div class="lab-card">
+      <h3>🌐 Lab 2: Cross-Site Scripting (XSS)</h3>
+      <p>Enter text below. If you inject HTML/JavaScript, it will render (simulating a vulnerable comment box).</p>
+
+      <input type="text" id="xss-input" placeholder="Enter comment or payload...">
+      <button class="btn btn-blue" onclick="xssExecute()">📝 Submit Comment</button>
+      <div style="margin-top:10px;">
+        <strong style="color:#0f0;">Rendered Output:</strong>
+        <div id="xss-output" class="result-box">No comments yet.</div>
+      </div>
+      <p class="hint">💡 Try: <code>&lt;script&gt;alert('XSS')&lt;/script&gt;</code> or <code>&lt;img src=x onerror=alert(1)&gt;</code></p>
+    </div>
+
+    <!-- ====== LAB 3: CMD INJECTION ====== -->
+    <div class="lab-card">
+      <h3>💻 Lab 3: Command Injection</h3>
+      <p>Simulated ping tool. Try injecting additional commands.</p>
+
+      <input type="text" id="cmd-input" placeholder="IP address (e.g. 8.8.8.8)" value="8.8.8.8">
+      <button class="btn btn-red" onclick="cmdInject()">▶ Ping</button>
+      <div id="cmd-result" class="result-box">Waiting...</div>
+      <p class="hint">💡 Try: <code>8.8.8.8; ls</code> or <code>127.0.0.1 && whoami</code></p>
+    </div>
+
+    <!-- ====== LAB 4: PORT SCANNER ====== -->
+    <div class="lab-card">
+      <h3>🔍 Lab 4: Simulated Port Scanner</h3>
+      <p>Enter a hostname/IP and common ports will be "scanned" (simulated).</p>
+
+      <input type="text" id="scan-target" placeholder="Target (e.g. scanme.nmap.org)" value="scanme.nmap.org">
+      <button class="btn btn-blue" onclick="scanPorts()">📡 Scan</button>
+      <div id="scan-result" class="result-box">Ready to scan...</div>
+    </div>
+
+  </div>
+
+  <script>
+    // ===================== LAB 1: SQL INJECTION SIMULATOR =====================
+    function sqlInject() {
+      const user = document.getElementById('sql-user').value;
+      const pass = document.getElementById('sql-pass').value;
+      const out = document.getElementById('sql-result');
+
+      const simulatedDB = [
+        { username: 'admin', password: 'supersecret123', role: 'Administrator' },
+        { username: 'user1', password: 'password1', role: 'User' },
+        { username: 'hacker', password: 'letmein', role: 'User' }
+      ];
+
+      // Simulate SQL query building (vulnerable)
+      const query = `SELECT * FROM users WHERE username='${user}' AND password='${pass}'`;
+
+      // Simulated SQL injection detection
+      const sqliPatterns = /(--|\bOR\b|\bAND\b|'|";|UNION|DROP|--)/i;
+      const isInjection = sqliPatterns.test(user) || sqliPatterns.test(pass);
+
+      let matched = false;
+      let result;
+
+      if (isInjection) {
+        // Injection succeeded
+        result = {
+          success: true,
+          data: simulatedDB.filter(u => u.username === 'admin' || u.username === 'hacker'),
+          message: '🔥 SQL Injection Successful! Retrieved all user records.'
+        };
+      } else {
+        // Normal login attempt
+        const userMatch = simulatedDB.find(u => u.username === user && u.password === pass);
+        if (userMatch) {
+          result = { success: true, data: [userMatch], message: `✅ Login successful. Welcome ${userMatch.role}!` };
+          matched = true;
+        } else {
+          result = { success: false, data: [], message: '❌ Login failed. Invalid credentials.' };
+        }
+      }
+
+      let output = `📜 Simulated Query: ${query}\n\n`;
+      output += `📊 Result: ${result.message}\n`;
+      if (result.data.length > 0) {
+        output += '📋 Data Retrieved:\n';
+        result.data.forEach(u => {
+          output += `   → ${u.username} | ${u.password} | ${u.role}\n`;
+        });
+        if (isInjection) output += '\n⚠️ The query was vulnerable to SQL injection! Always use prepared statements.';
+      }
+
+      out.textContent = output;
+      out.className = 'result-box ' + (result.success ? 'success' : 'error');
+    }
+
+    // ===================== LAB 2: XSS SIMULATOR =====================
+    function xssExecute() {
+      const input = document.getElementById('xss-input').value;
+      const out = document.getElementById('xss-output');
+
+      // Check for XSS payloads
+      const hasXSS = /<script|onerror=|onclick=|onload=|<iframe|<img|<svg/i.test(input);
+
+      if (hasXSS) {
+        out.innerHTML = input; // VULNERABLE - renders HTML (simulated)
+        // Note: alert() won't actually fire in this context due to security, but innerHTML shows the concept
+        out.className = 'result-box success';
+        out.innerHTML += '\n\n⚠️ XSS Detected! The input was not sanitized. An attacker could steal cookies or redirect users.';
+      } else {
+        out.textContent = input;
+        out.className = 'result-box';
+      }
+    }
+
+    // ===================== LAB 3: COMMAND INJECTION =====================
+    function cmdInject() {
+      const input = document.getElementById('cmd-input').value;
+      const out = document.getElementById('cmd-result');
+
+      const dangerous = /[;&|`$()]/;
+      const isInjection = dangerous.test(input);
+
+      let output = `$ ping -c 4 ${input}\n\n`;
+
+      if (isInjection) {
+        // Parse some "injected" commands
+        const parts = input.split(/[;&|]+/);
+        output += 'PING 8.8.8.8 (8.8.8.8) 56(84) bytes of data.\n';
+        output += '64 bytes from 8.8.8.8: icmp_seq=1 ttl=118 time=12.3ms\n';
+        output += '64 bytes from 8.8.8.8: icmp_seq=2 ttl=118 time=11.8ms\n';
+        output += '64 bytes from 8.8.8.8: icmp_seq=3 ttl=118 time=13.1ms\n\n';
+
+        for (let i = 1; i < parts.length; i++) {
+          const cmd = parts[i].trim();
+          if (cmd === 'ls' || cmd === 'dir') {
+            output += `$ ${cmd}\n`;
+            output += 'index.html  lab.html  config.php  .htaccess  admin_panel/\n';
+          } else if (cmd === 'whoami') {
+            output += `$ ${cmd}\nroot\n`;
+          } else if (cmd === 'id') {
+            output += `$ ${cmd}\nuid=0(root) gid=0(root) groups=0(root)\n`;
+          } else if (cmd === 'cat /etc/passwd') {
+            output += `$ ${cmd}\nroot:x:0:0:root:/root:/bin/bash\nwww-data:x:33:33:www-data:/var/www:/usr/sbin/nologin\n`;
+          } else if (cmd.startsWith('cat ')) {
+            output += `$ ${cmd}\n[Contents of ${cmd.replace('cat ','')}]\n`;
+          } else if (cmd === 'pwd') {
+            output += `$ ${cmd}\n/var/www/html\n`;
+          } else {
+            output += `$ ${cmd}\ncommand not found: ${cmd}\n`;
+          }
+        }
+        output += '\n🔥 Command Injection Successful! The input was not sanitized.';
+        out.className = 'result-box success';
+      } else {
+        output += 'PING 8.8.8.8 (8.8.8.8) 56(84) bytes of data.\n';
+        output += '64 bytes from 8.8.8.8: icmp_seq=1 ttl=118 time=12.3ms\n';
+        output += '64 bytes from 8.8.8.8: icmp_seq=2 ttl=118 time=11.8ms\n';
+        output += '64 bytes from 8.8.8.8: icmp_seq=3 ttl=118 time=13.1ms\n';
+        output += '64 bytes from 8.8.8.8: icmp_seq=4 ttl=118 time=11.9ms\n\n';
+        output += '--- 8.8.8.8 ping statistics ---\n4 packets transmitted, 4 received, 0% packet loss\n';
+        out.className = 'result-box';
+      }
+
+      out.textContent = output;
+    }
+
+    // ===================== LAB 4: PORT SCANNER =====================
+    function scanPorts() {
+      const target = document.getElementById('scan-target').value;
+      const out = document.getElementById('scan-result');
+
+      const commonPorts = [
+        { port: 21, service: 'FTP', status: Math.random() > 0.6 ? 'open' : 'closed' },
+        { port: 22, service: 'SSH', status: 'open' },
+        { port: 23, service: 'Telnet', status: Math.random() > 0.7 ? 'open' : 'closed' },
+        { port: 25, service: 'SMTP', status: Math.random() > 0.5 ? 'open' : 'closed' },
+        { port: 53, service: 'DNS', status: 'open' },
+        { port: 80, service: 'HTTP', status: 'open' },
+        { port: 110, service: 'POP3', status: Math.random() > 0.7 ? 'open' : 'closed' },
+        { port: 443, service: 'HTTPS', status: 'open' },
+        { port: 445, service: 'SMB', status: Math.random() > 0.5 ? 'open' : 'filtered' },
+        { port: 3306, service: 'MySQL', status: Math.random() > 0.4 ? 'open' : 'closed' },
+        { port: 3389, service: 'RDP', status: Math.random() > 0.8 ? 'open' : 'closed' },
+        { port: 5432, service: 'PostgreSQL', status: Math.random() > 0.5 ? 'open' : 'closed' },
+        { port: 8080, service: 'HTTP-Proxy', status: Math.random() > 0.6 ? 'open' : 'closed' },
+        { port: 8443, service: 'HTTPS-Alt', status: Math.random() > 0.6 ? 'open' : 'closed' }
+      ];
+
+      let output = `Starting Nmap scan on ${target}\n`;
+      output += `Scanning 14 common ports...\n`;
+      output += `━`.repeat(40) + '\n\n';
+
+      const openPorts = commonPorts.filter(p => p.status === 'open');
+
+      openPorts.forEach(p => {
+        output += `PORT     STATE    SERVICE\n`;
+        output += `${String(p.port).padEnd(8)} open     ${p.service}\n`;
+      });
+
+      if (openPorts.length > 0) {
+        output += `\n📌 Found ${openPorts.length} open ports on ${target}\n`;
+        output += '⚠️ Open ports = potential attack surface. Close unused ports.\n';
+      } else {
+        output += 'No open ports found on common ports.\n';
+      }
+
+      const filtered = commonPorts.filter(p => p.status === 'filtered');
+      if (filtered.length > 0) {
+        output += `\n🔒 ${filtered.length} port(s) filtered (firewall detected)\n`;
+      }
+
+      output += `\nScan completed in ${(Math.random() * 3 + 1).toFixed(2)}s`;
+
+      out.textContent = output;
+      out.className = 'result-box success';
+    }
+  </script>
+</body>
+</html>
