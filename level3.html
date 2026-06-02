@@ -1,238 +1,72 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>Level 3 – Command Line Hacking</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
-  body {
-    background: black;
-    color: #00ff00;
-    font-family: monospace;
-    padding: 30px;
-    text-align: center;
-  }
-  h1 {
-    text-shadow: 0 0 20px #00ff00;
-  }
-  .question-container {
-    border: 1px solid #00ff00;
-    padding: 20px;
-    margin: 20px auto;
-    max-width: 700px;
-    box-shadow: 0 0 20px #00ff00;
-    min-height: 180px;
-  }
-  .question-text {
-    font-size: 1.2em;
-    margin-bottom: 15px;
-  }
-  button.option-btn {
-    display: block;
-    width: 100%;
-    margin: 8px 0;
-    padding: 12px;
-    background: black;
-    color: #00ff00;
-    border: 1px solid #00ff00;
-    cursor: pointer;
-    font-family: monospace;
-    font-size: 1em;
-    transition: background 0.3s;
-  }
-  button.option-btn:hover:not(:disabled) {
-    background: #003300;
-  }
-  button.correct {
-    background: #004400;
-    color: #aaffaa;
-    cursor: default;
-  }
-  button.wrong {
-    background: #660000;
-    color: #ffaaaa;
-    cursor: default;
-  }
-  #next-btn {
-    margin-top: 25px;
-    padding: 12px 30px;
-    font-size: 1.1em;
-    cursor: pointer;
-    background: #00ff00;
-    border: none;
-    color: black;
-    font-weight: bold;
-    box-shadow: 0 0 15px #00ff00;
-    transition: background 0.3s;
-  }
-  #next-btn:hover {
-    background: #00cc00;
-  }
-  #score {
-    font-size: 1.2em;
-    margin-top: 15px;
-    text-shadow: 0 0 8px #00ff00;
-  }
-  a.back-link {
-    color: #00ff00;
-    text-decoration: none;
-    margin-top: 30px;
-    display: inline-block;
-    font-weight: bold;
-  }
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#0a0a0a;color:#0f0;font-family:'Courier New',monospace;min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:20px}
+.box{max-width:750px;width:100%;background:#111;border:2px solid #ff0;border-radius:10px;padding:30px;margin-top:20px;box-shadow:0 0 30px rgba(255,255,0,0.1)}
+h1{text-align:center;color:#ff0;font-size:26px;margin-bottom:5px;text-shadow:0 0 10px rgba(255,255,0,0.5)}
+h2{text-align:center;color:#aa0;font-size:14px;margin-bottom:20px;font-weight:normal}
+.mission{background:#0d0d0d;border:1px solid #aa0;border-radius:6px;padding:15px;margin-bottom:20px;font-size:13px;line-height:1.6}
+.mission span{color:#ff0}
+.panel{background:#0d0d0d;border:1px solid #aa0;border-radius:6px;padding:20px;margin-bottom:15px}
+.panel h3{color:#ff0;font-size:16px;margin-bottom:8px}
+.panel p{color:#aaa;font-size:13px;margin-bottom:10px;line-height:1.5}
+.panel .cmd-demo{background:#0a0a0a;border:1px solid #5a5a0a;border-radius:4px;padding:12px;font-size:13px;color:#ff0;margin:10px 0;font-family:'Courier New',monospace;line-height:1.6}
+.panel .cmd-demo .prompt{color:#0f0}.panel .cmd-demo .output{color:#aaa;padding-left:20px}
+.panel input{width:100%;padding:10px;background:#1a1a1a;border:1px solid #5a5a0a;border-radius:4px;color:#ff0;font-family:'Courier New',monospace;font-size:14px;outline:none;margin-bottom:8px}
+.panel input:focus{border-color:#ff0;box-shadow:0 0 8px rgba(255,255,0,0.2)}
+.panel button{padding:8px 20px;background:#ff0;color:#000;border:none;border-radius:4px;font-family:'Courier New',monospace;font-weight:bold;font-size:14px;cursor:pointer}
+.panel button:hover{background:#cc0;box-shadow:0 0 10px rgba(255,255,0,0.4)}
+.feedback{margin-top:8px;font-size:13px;padding:8px;border-radius:4px}
+.fb-correct{color:#0f0}.fb-wrong{color:#f44}.fb-hint{color:#ff0}
+.progress{display:flex;gap:8px;justify-content:center;margin-bottom:20px}
+.dot{width:14px;height:14px;border-radius:50%;background:#3a3a1a;border:1px solid #5a5a0a}
+.dot.done{background:#ff0;border-color:#ff0;box-shadow:0 0 6px #ff0}
+.status-bar{display:flex;justify-content:space-between;padding:10px;background:#0d0d0d;border-radius:4px;margin-bottom:20px;font-size:12px;color:#888}
+.status-bar span{color:#ff0}
+.cmd-table{border-collapse:collapse;width:100%;font-size:12px;margin:10px 0}
+.cmd-table td{border:1px solid #3a3a1a;padding:6px 10px;color:#aaa}
+.cmd-table td:first-child{color:#ff0;font-weight:bold}
+.back{display:block;text-align:center;margin-top:20px;color:#5a5a0a;text-decoration:none;font-size:13px}
+.back:hover{color:#ff0}
 </style>
 </head>
 <body>
-
+<div class="box">
 <h1>🟡 Level 3 – Command Line Hacking</h1>
-<p>Answer the questions below. Questions will appear randomly. Good luck, hacker! 😈</p>
-
-<div class="question-container">
-  <div class="question-text" id="question"></div>
-  <div id="options"></div>
+<h2>━━ Real Terminal Commands ━━</h2>
+<div class="status-bar"><div>Score: <span id="score">0</span>/6</div><div>Challenge: <span id="current">1</span>/6</div></div>
+<div class="progress" id="progress"></div>
+<div class="mission"><span>🎯 MISSION:</span> Before doing these, open the <a href="terminal.html" style="color:#0ff">Terminal</a> in a new tab. Test commands there, then answer here.</div>
+<div id="ca"></div>
+<a href="task.html" class="back">⬅ Back to Levels</a>
 </div>
-
-<button id="next-btn" disabled>Next Question ➡️</button>
-<div id="score"></div>
-
-<a href="task.html" class="back-link">⬅ Back to Levels</a>
-
 <script>
-  const questions = [
-    {
-      q: "Which command lists all files, including hidden ones?",
-      options: ["ls -a", "ls -l", "ls -h"],
-      answer: "ls -a"
-    },
-    {
-      q: "What does the 'chmod' command do?",
-      options: ["Change file permissions", "Change owner", "Change directory"],
-      answer: "Change file permissions"
-    },
-    {
-      q: "Which command is used to display the current directory?",
-      options: ["pwd", "cd", "ls"],
-      answer: "pwd"
-    },
-    {
-      q: "What does 'sudo' allow you to do?",
-      options: ["Run commands as root", "Exit terminal", "List processes"],
-      answer: "Run commands as root"
-    },
-    {
-      q: "How do you change directories in the terminal?",
-      options: ["cd", "mv", "rm"],
-      answer: "cd"
-    },
-    {
-      q: "Which command removes files?",
-      options: ["rm", "mv", "cp"],
-      answer: "rm"
-    },
-    {
-      q: "What does the 'grep' command do?",
-      options: ["Search text", "Print text", "Change permissions"],
-      answer: "Search text"
-    },
-    {
-      q: "How to view the contents of a file?",
-      options: ["cat", "touch", "head"],
-      answer: "cat"
-    },
-    {
-      q: "What command shows running processes?",
-      options: ["ps", "kill", "top"],
-      answer: "ps"
-    },
-    {
-      q: "How to copy a file in Linux?",
-      options: ["cp", "mv", "rm"],
-      answer: "cp"
-    },
-    {
-      q: "Which command creates a new directory?",
-      options: ["mkdir", "rmdir", "touch"],
-      answer: "mkdir"
-    },
-    {
-      q: "What does the 'whoami' command show?",
-      options: ["Current user", "System time", "File list"],
-      answer: "Current user"
-    }
-  ];
-
-  let shuffledQuestions = [];
-  let currentIndex = 0;
-  let score = 0;
-
-  function shuffleArray(arr) {
-    let array = arr.slice();
-    for (let i = array.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [array[i], array[j]] = [array[j], array[i]];
-    }
-    return array;
-  }
-
-  function loadQuestion() {
-    if(currentIndex >= shuffledQuestions.length){
-      showResult();
-      return;
-    }
-
-    const questionObj = shuffledQuestions[currentIndex];
-    const questionEl = document.getElementById("question");
-    const optionsEl = document.getElementById("options");
-    const nextBtn = document.getElementById("next-btn");
-
-    questionEl.textContent = `${currentIndex + 1}. ${questionObj.q}`;
-    optionsEl.innerHTML = "";
-
-    questionObj.options.forEach(option => {
-      const btn = document.createElement("button");
-      btn.textContent = option;
-      btn.classList.add("option-btn");
-      btn.onclick = () => selectAnswer(btn, option === questionObj.answer);
-      optionsEl.appendChild(btn);
-    });
-
-    nextBtn.disabled = true;
-  }
-
-  function selectAnswer(button, isCorrect) {
-    const optionsEl = document.getElementById("options");
-    const buttons = optionsEl.querySelectorAll("button");
-    buttons.forEach(btn => btn.disabled = true);
-
-    if (isCorrect) {
-      button.classList.add("correct");
-      score++;
-    } else {
-      button.classList.add("wrong");
-      // highlight correct answer
-      buttons.forEach(btn => {
-        if (btn.textContent === shuffledQuestions[currentIndex].answer) {
-          btn.classList.add("correct");
-        }
-      });
-    }
-    document.getElementById("next-btn").disabled = false;
-  }
-
-  function showResult() {
-    const container = document.querySelector(".question-container");
-    container.innerHTML = `<h2>Your Score: ${score} / ${shuffledQuestions.length}</h2>`;
-    document.getElementById("next-btn").style.display = "none";
-  }
-
-  document.getElementById("next-btn").addEventListener("click", () => {
-    currentIndex++;
-    loadQuestion();
-  });
-
-  // Initialize quiz
-  shuffledQuestions = shuffleArray(questions).slice(0, 10);
-  loadQuestion();
+const challenges=[
+{title:'📂 Challenge 1: List Files','desc':'Open the Terminal. Type the command that shows all files and folders in the current directory.','answer':'ls','hint':'Type "ls" in the terminal and press Enter. It\'s just 2 letters.'},
+{title:'📁 Challenge 2: Change Directory','desc':'What Linux command changes your current directory? Example: "____ /home/user"','answer':'cd','hint':'It stands for "change directory". 2 letters.'},
+{title:'👤 Challenge 3: Who Are You?','desc':'Open the Terminal. Type the command that shows your current username.','answer':'whoami','hint':'Type "whoami" in the terminal. It literally asks "who am I?"'},
+{title:'📍 Challenge 4: Where Am I?','desc':'Open the Terminal. What command prints the full path of your current directory?','answer':'pwd','hint':'Stands for "print working directory". 3 letters.'},
+{title:'🌐 Challenge 5: DNS Lookup','desc':'Open the Terminal. Which command resolves a domain name to an IP address? Example: "____ google.com"','answer':'nslookup','hint':'It\'s "nslookup" — name server lookup. Try it in terminal with google.com'},
+{title:'🖥️ Challenge 6: Network Info','desc':'Open the Terminal. What command shows all network interfaces and IP addresses?','answer':'ifconfig','hint':'Type "ifconfig" in the terminal. It shows all network adapters.'}
+];
+let cur=0;let sc=0;let done=[false,false,false,false,false,false];
+const ca=document.getElementById('ca');const se=document.getElementById('score');
+const ce=document.getElementById('current');const pe=document.getElementById('progress');
+function rp(){pe.innerHTML='';for(let i=0;i<challenges.length;i++){let d=document.createElement('div');d.className='dot';if(done[i])d.className='dot done';pe.appendChild(d);}}
+function ld(idx){
+if(idx>=challenges.length){ca.innerHTML=`<div style="text-align:center;padding:30px"><div style="font-size:50px;">🏆</div><h2 style="color:#ff0;font-size:24px;margin:15px 0">COMMAND LINE MASTER!</h2><p style="color:#aaa;font-size:14px">Score: ${sc}/${challenges.length}</p><p style="color:#ff0;font-size:16px;margin:15px">${sc>=5?'🟡 You earned: COMMAND LINE BADGE':'🟡 Keep practicing in the terminal'}</p></div>';return;}
+const c=challenges[idx];ce.textContent=idx+1;
+ca.innerHTML=`<div class="panel"><h3>${c.title}</h3><p>${c.desc}</p><input type="text" id="ans" placeholder="Type the command..." autocomplete="off"><button id="btn">Submit</button><div id="fb" class="feedback"></div></div>`;
+document.getElementById('btn').addEventListener('click',()=>ch(idx));document.getElementById('ans').addEventListener('keypress',(e)=>{if(e.key==='Enter')ch(idx)});document.getElementById('ans').focus();}
+function ch(idx){const inp=document.getElementById('ans');const fb=document.getElementById('fb');const ans=inp.value.trim().toLowerCase();const c=challenges[idx];if(!ans){fb.textContent='⚠️ Type a command!';fb.className='feedback fb-hint';return}
+if(ans===c.answer.toLowerCase()){fb.textContent='Congratulations! Now try it in the Terminal!';fb.className='feedback fb-correct';done[idx]=true;sc++;se.textContent=sc;setTimeout(()=>{cur++;ld(cur);rp()},1200)}
+else{fb.innerHTML='❌ Wrong. '+c.hint;fb.className='feedback fb-wrong';setTimeout(()=>{cur++;ld(cur);rp()},1500)}rp();}
+rp();ld(0);
 </script>
-
 </body>
 </html>
