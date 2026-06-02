@@ -1,275 +1,139 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>CyberArena - Level 5</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Level 5 – Attack Simulation</title>
 <style>
-  body {
-    font-family: 'Courier New', Courier, monospace;
-    background: #0d1117;
-    color: #c9d1d9;
-    margin: 0;
-    padding: 20px;
-  }
-  h1 {
-    text-align: center;
-    color: #58a6ff;
-    margin-bottom: 10px;
-  }
-  #score {
-    font-size: 1.2rem;
-    text-align: center;
-    margin-bottom: 25px;
-    color: #1db954; /* happy green */
-  }
-  .question {
-    background: #161b22;
-    padding: 15px;
-    margin-bottom: 15px;
-    border-radius: 8px;
-    border: 1px solid #30363d;
-  }
-  .question h3 {
-    margin-top: 0;
-    color: #79c0ff;
-  }
-  .options label {
-    display: block;
-    margin: 8px 0;
-    cursor: pointer;
-    transition: color 0.3s ease;
-  }
-  .options input[type="radio"] {
-    margin-right: 10px;
-    cursor: pointer;
-  }
-  .options label:hover {
-    color: #58a6ff;
-  }
-  #submitBtn {
-    background-color: #238636;
-    border: none;
-    padding: 12px 30px;
-    font-size: 1.1rem;
-    border-radius: 8px;
-    color: white;
-    cursor: pointer;
-    display: block;
-    margin: 30px auto 0;
-    transition: background-color 0.3s ease;
-  }
-  #submitBtn:hover {
-    background-color: #2ea043;
-  }
-  #resultMessage {
-    text-align: center;
-    font-size: 1.4rem;
-    margin-top: 20px;
-    min-height: 40px;
-  }
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#0a0a0a;color:#0f0;font-family:'Courier New',monospace;min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:20px}
+.box{max-width:800px;width:100%;background:#111;border:2px solid #f00;border-radius:10px;padding:30px;margin-top:20px;box-shadow:0 0 30px rgba(255,0,0,0.1)}
+h1{text-align:center;color:#f00;font-size:26px;margin-bottom:5px;text-shadow:0 0 10px rgba(255,0,0,0.5)}
+h2{text-align:center;color:#a00;font-size:14px;margin-bottom:20px;font-weight:normal}
+.mission{background:#0d0d0d;border:1px solid #a00;border-radius:6px;padding:15px;margin-bottom:20px;font-size:13px;line-height:1.6}
+.mission span{color:#f00}
+.panel{background:#0d0d0d;border:1px solid #a00;border-radius:6px;padding:20px;margin-bottom:15px}
+.panel h3{color:#f00;font-size:16px;margin-bottom:8px}
+.panel p{color:#aaa;font-size:13px;margin-bottom:10px;line-height:1.5}
+.panel .sim-box{background:#0a0a0a;border:1px solid #5a1a1a;border-radius:4px;padding:15px;margin:10px 0;font-size:12px;line-height:1.6}
+.panel .sim-box .sim-prompt{color:#0f0}
+.panel .sim-box .sim-output{color:#aaa;padding-left:15px}
+.panel .sim-box .sim-success{color:#0f0;font-weight:bold}
+.panel .sim-box .sim-error{color:#f44}
+.panel .sim-box .sim-info{color:#ff0}
+.panel input{width:100%;padding:10px;background:#1a1a1a;border:1px solid #5a1a1a;border-radius:4px;color:#f00;font-family:'Courier New',monospace;font-size:14px;outline:none;margin-bottom:8px}
+.panel input:focus{border-color:#f00;box-shadow:0 0 8px rgba(255,0,0,0.2)}
+.panel button{padding:8px 20px;background:#f00;color:#fff;border:none;border-radius:4px;font-family:'Courier New',monospace;font-weight:bold;font-size:14px;cursor:pointer}
+.panel button:hover{background:#c00;box-shadow:0 0 10px rgba(255,0,0,0.4)}
+.feedback{margin-top:8px;font-size:13px;padding:8px;border-radius:4px}
+.fb-correct{color:#0f0}.fb-wrong{color:#f44}.fb-hint{color:#f80}
+.progress{display:flex;gap:8px;justify-content:center;margin-bottom:20px}
+.dot{width:14px;height:14px;border-radius:50%;background:#3a1a1a;border:1px solid #5a1a1a}
+.dot.done{background:#0f0;border-color:#0f0;box-shadow:0 0 6px #0f0}
+.status-bar{display:flex;justify-content:space-between;padding:10px;background:#0d0d0d;border-radius:4px;margin-bottom:20px;font-size:12px;color:#888}
+.status-bar span{color:#f00}
+.back{display:block;text-align:center;margin-top:20px;color:#5a1a1a;text-decoration:none;font-size:13px}
+.back:hover{color:#f00}
 </style>
 </head>
 <body>
-
-<h1>CyberArena - Level 5</h1>
-<div id="score">Score: 0 / 15</div>
-
-<form id="quizForm">
-  <!-- Questions will be inserted here by JavaScript -->
-</form>
-
-<button id="submitBtn">Submit Answers</button>
-<div id="resultMessage"></div>
-
+<div class="box">
+<h1>🔴 Level 5 – Attack Simulation</h1>
+<h2>━━ Real Hacking Attack Scenarios ━━</h2>
+<div class="status-bar"><div>Score: <span id="score">0</span>/5</div><div>Challenge: <span id="current">1</span>/5</div></div>
+<div class="progress" id="progress"></div>
+<div class="mission"><span>🎯 MISSION:</span> You're a penetration tester. Complete 5 realistic attack scenarios by entering the correct commands or answers.</div>
+<div id="ca"></div>
+<a href="task.html" class="back">⬅ Back to Levels</a>
+</div>
 <script>
-  const questions = [
-    {
-      q: "What does XSS stand for?",
-      options: [
-        "Cross-Site Scripting",
-        "Cross Server Script",
-        "Executable Script Source",
-        "Cross-Site Source"
-      ],
-      answer: 0
-    },
-    {
-      q: "Which port is commonly used for HTTP?",
-      options: ["21", "22", "80", "443"],
-      answer: 2
-    },
-    {
-      q: "What tool is often used for network scanning?",
-      options: ["Nmap", "Metasploit", "Wireshark", "Burp Suite"],
-      answer: 0
-    },
-    {
-      q: "What type of attack tries many passwords quickly?",
-      options: ["Phishing", "Brute Force", "SQL Injection", "Spoofing"],
-      answer: 1
-    },
-    {
-      q: "Which protocol is secure for browsing?",
-      options: ["HTTP", "FTP", "HTTPS", "TELNET"],
-      answer: 2
-    },
-    {
-      q: "What does SQLi stand for?",
-      options: [
-        "Structured Query Language Injection",
-        "Server Query Language Injection",
-        "Secure Query Logic Injection",
-        "Simple Query Language Injection"
-      ],
-      answer: 0
-    },
-    {
-      q: "Which tool intercepts and manipulates web traffic?",
-      options: ["Wireshark", "Burp Suite", "Nmap", "John the Ripper"],
-      answer: 1
-    },
-    {
-      q: "What is the main purpose of a firewall?",
-      options: [
-        "Encrypt data",
-        "Block unauthorized access",
-        "Scan viruses",
-        "Manage passwords"
-      ],
-      answer: 1
-    },
-    {
-      q: "What is a 'phishing' attack?",
-      options: [
-        "Physical theft of device",
-        "Social engineering to steal info",
-        "Brute force password attack",
-        "Malware installation"
-      ],
-      answer: 1
-    },
-    {
-      q: "Which one is a strong password?",
-      options: [
-        "password123",
-        "Qwerty",
-        "P@55w0rd!2025",
-        "123456"
-      ],
-      answer: 2
-    },
-    {
-      q: "What is a common sign of a fake website?",
-      options: [
-        "Secure HTTPS lock icon",
-        "Typos and grammatical errors",
-        "Professional design",
-        "Contact info available"
-      ],
-      answer: 1
-    },
-    {
-      q: "Which command is used to check active network connections on Linux?",
-      options: ["netstat", "ping", "ifconfig", "traceroute"],
-      answer: 0
-    },
-    {
-      q: "What is 'social engineering' in cybersecurity?",
-      options: [
-        "Manipulating people to get info",
-        "Writing encryption algorithms",
-        "Analyzing network packets",
-        "Scanning for vulnerabilities"
-      ],
-      answer: 0
-    },
-    {
-      q: "Which port does HTTPS use by default?",
-      options: ["80", "443", "21", "25"],
-      answer: 1
-    },
-    {
-      q: "What does VPN stand for?",
-      options: [
-        "Virtual Private Network",
-        "Verified Protected Node",
-        "Variable Protocol Network",
-        "Virtual Public Network"
-      ],
-      answer: 0
-    }
-  ];
-
-  const form = document.getElementById("quizForm");
-  const scoreDisplay = document.getElementById("score");
-  const submitBtn = document.getElementById("submitBtn");
-  const resultMessage = document.getElementById("resultMessage");
-
-  // Render questions
-  questions.forEach((q, idx) => {
-    const questionDiv = document.createElement("div");
-    questionDiv.classList.add("question");
-
-    let optionsHTML = "";
-    q.options.forEach((option, i) => {
-      optionsHTML += `
-        <label>
-          <input type="radio" name="q${idx}" value="${i}" />
-          ${option}
-        </label>`;
-    });
-
-    questionDiv.innerHTML = `<h3>Q${idx + 1}. ${q.q}</h3><div class="options">${optionsHTML}</div>`;
-    form.appendChild(questionDiv);
-  });
-
-  submitBtn.addEventListener("click", () => {
-    let score = 0;
-    let unanswered = 0;
-
-    for (let i = 0; i < questions.length; i++) {
-      const selected = form[`q${i}`].value;
-      if (selected === undefined || selected === "") {
-        unanswered++;
-        continue;
-      }
-      if (parseInt(selected) === questions[i].answer) {
-        score++;
-      }
-    }
-
-    if (unanswered > 0) {
-      resultMessage.style.color = "#ffa500"; // orange for warning
-      resultMessage.textContent = `Please answer all questions! You left ${unanswered} unanswered.`;
-      return;
-    }
-
-    scoreDisplay.textContent = `Score: ${score} / ${questions.length}`;
-
-    if (score === questions.length) {
-      resultMessage.style.color = "#1db954";
-      resultMessage.textContent = `🎉 Amazing! Perfect score! You're a Cyber Ninja! 😄`;
-    } else if (score >= questions.length * 0.7) {
-      resultMessage.style.color = "#1db954";
-      resultMessage.textContent = `👍 Great job! Keep it up! You scored ${score} out of ${questions.length}.`;
-    } else if (score >= questions.length * 0.4) {
-      resultMessage.style.color = "#ffcc00";
-      resultMessage.textContent = `🙂 Not bad! Keep learning and improving. Score: ${score} / ${questions.length}`;
-    } else {
-      resultMessage.style.color = "#ff4444";
-      resultMessage.textContent = `😞 Keep practicing! You scored ${score} out of ${questions.length}. Don't give up!`;
-    }
-
-    // Scroll to message smoothly
-    resultMessage.scrollIntoView({behavior: 'smooth'});
-
-    // Disable form and button after submit
-    submitBtn.disabled = true;
-    const allRadios = form.querySelectorAll("input[type=radio]");
-    allRadios.forEach(radio => radio.disabled = true);
-  });
-</script>
-
-</body>
-</html>
+const challenges=[{
+title:'🕵️ Scenario 1: Reconnaissance — Port Scanning',
+desc:'You are hired to test "target.local". First step: find open ports.',
+sim:`<div class="sim-box">
+<div class="sim-prompt">root@kali:~$ nmap -sV target.local</div>
+<div class="sim-output">Starting Nmap 7.94 (https://nmap.org)</div>
+<div class="sim-output">PORT     STATE    SERVICE    VERSION</div>
+<div class="sim-output">22/tcp   open     ssh        OpenSSH 8.9p1</div>
+<div class="sim-output">80/tcp   open     http       Apache httpd 2.4.57</div>
+<div class="sim-output">443/tcp  open     https      Apache httpd 2.4.57</div>
+<div class="sim-output">3306/tcp open     mysql      MySQL 8.0.33</div>
+<div class="sim-success">Nmap done: 1 IP address scanned</div>
+</div>`,
+question:'Which Nmap flag discovers service versions? (Example: nmap -? target)',
+answer:'-sv',
+acceptMultiple:true,validAnswers:['-sv','-s v','-sV'],
+hint:'It\'s the flag for "service version detection". Starts with -s followed by V.'
+},
+{
+title:'💣 Scenario 2: Exploitation — SSH Brute Force',
+desc:'You found port 22 (SSH) open. You decide to brute force the password using Hydra.',
+sim:`<div class="sim-box">
+<div class="sim-prompt">root@kali:~$ hydra -l root -P /usr/share/wordlists/rockyou.txt ssh://target.local</div>
+<div class="sim-output">[ATTEMPT] root:123456 ⨯</div>
+<div class="sim-output">[ATTEMPT] root:password ⨯</div>
+<div class="sim-output">[ATTEMPT] root:letmein ⨯</div>
+<div class="sim-output">[ATTEMPT] root:P@ssw0rd ✅ FOUND!</div>
+<div class="sim-success">[SUCCESS] ssh://root:P@ssw0rd@target.local:22</div>
+</div>`,
+question:'What password was found for the root user?',
+answer:'P@ssw0rd',
+hint:'Look at the last line in the simulation — the password after "root:" and before "✅"'
+},
+{
+title:'💉 Scenario 3: Web Attack — SQL Injection',
+desc:'You find a login page. The URL is: http://target.local/login?id=1<br>You try SQL injection to extract database info.',
+sim:`<div class="sim-box">
+<div class="sim-prompt">root@kali:~$ sqlmap -u 'http://target.local/login?id=1' --dbs</div>
+<div class="sim-output">[INFO] testing connection to target</div>
+<div class="sim-output">[INFO] parameter 'id' is vulnerable</div>
+<div class="sim-output">[INFO] retrieved databases:</div>
+<div class="sim-success">information_schema</div>
+<div class="sim-success">mysql</div>
+<div class="sim-success">target_db</div>
+</div>`,
+question:'Which flag in sqlmap is used to list all databases?',
+answer:'--dbs',
+hint:'It\'s "--dbs" — short for "databases".'
+},
+{
+title:'🕸️ Scenario 4: Web Attack — XSS',
+desc:'You find a comment form that doesn\'t sanitize input. You can inject JavaScript.',
+sim:`<div class="sim-box">
+<div class="sim-prompt">Payload: &lt;script&gt;alert('XSS')&lt;/script&gt;</div>
+<div class="sim-success">✅ JavaScript executed in victim's browser!</div>
+<div class="sim-output">You could steal cookies with: document.cookie</div>
+<div class="sim-info">Stealing cookies allows session hijacking.</div>
+</div>`,
+question:'What JavaScript property contains all cookies for the current site?',
+answer:'document.cookie',
+hint:'It\'s document.cookie — JavaScript object that stores cookies.'
+},
+{
+title:'🔐 Scenario 5: Privilege Escalation',
+desc:'You got a low-privilege shell on the target. Now you need to become root.',
+sim:`<div class="sim-box">
+<div class="sim-prompt">www-data@target:/var/www$ sudo -l</div>
+<div class="sim-output">User www-data may run the following commands on target:</div>
+<div class="sim-output">(ALL : ALL) NOPASSWD: ALL</div>
+<div class="sim-info">User can run ANY command as root without password!</div>
+<div class="sim-prompt">www-data@target:/var/www$ sudo su</div>
+<div class="sim-success">root@target:/root# ✅ PRIVILEGE ESCALATED!</div>
+</div>`,
+question:'What command escalates to root when you have sudo access?',
+answer:'sudo su',
+hint:'Two words: "sudo" then "su" — it switches to the root user.'
+}
+];
+let cur=0;let sc=0;let done=[false,false,false,false,false];
+const ca=document.getElementById('ca');const se=document.getElementById('score');
+const ce=document.getElementById('current');const pe=document.getElementById('progress');
+function rp(){pe.innerHTML='';for(let i=0;i<challenges.length;i++){let d=document.createElement('div');d.className='dot';if(done[i])d.className='dot done';pe.appendChild(d);}}
+function ld(idx){
+if(idx>=challenges.length){ca.innerHTML=`<div style="text-align:center;padding:30px"><div style="font-size:50px;">🏆</div><h2 style="color:#f00;font-size:24px;margin:15px 0">🎯 ATTACK SIMULATION COMPLETE!</h2><p style="color:#aaa;font-size:14px">Score: ${sc}/${challenges.length}</p><p style="color:#0f0;font-size:16px;margin:15px">${sc>=4?'🔴 You earned: PENETRATION TESTER BADGE 🛡️':'🟡 Keep practicing — try using the Terminal!'}</p></div>`;return;}
+const c=challenges[idx];ce.textContent=idx+1;
+ca.innerHTML=`<div class="panel"><h3>${c.title}</h3><p>${c.desc}</p>${c.sim||''}<p><b>${c.question}</b></p><input type="text" id="ans" placeholder="Type answer..." autocomplete="off"><button id="btn">Submit</button><div id="fb" class="feedback"></div></div>`;
+document.getElementById('btn').addEventListener('click',()=>ch(idx));document.getElementById('ans').addEventListener('keypress',(e)=>{if(e.key==='Enter')ch(idx)});document.getElementById('ans').focus();}
+function ch(idx){const inp=document.getElementById('ans');const fb=document.getElementById('fb');const ans=inp.value.trim().toLowerCase();const c=challenges[idx];if(!ans){fb.textContent='⚠️ Type an answer!';fb.className='feedback fb-hint';return}
+let correct=false;if(c.acceptMultiple){correct=c.validAnswers.some(v=>v.toLowerCase()===ans)}else{correct=ans===c.answer.toLowerCase()}
+if(correct){fb.textContent='✅ CORRECT! You\'re thinking like a pentester!';fb.className='feedback fb-correct';done[idx]=true;
