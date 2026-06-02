@@ -1,100 +1,356 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>CyberArena – WHOIS & Subdomain Lookup</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <style>
-    body {
-      background: #0d1117;
-      color: #00ffcc;
-      font-family: monospace;
-      text-align: center;
-      padding: 20px;
-    }
-    h1 {
-      color: #58a6ff;
-    }
-    input, button {
-      padding: 12px;
-      margin: 10px;
-      width: 80%;
-      max-width: 400px;
-      background: black;
-      color: #00ff00;
-      border: 1px solid #00ff00;
-      font-family: monospace;
-    }
-    button:hover {
-      background: #00ff00;
-      color: black;
-      cursor: pointer;
-    }
-    pre {
-      background: black;
-      padding: 15px;
-      text-align: left;
-      overflow-x: auto;
-      border: 1px solid #00ff00;
-      max-width: 95%;
-      margin: auto;
-    }
-    a {
-      color: #58a6ff;
-      text-decoration: none;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CyberArena – WHOIS Lookup</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            background: #0a0a0a;
+            color: #00ff00;
+            font-family: 'Courier New', monospace;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            width: 100%;
+            background: #111;
+            border: 1px solid #00ff00;
+            border-radius: 8px;
+            padding: 30px;
+            margin-top: 30px;
+            box-shadow: 0 0 20px rgba(0, 255, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #00ff00;
+            font-size: 24px;
+            margin-bottom: 20px;
+            text-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
+        }
+        .input-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        input[type="text"] {
+            flex: 1;
+            padding: 12px 16px;
+            background: #1a1a1a;
+            border: 1px solid #00ff00;
+            border-radius: 4px;
+            color: #00ff00;
+            font-family: 'Courier New', monospace;
+            font-size: 16px;
+            outline: none;
+        }
+        input[type="text"]:focus {
+            box-shadow: 0 0 8px rgba(0, 255, 0, 0.3);
+        }
+        input[type="text"]::placeholder {
+            color: #0a5a0a;
+        }
+        button {
+            padding: 12px 24px;
+            background: #00ff00;
+            color: #000;
+            border: none;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        button:hover {
+            background: #00cc00;
+            box-shadow: 0 0 15px rgba(0, 255, 0, 0.5);
+        }
+        button:disabled {
+            background: #0a5a0a;
+            color: #555;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+        .status {
+            text-align: center;
+            padding: 10px;
+            color: #0a0;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+        .status.loading {
+            color: #ffff00;
+            animation: blink 1s infinite;
+        }
+        .status.error {
+            color: #ff4444;
+        }
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+        .result {
+            background: #0d0d0d;
+            border: 1px solid #0a5a0a;
+            border-radius: 4px;
+            padding: 16px;
+            font-size: 13px;
+            line-height: 1.8;
+            overflow-x: auto;
+            white-space: pre-wrap;
+            word-break: break-all;
+            display: none;
+            max-height: 500px;
+            overflow-y: auto;
+        }
+        .result.show {
+            display: block;
+        }
+        .result .label {
+            color: #00ff00;
+            font-weight: bold;
+        }
+        .result .value {
+            color: #ccffcc;
+        }
+        .result .section {
+            margin-bottom: 12px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid #0a5a0a;
+        }
+        .result .section:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+        .back-link {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            color: #0a5a0a;
+            text-decoration: none;
+            font-size: 14px;
+        }
+        .back-link:hover {
+            color: #00ff00;
+        }
+        .example-hint {
+            text-align: center;
+            color: #0a5a0a;
+            font-size: 12px;
+            margin-top: -10px;
+            margin-bottom: 15px;
+        }
+        .example-hint span {
+            color: #00aa00;
+            cursor: pointer;
+            text-decoration: underline;
+        }
+        .example-hint span:hover {
+            color: #00ff00;
+        }
+        .raw-toggle {
+            text-align: right;
+            margin-top: 8px;
+            font-size: 12px;
+        }
+        .raw-toggle a {
+            color: #0a5a0a;
+            cursor: pointer;
+            text-decoration: none;
+        }
+        .raw-toggle a:hover {
+            color: #00ff00;
+        }
+    </style>
 </head>
-
 <body>
+    <div class="container">
+        <h1>🌐 WHOIS Lookup</h1>
+        
+        <div class="input-group">
+            <input type="text" id="domainInput" placeholder="Enter domain (e.g. google.com)" autocomplete="off">
+            <button id="lookupBtn">LOOKUP</button>
+        </div>
 
-<h1>🌐 CyberArena – WHOIS & Subdomain Scanner</h1>
+        <div class="example-hint">
+            Try: <span onclick="fillExample('google.com')">google.com</span> · 
+            <span onclick="fillExample('github.com')">github.com</span> · 
+            <span onclick="fillExample('tryhackme.com')">tryhackme.com</span>
+        </div>
 
-<input type="text" id="target" placeholder="Enter domain or IP (example.com)">
-<br>
+        <div id="status" class="status">Enter a domain and click LOOKUP</div>
 
-<button onclick="whoisLookup()">WHOIS Lookup</button>
-<button onclick="subdomainLookup()">Find Subdomains</button>
-<button onclick="ipLookup()">IP Info</button>
+        <div id="result" class="result"></div>
 
-<pre id="output">Waiting for input...</pre>
+        <div class="raw-toggle" id="rawToggle" style="display:none;">
+            <a onclick="toggleRaw()">[View Raw JSON]</a>
+        </div>
 
-<br>
-<a href="index.html">⬅ Back to Home</a>
+        <a href="index.html" class="back-link">⬅ Back to Home</a>
+    </div>
 
-<script>
-function whoisLookup() {
-  let target = document.getElementById("target").value;
-  let output = document.getElementById("output");
-  output.textContent = "Fetching WHOIS data...\n";
+    <script>
+        const domainInput = document.getElementById('domainInput');
+        const lookupBtn = document.getElementById('lookupBtn');
+        const status = document.getElementById('status');
+        const resultDiv = document.getElementById('result');
+        const rawToggle = document.getElementById('rawToggle');
+        
+        let rawData = null;
+        let showRaw = false;
 
-  fetch("https://api.hackertarget.com/whois/?q=" + target)
-    .then(res => res.text())
-    .then(data => output.textContent = data)
-    .catch(() => output.textContent = "Error fetching WHOIS data");
-}
+        function fillExample(domain) {
+            domainInput.value = domain;
+            lookup();
+        }
 
-function subdomainLookup() {
-  let target = document.getElementById("target").value;
-  let output = document.getElementById("output");
-  output.textContent = "Finding subdomains...\n";
+        function toggleRaw() {
+            showRaw = !showRaw;
+            if (showRaw && rawData) {
+                resultDiv.textContent = JSON.stringify(rawData, null, 2);
+            } else if (rawData) {
+                displayFormatted(rawData);
+            }
+            rawToggle.querySelector('a').textContent = showRaw ? '[View Formatted]' : '[View Raw JSON]';
+        }
 
-  fetch("https://api.hackertarget.com/hostsearch/?q=" + target)
-    .then(res => res.text())
-    .then(data => output.textContent = data)
-    .catch(() => output.textContent = "Error fetching subdomains");
-}
+        function displayFormatted(data) {
+            let html = '';
 
-function ipLookup() {
-  let target = document.getElementById("target").value;
-  let output = document.getElementById("output");
-  output.textContent = "Fetching IP info...\n";
+            // Basic info
+            html += '<div class="section">';
+            html += `<div><span class="label">Domain:</span> <span class="value">${data.domain || 'N/A'}</span></div>`;
+            html += `<div><span class="label">Registered:</span> <span class="value">${data.isRegistered ? 'Yes ✅' : 'No ❌'}</span></div>`;
+            html += '</div>';
 
-  fetch("https://api.hackertarget.com/ipinfo/?q=" + target)
-    .then(res => res.text())
-    .then(data => output.textContent = data)
-    .catch(() => output.textContent = "Error fetching IP info");
-}
-</script>
+            // Dates
+            if (data.dates) {
+                html += '<div class="section">';
+                html += '<span class="label">📅 Registration Dates</span><br>';
+                html += `<div>Created: <span class="value">${data.dates.created || 'N/A'}</span></div>`;
+                html += `<div>Updated: <span class="value">${data.dates.updated || 'N/A'}</span></div>`;
+                html += `<div>Expires: <span class="value">${data.dates.expires || 'N/A'}</span></div>`;
+                html += '</div>';
+            }
 
+            // Registrar
+            if (data.registrar) {
+                html += '<div class="section">';
+                html += '<span class="label">🏢 Registrar</span><br>';
+                html += `<div>Name: <span class="value">${data.registrar.name || 'N/A'}</span></div>`;
+                if (data.registrar.ianaId) html += `<div>IANA ID: <span class="value">${data.registrar.ianaId}</span></div>`;
+                if (data.registrar.abuseEmail) html += `<div>Abuse Email: <span class="value">${data.registrar.abuseEmail}</span></div>`;
+                if (data.registrar.abusePhone) html += `<div>Abuse Phone: <span class="value">${data.registrar.abusePhone}</span></div>`;
+                html += '</div>';
+            }
+
+            // Nameservers
+            if (data.nameservers && data.nameservers.length > 0) {
+                html += '<div class="section">';
+                html += '<span class="label">🌍 Nameservers</span><br>';
+                data.nameservers.forEach(ns => {
+                    html += `<div class="value">${ns.name}</div>`;
+                });
+                html += '</div>';
+            }
+
+            // Status
+            if (data.status && data.status.length > 0) {
+                html += '<div class="section">';
+                html += '<span class="label">🔒 Domain Status</span><br>';
+                data.status.forEach(s => {
+                    html += `<div class="value">${s}</div>`;
+                });
+                html += '</div>';
+            }
+
+            // DNSSEC
+            if (data.dnssec) {
+                html += '<div class="section">';
+                html += `<span class="label">🔐 DNSSEC:</span> <span class="value">${data.dnssec.signed ? 'Signed' : 'Not Signed'}</span>`;
+                html += '</div>';
+            }
+
+            resultDiv.innerHTML = html;
+        }
+
+        async function lookup() {
+            const domain = domainInput.value.trim().toLowerCase();
+            
+            if (!domain) {
+                status.textContent = '⚠️ Please enter a domain name';
+                status.className = 'status error';
+                return;
+            }
+
+            // Basic domain validation
+            if (!domain.includes('.') || domain.includes(' ')) {
+                status.textContent = '⚠️ Invalid domain. Enter something like: google.com';
+                status.className = 'status error';
+                return;
+            }
+
+            lookupBtn.disabled = true;
+            status.textContent = '⏳ Fetching WHOIS data...';
+            status.className = 'status loading';
+            resultDiv.classList.remove('show');
+            rawToggle.style.display = 'none';
+            rawData = null;
+            showRaw = false;
+
+            try {
+                const response = await fetch(`https://who-dat.as93.net/${domain}`);
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+
+                rawData = await response.json();
+                
+                if (rawData.error) {
+                    throw new Error(rawData.error);
+                }
+
+                displayFormatted(rawData);
+                resultDiv.classList.add('show');
+                rawToggle.style.display = 'block';
+                rawToggle.querySelector('a').textContent = '[View Raw JSON]';
+                
+                status.textContent = `✅ WHOIS data for ${rawData.domain || domain} retrieved successfully`;
+                status.className = 'status';
+
+            } catch (error) {
+                status.textContent = `❌ Error: ${error.message}`;
+                status.className = 'status error';
+                resultDiv.classList.remove('show');
+            } finally {
+                lookupBtn.disabled = false;
+            }
+        }
+
+        // Trigger lookup on button click
+        lookupBtn.addEventListener('click', lookup);
+
+        // Trigger lookup on Enter key
+        domainInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                lookup();
+            }
+        });
+
+        // Auto-focus input on load
+        domainInput.focus();
+    </script>
 </body>
 </html>
