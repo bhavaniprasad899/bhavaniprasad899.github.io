@@ -46,6 +46,11 @@ h2{text-align:center;color:#aa0;font-size:14px;margin-bottom:20px;font-weight:no
 <a href="task.html" class="back">⬅ Back to Levels</a>
 </div>
 <script>
+  // ===== POINTS SYSTEM =====
+function addPoints(amount) {
+    const current = parseInt(localStorage.getItem('cyberarena_points') || '0');
+    localStorage.setItem('cyberarena_points', (current + amount).toString());
+}
 const challenges=[
 {title:'📂 Challenge 1: List Files','desc':'Open the Terminal. Type the command that shows all files and folders in the current directory.','answer':'ls','hint':'Type "ls" in the terminal and press Enter. It\'s just 2 letters.'},
 {title:'📁 Challenge 2: Change Directory','desc':'What Linux command changes your current directory? Example: "____ /home/user"','answer':'cd','hint':'It stands for "change directory". 2 letters.'},
