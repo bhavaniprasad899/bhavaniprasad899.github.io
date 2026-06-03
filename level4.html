@@ -1,80 +1,121 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Level 4 – CTF Challenge</title>
-<style>
-*{margin:0;padding:0;box-sizing:border-box}
-body{background:#0a0a0a;color:#0f0;font-family:'Courier New',monospace;min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:20px}
-.box{max-width:750px;width:100%;background:#111;border:2px solid #f80;border-radius:10px;padding:30px;margin-top:20px;box-shadow:0 0 30px rgba(255,136,0,0.1)}
-h1{text-align:center;color:#f80;font-size:26px;margin-bottom:5px;text-shadow:0 0 10px rgba(255,136,0,0.5)}
-h2{text-align:center;color:#a50;font-size:14px;margin-bottom:20px;font-weight:normal}
-.mission{background:#0d0d0d;border:1px solid #a50;border-radius:6px;padding:15px;margin-bottom:20px;font-size:13px;line-height:1.6}
-.mission span{color:#f80}
-.panel{background:#0d0d0d;border:1px solid #a50;border-radius:6px;padding:20px;margin-bottom:15px}
-.panel h3{color:#f80;font-size:16px;margin-bottom:8px}
-.panel p{color:#aaa;font-size:13px;margin-bottom:10px;line-height:1.5}
-.panel .flag-box{background:#0a0a0a;border:1px solid #5a3a0a;border-radius:4px;padding:15px;font-size:18px;color:#f80;margin:10px 0;text-align:center;font-weight:bold;letter-spacing:2px}
-.panel .cipher-text{background:#0a0a0a;border:1px solid #5a3a0a;border-radius:4px;padding:12px;font-size:14px;color:#ff0;margin:10px 0;text-align:center;font-family:monospace;word-break:break-all}
-.panel input{width:100%;padding:10px;background:#1a1a1a;border:1px solid #5a3a0a;border-radius:4px;color:#f80;font-family:'Courier New',monospace;font-size:14px;outline:none;margin-bottom:8px}
-.panel input:focus{border-color:#f80;box-shadow:0 0 8px rgba(255,136,0,0.2)}
-.panel button{padding:8px 20px;background:#f80;color:#000;border:none;border-radius:4px;font-family:'Courier New',monospace;font-weight:bold;font-size:14px;cursor:pointer}
-.panel button:hover{background:#d60;box-shadow:0 0 10px rgba(255,136,0,0.4)}
-.feedback{margin-top:8px;font-size:13px;padding:8px;border-radius:4px}
-.fb-correct{color:#0f0}.fb-wrong{color:#f44}.fb-hint{color:#f80}
-.progress{display:flex;justify-content:center;margin-bottom:20px}
-.dot{width:12px;height:12px;border-radius:50%;margin:0 5px;background: #3a2a1a;border:1px solid #5a3a0a; display: inline-block} .dot.done{background:#f80;border-color:#f80;box-shadow:0 0 6px #f80}
-.status-bar{display:flex;justify-content:space-between;padding:10px;background:#0d0d0d;border-radius:4px;margin-bottom:20px;font-size:12px;color:#888}
-.status-bar span{color:#f80}
-.timer{text-align:center;font-size:16px;color:#f80;margin-bottom:15px}
-.back{display:block;text-align:center;margin-top:20px;color:#5a3a0a;text-decoration:none;font-size:13px}
-.back:hover{color:#f80}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval' https:; img-src 'self' https: data:;">
+  <title>Level 4 – CTF Logic | CyberArena</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; }
+    :root { --bg:#0a0e17; --bg2:#111827; --primary:#00ff41; --text:#c8d6e5; --text-dim:#4a5568; --font-mono:'Share Tech Mono',monospace; --font-display:'Orbitron',sans-serif; }
+    body { background:var(--bg); color:var(--text); font-family:var(--font-mono); min-height:100vh; padding:2rem; }
+    .container { max-width:700px; margin:0 auto; }
+    h1 { font-family:var(--font-display); font-size:2rem; color:#fff; text-align:center; }
+    h1 span { color:var(--primary); }
+    .subtitle { text-align:center; color:var(--text-dim); margin-bottom:2rem; font-size:0.9rem; }
+    .score-bar { display:flex; justify-content:space-between; background:var(--bg2); border:1px solid rgba(0,255,65,0.1); border-radius:12px; padding:1rem 1.5rem; margin-bottom:2rem; }
+    .score-bar .score { font-family:var(--font-display); color:var(--primary); font-size:1.3rem; }
+    .timer { color:var(--primary); font-family:var(--font-display); }
+    .challenge-card { background:var(--bg2); border:1px solid rgba(0,255,65,0.12); border-radius:16px; padding:1.5rem; margin-bottom:1rem; }
+    .challenge-card .num { color:var(--primary); font-size:0.8rem; text-transform:uppercase; letter-spacing:1px; }
+    .challenge-card .question { color:#fff; margin:0.5rem 0 1rem; }
+    .challenge-card .hint { color:var(--text-dim); font-size:0.8rem; margin-bottom:0.5rem; }
+    input { width:100%; background:rgba(0,0,0,0.5); border:1px solid var(--text-dim); border-radius:8px; padding:0.7rem 1rem; color:var(--text); font-family:var(--font-mono); outline:none; margin-bottom:0.5rem; }
+    input:focus { border-color:var(--primary); }
+    .chk-btn { padding:0.6rem 1.5rem; border:1px solid var(--primary); background:transparent; color:var(--primary); font-family:var(--font-mono); cursor:pointer; border-radius:6px; transition:all 0.3s; }
+    .chk-btn:hover { background:var(--primary); color:var(--bg); }
+    .fb { font-size:0.85rem; min-height:1.5rem; margin-top:0.5rem; }
+    .fb-correct { color:var(--primary); }
+    .fb-wrong { color:#ff3333; }
+    .fb-hint { color:#ffaa00; }
+    .back { text-align:center; margin-top:2rem; }
+    .back a { color:var(--primary); text-decoration:none; }
+    @media(max-width:600px) { body { padding:1rem; } }
+  </style>
 </head>
 <body>
-<div class="box">
-<h1>🟠 Level 4 – CTF Logic</h1>
-<h2>━━ Capture The Flag Challenges ━━</h2>
-<div class="status-bar"><div>Score: <span id="score">0</span>/5</div><div id="timerDisplay" class="timer" style="margin:0">⏱️ <span id="timer">300</span>s</div></div>
-<div class="progress" id="progress"></div>
-<div class="mission"><span>🎯 MISSION:</span> Solve 5 CTF-style challenges. Each one reveals a flag. Enter the flag to score. You have 5 minutes!</div>
-<div id="ca"></div>
-<a href="task.html" class="back">⬅ Back to Levels</a>
+<div class="container">
+  <h1>🟠 <span>Level 4</span> — CTF Logic</h1>
+  <p class="subtitle">Solve CTF challenges. Enter flags to score. Timer: <span class="timer" id="timerDisplay">05:00</span></p>
+  <div class="score-bar"><span>Score</span><span class="score"><span id="scoreDisplay">0</span>/<span id="totalDisplay">5</span></span></div>
+  <div id="challenges"></div>
+  <div class="back"><a href="task.html">⬅ Back to Levels</a></div>
 </div>
 <script>
-  // ===== POINTS SYSTEM =====
-function addPoints(amount) {
-    const current = parseInt(localStorage.getItem('cyberarena_points') || '0');
-    localStorage.setItem('cyberarena_points', (current + amount).toString());
-}
-let timeLeft=300;let timerRunning=false;
-const challenges=[
-{title:'🔢 Challenge 1: Binary Decode','desc':'A message was found in binary. Decode it to get the flag.','display':'01000110 01001100 01000001 01000111 01111011 01100010 01101001 01101110 01100001 01110010 01111001 01011111 01101001 01110011 01011111 01100110 01110101 01101110 01111101','answer':'flag{binary_is_fun}'},
-{title:'🔤 Challenge 2: Caesar Cipher','desc':'Julius Caesar used a shift cipher. Decode:','display':'VHGUDQGVRIGUHHGRP','answer':'flag{caesar_cipher}'},
-{title:'🔐 Challenge 3: Hex Decode','desc':'Hexadecimal encoding — decode this:','display':'666c61677b6865785f6465636f64696e675f726f636b737d','answer':'flag{hex_decoding_rocks}'},
-{title:'🧮 Challenge 4: ROT13','desc':'ROT13 shifts letters by 13 positions. Decode:','display':'SYNT{EBG13_VF_PBBY}','answer':'flag{rot13_is_cool}'},
-{title:'🔓 Challenge 5: Hash Crack','desc':'An MD5 hash was found: <b>900150983cd24fb0d6963f7d28e17f72</b><br>This hash is a common 3-letter word. What is it?','display':'Hash: 900150983cd24fb0d6963f7d28e17f72','answer':'abc'}
-];
-let cur=0;let sc=0;let done=[false,false,false,false,false];
-const ca=document.getElementById('ca');const se=document.getElementById('score');
-const pe=document.getElementById('progress');const te=document.getElementById('timer');
+  const challenges = [
+    { q: "Decode this binary: 01000110 01001100 01000001 01000111", answer: "FLAG", hint: "Convert binary to text (8 bits per character)" },
+    { q: "Decode this hex: 48 65 6c 6c 6f", answer: "Hello", hint: "Hex to ASCII — use an online converter or echo in terminal" },
+    { q: "Base64 decode: Q3liZXJBcmVuYQ==", answer: "CyberArena", hint: "Use echo 'Q3liZXJBcmVuYQ==' | base64 -d" },
+    { q: "What port number is SSH?", answer: "22", hint: "SSH = Secure Shell. Think about the default port." },
+    { q: "ROT13 decode: PloreNeran", answer: "CyberArena", hint: "ROT13 shifts each letter by 13 positions" }
+  ];
 
-function rp(){pe.innerHTML='';for(let i=0;i<challenges.length;i++){let d=document.createElement('span');d.className='dot';if(done[i])d.className='dot done';pe.appendChild(d);}}
+  let score = parseInt(localStorage.getItem('level4_score') || '0');
+  let done = JSON.parse(localStorage.getItem('level4_done') || '[false,false,false,false,false]');
 
-function startTimer(){if(timerRunning)return;timerRunning=true;let iv=setInterval(()=>{timeLeft--;te.textContent=timeLeft;if(timeLeft<=0){clearInterval(iv);ca.innerHTML=`<div style="text-align:center;padding:30px"><div style="font-size:50px;">⏰</div><h2 style="color:#f44;font-size:24px;margin:15px 0">TIME IS UP!</h2><p style="color:#aaa">You scored ${sc}/${challenges.length}</p><button onclick="location.reload()" style="margin-top:15px;padding:10px 20px;background:#f80;color:#000;border:none;border-radius:4px;font-family:monospace;font-weight:bold;font-size:14px;cursor:pointer">TRY AGAIN</button></div>`;}},1000);}
+  document.getElementById('totalDisplay').textContent = challenges.length;
+  document.getElementById('scoreDisplay').textContent = score;
 
-function ld(idx){
-if(idx>=challenges.length){ca.innerHTML=`<div style="text-align:center;padding:30px"><div style="font-size:50px;">🏆</div><h2 style="color:#f80;font-size:24px;margin:15px 0">🎉 CAPTURE THE FLAG COMPLETE!</h2><p style="color:#aaa;font-size:14px">Score: ${sc}/${challenges.length}</p><p style="color:#0f0;font-size:16px;margin:15px">${sc>=4?'🟠 You earned: CTF MASTER BADGE: '+timeLeft+'s remaining! 🏁':'🟡 Keep hacking!'}</p></div>`;return;}
-const c=challenges[idx];
-if(idx===0)startTimer();
-ca.innerHTML=`<div class="panel"><h3>${c.title}</h3><p>${c.desc}</p><div class="cipher-text">${c.display}</div><input type="text" id="ans" placeholder="Enter the flag..." autocomplete="off"><button id="btn">Submit</button><div id="fb" class="feedback"></div></div>`;
-document.getElementById('btn').addEventListener('click',()=>ch(idx));document.getElementById('ans').addEventListener('keypress',(e)=>{if(e.key==='Enter')ch(idx)});document.getElementById('ans').focus();}
+  // Timer
+  let timeLeft = 300;
+  const timerEl = document.getElementById('timerDisplay');
+  const timerInterval = setInterval(() => {
+    timeLeft--;
+    const m = Math.floor(timeLeft / 60).toString().padStart(2, '0');
+    const s = (timeLeft % 60).toString().padStart(2, '0');
+    timerEl.textContent = `${m}:${s}`;
+    if (timeLeft <= 0) {
+      clearInterval(timerInterval);
+      timerEl.textContent = '00:00';
+      document.querySelectorAll('input').forEach(i => i.disabled = true);
+      document.querySelectorAll('.chk-btn').forEach(b => b.disabled = true);
+    }
+  }, 1000);
 
-function ch(idx){const inp=document.getElementById('ans');const fb=document.getElementById('fb');const ans=inp.value.trim().toLowerCase();const c=challenges[idx];if(!ans){fb.textContent='⚠️ Enter the flag!';fb.className='feedback fb-hint';return}
-if(ans===c.answer.toLowerCase()){fb.textContent='✅ FLAG CAPTURED! Correct!';fb.className='feedback fb-correct';done[idx]=true;sc++;se.textContent=sc;setTimeout(()=>{cur++;ld(cur);rp()},1200)}
-else{fb.innerHTML='❌ Wrong flag. Hint: The answer format is typically "flag{...}" or a simple word.';fb.className='feedback fb-wrong';setTimeout(()=>{cur++;ld(cur);rp()},1800)}rp();}
-rp();ld(0);
+  function render() {
+    const area = document.getElementById('challenges');
+    let html = '';
+    challenges.forEach((c, i) => {
+      const completed = done[i] || false;
+      html += `<div class="challenge-card" id="card${i}">
+        <div class="num">Challenge ${i+1} ${completed ? '✅' : ''}</div>
+        <div class="question">${c.q}</div>
+        <div class="hint">💡 ${c.hint}</div>
+        <input type="text" id="ans${i}" placeholder="Enter flag..." ${completed ? 'disabled' : ''}>
+        <button class="chk-btn" onclick="check(${i})" ${completed ? 'disabled' : ''}>${completed ? 'Done ✓' : 'Submit Flag'}</button>
+        <div class="fb" id="fb${i}"></div>
+      </div>`;
+    });
+    area.innerHTML = html;
+  }
+
+  function check(idx) {
+    if (timeLeft <= 0) { document.getElementById('fb' + idx).textContent = '⏱ Time is up!'; return; }
+    const input = document.getElementById('ans' + idx);
+    const fb = document.getElementById('fb' + idx);
+    const ans = input.value.trim();
+    if (!ans) { fb.textContent = '⚠️ Enter a flag!'; fb.className = 'fb fb-hint'; return; }
+    if (ans.toLowerCase() === challenges[idx].answer.toLowerCase()) {
+      fb.textContent = '✅ Correct! Flag captured!'; fb.className = 'fb fb-correct';
+      if (!done[idx]) {
+        done[idx] = true;
+        score++;
+        localStorage.setItem('level4_score', score);
+        localStorage.setItem('level4_done', JSON.stringify(done));
+        document.getElementById('scoreDisplay').textContent = score;
+      }
+      input.disabled = true;
+      document.querySelector(`#card${idx} .chk-btn`).disabled = true;
+      document.querySelector(`#card${idx} .chk-btn`).textContent = 'Done ✓';
+    } else {
+      fb.textContent = '❌ Wrong flag. Check the hint and try again!'; fb.className = 'fb fb-wrong';
+    }
+  }
+
+  render();
 </script>
 </body>
 </html>
