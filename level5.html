@@ -1,144 +1,102 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Level 5 – Attack Simulation</title>
-<style>
-*{margin:0;padding:0;box-sizing:border-box}
-body{background:#0a0a0a;color:#0f0;font-family:'Courier New',monospace;min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:20px}
-.box{max-width:800px;width:100%;background:#111;border:2px solid #f00;border-radius:10px;padding:30px;margin-top:20px;box-shadow:0 0 30px rgba(255,0,0,0.1)}
-h1{text-align:center;color:#f00;font-size:26px;margin-bottom:5px;text-shadow:0 0 10px rgba(255,0,0,0.5)}
-h2{text-align:center;color:#a00;font-size:14px;margin-bottom:20px;font-weight:normal}
-.mission{background:#0d0d0d;border:1px solid #a00;border-radius:6px;padding:15px;margin-bottom:20px;font-size:13px;line-height:1.6}
-.mission span{color:#f00}
-.panel{background:#0d0d0d;border:1px solid #a00;border-radius:6px;padding:20px;margin-bottom:15px}
-.panel h3{color:#f00;font-size:16px;margin-bottom:8px}
-.panel p{color:#aaa;font-size:13px;margin-bottom:10px;line-height:1.5}
-.panel .sim-box{background:#0a0a0a;border:1px solid #5a1a1a;border-radius:4px;padding:15px;margin:10px 0;font-size:12px;line-height:1.6}
-.panel .sim-box .sim-prompt{color:#0f0}
-.panel .sim-box .sim-output{color:#aaa;padding-left:15px}
-.panel .sim-box .sim-success{color:#0f0;font-weight:bold}
-.panel .sim-box .sim-error{color:#f44}
-.panel .sim-box .sim-info{color:#ff0}
-.panel input{width:100%;padding:10px;background:#1a1a1a;border:1px solid #5a1a1a;border-radius:4px;color:#f00;font-family:'Courier New',monospace;font-size:14px;outline:none;margin-bottom:8px}
-.panel input:focus{border-color:#f00;box-shadow:0 0 8px rgba(255,0,0,0.2)}
-.panel button{padding:8px 20px;background:#f00;color:#fff;border:none;border-radius:4px;font-family:'Courier New',monospace;font-weight:bold;font-size:14px;cursor:pointer}
-.panel button:hover{background:#c00;box-shadow:0 0 10px rgba(255,0,0,0.4)}
-.feedback{margin-top:8px;font-size:13px;padding:8px;border-radius:4px}
-.fb-correct{color:#0f0}.fb-wrong{color:#f44}.fb-hint{color:#f80}
-.progress{display:flex;gap:8px;justify-content:center;margin-bottom:20px}
-.dot{width:14px;height:14px;border-radius:50%;background:#3a1a1a;border:1px solid #5a1a1a}
-.dot.done{background:#0f0;border-color:#0f0;box-shadow:0 0 6px #0f0}
-.status-bar{display:flex;justify-content:space-between;padding:10px;background:#0d0d0d;border-radius:4px;margin-bottom:20px;font-size:12px;color:#888}
-.status-bar span{color:#f00}
-.back{display:block;text-align:center;margin-top:20px;color:#5a1a1a;text-decoration:none;font-size:13px}
-.back:hover{color:#f00}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval' https:; img-src 'self' https: data:;">
+  <title>Level 5 – Attack Simulation | CyberArena</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; }
+    :root { --bg:#0a0e17; --bg2:#111827; --primary:#00ff41; --text:#c8d6e5; --text-dim:#4a5568; --font-mono:'Share Tech Mono',monospace; --font-display:'Orbitron',sans-serif; }
+    body { background:var(--bg); color:var(--text); font-family:var(--font-mono); min-height:100vh; padding:2rem; }
+    .container { max-width:700px; margin:0 auto; }
+    h1 { font-family:var(--font-display); font-size:2rem; color:#fff; text-align:center; }
+    h1 span { color:#ff3333; }
+    .subtitle { text-align:center; color:var(--text-dim); margin-bottom:2rem; font-size:0.9rem; }
+    .score-bar { display:flex; justify-content:space-between; background:var(--bg2); border:1px solid rgba(255,51,51,0.15); border-radius:12px; padding:1rem 1.5rem; margin-bottom:2rem; }
+    .score-bar .score { font-family:var(--font-display); color:#ff3333; font-size:1.3rem; }
+    .scenario-card { background:var(--bg2); border:1px solid rgba(255,51,51,0.12); border-radius:16px; padding:1.5rem; margin-bottom:1rem; }
+    .scenario-card .num { color:#ff3333; font-size:0.8rem; text-transform:uppercase; letter-spacing:1px; }
+    .scenario-card .scenario-text { color:#fff; margin:0.5rem 0 1rem; line-height:1.6; }
+    .scenario-card .scenario-text strong { color:#ffaa00; }
+    input { width:100%; background:rgba(0,0,0,0.5); border:1px solid var(--text-dim); border-radius:8px; padding:0.7rem 1rem; color:var(--text); font-family:var(--font-mono); outline:none; margin-bottom:0.5rem; }
+    input:focus { border-color:#ff3333; }
+    .chk-btn { padding:0.6rem 1.5rem; border:1px solid #ff3333; background:transparent; color:#ff3333; font-family:var(--font-mono); cursor:pointer; border-radius:6px; transition:all 0.3s; }
+    .chk-btn:hover { background:#ff3333; color:#fff; }
+    .fb { font-size:0.85rem; min-height:1.5rem; margin-top:0.5rem; }
+    .fb-correct { color:var(--primary); }
+    .fb-wrong { color:#ff3333; }
+    .back { text-align:center; margin-top:2rem; }
+    .back a { color:var(--primary); text-decoration:none; }
+    @media(max-width:600px) { body { padding:1rem; } }
+  </style>
 </head>
 <body>
-<div class="box">
-<h1>🔴 Level 5 – Attack Simulation</h1>
-<h2>━━ Real Hacking Attack Scenarios ━━</h2>
-<div class="status-bar"><div>Score: <span id="score">0</span>/5</div><div>Challenge: <span id="current">1</span>/5</div></div>
-<div class="progress" id="progress"></div>
-<div class="mission"><span>🎯 MISSION:</span> You're a penetration tester. Complete 5 realistic attack scenarios by entering the correct commands or answers.</div>
-<div id="ca"></div>
-<a href="task.html" class="back">⬅ Back to Levels</a>
+<div class="container">
+  <h1>🔴 <span>Level 5</span> — Attack Simulation</h1>
+  <p class="subtitle">Real penetration testing scenarios — what command or tool do you use?</p>
+  <div class="score-bar"><span>Score</span><span class="score"><span id="scoreDisplay">0</span>/<span id="totalDisplay">5</span></span></div>
+  <div id="scenarios"></div>
+  <div class="back"><a href="task.html">⬅ Back to Levels</a></div>
 </div>
 <script>
-  // ===== POINTS SYSTEM =====
-function addPoints(amount) {
-    const current = parseInt(localStorage.getItem('cyberarena_points') || '0');
-    localStorage.setItem('cyberarena_points', (current + amount).toString());
-}
-const challenges=[{
-title:'🕵️ Scenario 1: Reconnaissance — Port Scanning',
-desc:'You are hired to test "target.local". First step: find open ports.',
-sim:`<div class="sim-box">
-<div class="sim-prompt">root@kali:~$ nmap -sV target.local</div>
-<div class="sim-output">Starting Nmap 7.94 (https://nmap.org)</div>
-<div class="sim-output">PORT     STATE    SERVICE    VERSION</div>
-<div class="sim-output">22/tcp   open     ssh        OpenSSH 8.9p1</div>
-<div class="sim-output">80/tcp   open     http       Apache httpd 2.4.57</div>
-<div class="sim-output">443/tcp  open     https      Apache httpd 2.4.57</div>
-<div class="sim-output">3306/tcp open     mysql      MySQL 8.0.33</div>
-<div class="sim-success">Nmap done: 1 IP address scanned</div>
-</div>`,
-question:'Which Nmap flag discovers service versions? (Example: nmap -? target)',
-answer:'-sv',
-acceptMultiple:true,validAnswers:['-sv','-s v','-sV'],
-hint:'It\'s the flag for "service version detection". Starts with -s followed by V.'
-},
-{
-title:'💣 Scenario 2: Exploitation — SSH Brute Force',
-desc:'You found port 22 (SSH) open. You decide to brute force the password using Hydra.',
-sim:`<div class="sim-box">
-<div class="sim-prompt">root@kali:~$ hydra -l root -P /usr/share/wordlists/rockyou.txt ssh://target.local</div>
-<div class="sim-output">[ATTEMPT] root:123456 ⨯</div>
-<div class="sim-output">[ATTEMPT] root:password ⨯</div>
-<div class="sim-output">[ATTEMPT] root:letmein ⨯</div>
-<div class="sim-output">[ATTEMPT] root:P@ssw0rd ✅ FOUND!</div>
-<div class="sim-success">[SUCCESS] ssh://root:P@ssw0rd@target.local:22</div>
-</div>`,
-question:'What password was found for the root user?',
-answer:'P@ssw0rd',
-hint:'Look at the last line in the simulation — the password after "root:" and before "✅"'
-},
-{
-title:'💉 Scenario 3: Web Attack — SQL Injection',
-desc:'You find a login page. The URL is: http://target.local/login?id=1<br>You try SQL injection to extract database info.',
-sim:`<div class="sim-box">
-<div class="sim-prompt">root@kali:~$ sqlmap -u 'http://target.local/login?id=1' --dbs</div>
-<div class="sim-output">[INFO] testing connection to target</div>
-<div class="sim-output">[INFO] parameter 'id' is vulnerable</div>
-<div class="sim-output">[INFO] retrieved databases:</div>
-<div class="sim-success">information_schema</div>
-<div class="sim-success">mysql</div>
-<div class="sim-success">target_db</div>
-</div>`,
-question:'Which flag in sqlmap is used to list all databases?',
-answer:'--dbs',
-hint:'It\'s "--dbs" — short for "databases".'
-},
-{
-title:'🕸️ Scenario 4: Web Attack — XSS',
-desc:'You find a comment form that doesn\'t sanitize input. You can inject JavaScript.',
-sim:`<div class="sim-box">
-<div class="sim-prompt">Payload: &lt;script&gt;alert('XSS')&lt;/script&gt;</div>
-<div class="sim-success">✅ JavaScript executed in victim's browser!</div>
-<div class="sim-output">You could steal cookies with: document.cookie</div>
-<div class="sim-info">Stealing cookies allows session hijacking.</div>
-</div>`,
-question:'What JavaScript property contains all cookies for the current site?',
-answer:'document.cookie',
-hint:'It\'s document.cookie — JavaScript object that stores cookies.'
-},
-{
-title:'🔐 Scenario 5: Privilege Escalation',
-desc:'You got a low-privilege shell on the target. Now you need to become root.',
-sim:`<div class="sim-box">
-<div class="sim-prompt">www-data@target:/var/www$ sudo -l</div>
-<div class="sim-output">User www-data may run the following commands on target:</div>
-<div class="sim-output">(ALL : ALL) NOPASSWD: ALL</div>
-<div class="sim-info">User can run ANY command as root without password!</div>
-<div class="sim-prompt">www-data@target:/var/www$ sudo su</div>
-<div class="sim-success">root@target:/root# ✅ PRIVILEGE ESCALATED!</div>
-</div>`,
-question:'What command escalates to root when you have sudo access?',
-answer:'sudo su',
-hint:'Two words: "sudo" then "su" — it switches to the root user.'
-}
-];
-let cur=0;let sc=0;let done=[false,false,false,false,false];
-const ca=document.getElementById('ca');const se=document.getElementById('score');
-const ce=document.getElementById('current');const pe=document.getElementById('progress');
-function rp(){pe.innerHTML='';for(let i=0;i<challenges.length;i++){let d=document.createElement('div');d.className='dot';if(done[i])d.className='dot done';pe.appendChild(d);}}
-function ld(idx){
-if(idx>=challenges.length){ca.innerHTML=`<div style="text-align:center;padding:30px"><div style="font-size:50px;">🏆</div><h2 style="color:#f00;font-size:24px;margin:15px 0">🎯 ATTACK SIMULATION COMPLETE!</h2><p style="color:#aaa;font-size:14px">Score: ${sc}/${challenges.length}</p><p style="color:#0f0;font-size:16px;margin:15px">${sc>=4?'🔴 You earned: PENETRATION TESTER BADGE 🛡️':'🟡 Keep practicing — try using the Terminal!'}</p></div>`;return;}
-const c=challenges[idx];ce.textContent=idx+1;
-ca.innerHTML=`<div class="panel"><h3>${c.title}</h3><p>${c.desc}</p>${c.sim||''}<p><b>${c.question}</b></p><input type="text" id="ans" placeholder="Type answer..." autocomplete="off"><button id="btn">Submit</button><div id="fb" class="feedback"></div></div>`;
-document.getElementById('btn').addEventListener('click',()=>ch(idx));document.getElementById('ans').addEventListener('keypress',(e)=>{if(e.key==='Enter')ch(idx)});document.getElementById('ans').focus();}
-function ch(idx){const inp=document.getElementById('ans');const fb=document.getElementById('fb');const ans=inp.value.trim().toLowerCase();const c=challenges[idx];if(!ans){fb.textContent='⚠️ Type an answer!';fb.className='feedback fb-hint';return}
-let correct=false;if(c.acceptMultiple){correct=c.validAnswers.some(v=>v.toLowerCase()===ans)}else{correct=ans===c.answer.toLowerCase()}
-if(correct){fb.textContent='✅ CORRECT! You\'re thinking like a pentester!';fb.className='feedback fb-correct';done[idx]=true;
+  const scenarios = [
+    { scenario: "You're scanning a target network to find live hosts on 192.168.1.0/24. <strong>What nmap command do you use?</strong>", answer: "nmap -sn 192.168.1.0/24", valid: ["nmap -sn 192.168.1.0/24", "nmap -sn 192.168.1.0-255"] },
+    { scenario: "You found a login page and want to test for SQL injection. <strong>What payload bypasses a login with username 'admin'?</strong>", answer: "admin' --", valid: ["admin' --", "' or '1'='1", "' or 1=1 --", "admin' or '1'='1"] },
+    { scenario: "You need to find all SUID binaries on a compromised Linux machine. <strong>What command?</strong>", answer: "find / -perm -4000 2>/dev/null", valid: ["find / -perm -4000", "find / -perm -4000 2>/dev/null"] },
+    { scenario: "You captured a password hash and want to crack it with rockyou.txt using John the Ripper. <strong>What command?</strong>", answer: "john --wordlist=/usr/share/wordlists/rockyou.txt hash.txt", valid: ["john --wordlist=rockyou.txt hash.txt", "john hash.txt"] },
+    { scenario: "You need to brute-force SSH as root on 192.168.1.100 using Hydra with rockyou.txt. <strong>What command?</strong>", answer: "hydra -l root -P /usr/share/wordlists/rockyou.txt ssh://192.168.1.100", valid: ["hydra -l root -P rockyou.txt ssh://192.168.1.100", "hydra -l root -P /usr/share/wordlists/rockyou.txt ssh://192.168.1.100"] }
+  ];
+
+  let score = parseInt(localStorage.getItem('level5_score') || '0');
+  let done = JSON.parse(localStorage.getItem('level5_done') || '[false,false,false,false,false]');
+
+  document.getElementById('totalDisplay').textContent = scenarios.length;
+  document.getElementById('scoreDisplay').textContent = score;
+
+  function render() {
+    const area = document.getElementById('scenarios');
+    let html = '';
+    scenarios.forEach((s, i) => {
+      const completed = done[i] || false;
+      html += `<div class="scenario-card" id="card${i}">
+        <div class="num">Scenario ${i+1} ${completed ? '✅' : ''}</div>
+        <div class="scenario-text">${s.scenario}</div>
+        <input type="text" id="ans${i}" placeholder="Type your command..." ${completed ? 'disabled' : ''}>
+        <button class="chk-btn" onclick="check(${i})" ${completed ? 'disabled' : ''}>${completed ? 'Done ✓' : 'Execute'}</button>
+        <div class="fb" id="fb${i}"></div>
+      </div>`;
+    });
+    area.innerHTML = html;
+  }
+
+  function check(idx) {
+    const input = document.getElementById('ans' + idx);
+    const fb = document.getElementById('fb' + idx);
+    const ans = input.value.trim().toLowerCase().replace(/\s+/g, ' ');
+    if (!ans) { fb.textContent = '⚠️ Enter a command!'; fb.className = 'fb'; return; }
+    const valid = scenarios[idx].valid.map(v => v.toLowerCase().replace(/\s+/g, ' '));
+    if (valid.includes(ans) || ans === scenarios[idx].answer.toLowerCase().replace(/\s+/g, ' ')) {
+      fb.textContent = '✅ Correct! You solved the scenario.'; fb.className = 'fb fb-correct';
+      if (!done[idx]) {
+        done[idx] = true;
+        score++;
+        localStorage.setItem('level5_score', score);
+        localStorage.setItem('level5_done', JSON.stringify(done));
+        document.getElementById('scoreDisplay').textContent = score;
+      }
+      input.disabled = true;
+      document.querySelector(`#card${idx} .chk-btn`).disabled = true;
+      document.querySelector(`#card${idx} .chk-btn`).textContent = 'Done ✓';
+    } else {
+      fb.textContent = '❌ Not quite. Hint: Check the Ethical Hacking lab page for command reference!'; fb.className = 'fb fb-wrong';
+    }
+  }
+
+  render();
+</script>
+</body>
+</html>
