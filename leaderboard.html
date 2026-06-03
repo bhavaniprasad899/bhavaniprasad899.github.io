@@ -1,243 +1,337 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Leaderboard | CyberArena</title>
-    <style>
-        * { margin:0; padding:0; box-sizing:border-box; }
-        body { font-family:'Courier New',monospace; background:#0a0a0a; color:#00ff41; }
-        .navbar { background:rgba(13,13,13,0.95); border-bottom:2px solid #00ff41; position:sticky; top:0; z-index:1000; }
-        .navbar-inner { max-width:1200px; margin:0 auto; display:flex; justify-content:space-between; align-items:center; padding:10px 20px; }
-        .navbar .logo { color:#00ff41; font-size:22px; font-weight:bold; text-decoration:none; text-shadow:0 0 10px #00ff41; }
-        .navbar .logo span { color:#ff0040; }
-        .nav-links { display:flex; flex-wrap:wrap; list-style:none; gap:5px; }
-        .nav-links li a { color:#ccc; text-decoration:none; padding:6px 12px; font-size:13px; border:1px solid transparent; transition:0.3s; }
-        .nav-links li a:hover { color:#00ff41; border:1px solid #00ff41; }
-        .dropdown { position:relative; display:inline-block; }
-        .dropdown-content { display:none; position:absolute; background:#111; border:1px solid #00ff41; min-width:180px; z-index:1; }
-        .dropdown-content a { display:block; padding:10px 15px; color:#ccc; border-bottom:1px solid #1a1a1a; }
-        .dropdown-content a:hover { background:#1a1a1a; color:#00ff41; }
-        .dropdown:hover .dropdown-content { display:block; }
-        .hamburger { display:none; color:#00ff41; font-size:28px; cursor:pointer; }
-
-        .container { max-width:800px; margin:30px auto; padding:20px; text-align:center; }
-        h1 { font-size:32px; color:#00ff41; text-shadow:0 0 15px #00ff41; margin-bottom:10px; }
-        p { color:#888; margin-bottom:30px; }
-
-        .points-display { background:rgba(17,17,17,0.9); border:1px solid #00ff41; padding:30px; border-radius:10px; margin-bottom:30px; }
-        .points-display .score { font-size:64px; color:#00ff41; text-shadow:0 0 20px #00ff41; }
-        .points-display .label { color:#888; font-size:16px; margin-top:5px; }
-
-        .name-input { margin:20px 0; }
-        .name-input input { background:#1a1a1a; border:1px solid #333; color:#0f0; padding:10px 15px; font-family:'Courier New',monospace; border-radius:4px; width:250px; }
-        .name-input input:focus { outline:2px solid #00ff41; }
-        .name-input button { background:#00ff41; color:#000; border:none; padding:10px 20px; font-weight:bold; cursor:pointer; border-radius:4px; font-family:'Courier New',monospace; }
-
-        table { width:100%; border-collapse:collapse; margin-top:20px; }
-        th { color:#00ff41; padding:12px; border-bottom:2px solid #00ff41; font-size:14px; }
-        td { padding:12px; border-bottom:1px solid #222; color:#aaa; font-size:14px; }
-        tr:hover td { background:rgba(0,255,65,0.05); }
-        .rank-1 td { color:#ffd700; }
-        .rank-2 td { color:#c0c0c0; }
-        .rank-3 td { color:#cd7f32; }
-
-        .footer { text-align:center; padding:30px; border-top:1px solid #1a1a1a; color:#555; font-size:13px; margin-top:50px; }
-        .footer a { color:#00ff41; text-decoration:none; }
-        @media (max-width:768px) {
-            .nav-links { display:none; flex-direction:column; width:100%; background:#0d0d0d; }
-            .nav-links.active { display:flex; }
-            .hamburger { display:block; }
-            h1 { font-size:24px; }
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="CyberArena Leaderboard - Track your hacking challenge scores">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval' https:; img-src 'self' https: data:;">
+  <title>Leaderboard | CyberArena</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --bg: #0a0e17;
+      --bg2: #111827;
+      --primary: #00ff41;
+      --text: #c8d6e5;
+      --text-dim: #4a5568;
+      --font-mono: 'Share Tech Mono', monospace;
+      --font-display: 'Orbitron', sans-serif;
+    }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-mono);
+      min-height: 100vh;
+    }
+    nav {
+      background: rgba(10,14,23,0.92);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(0,255,65,0.15);
+      padding: 0 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 64px;
+    }
+    nav .logo a {
+      font-family: var(--font-display);
+      font-weight: 900;
+      font-size: 1.3rem;
+      color: var(--primary);
+      text-shadow: 0 0 20px rgba(0,255,65,0.5);
+      letter-spacing: 3px;
+    }
+    nav .logo a span { color: #0ff; }
+    .nav-links { display: flex; gap: 1.5rem; list-style: none; }
+    .nav-links a { color: var(--text-dim); font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; text-decoration: none; }
+    .nav-links a:hover { color: var(--primary); }
+    .container { max-width: 1000px; margin: 0 auto; padding: 2rem; }
+    .hero { text-align: center; padding: 3rem 1rem 2rem; }
+    .hero h1 {
+      font-family: var(--font-display);
+      font-size: 2.5rem;
+      color: #fff;
+      text-shadow: 0 0 30px rgba(0,255,65,0.3);
+    }
+    .hero h1 span { color: var(--primary); }
+    .hero p { color: var(--text-dim); margin-top: 0.5rem; }
+    .score-card {
+      background: rgba(17,24,39,0.8);
+      border: 1px solid rgba(0,255,65,0.15);
+      border-radius: 16px;
+      padding: 2rem;
+      text-align: center;
+      margin: 2rem auto;
+      max-width: 400px;
+    }
+    .score-card .score-num {
+      font-family: var(--font-display);
+      font-size: 4rem;
+      font-weight: 900;
+      color: var(--primary);
+      text-shadow: 0 0 40px rgba(0,255,65,0.4);
+    }
+    .score-card p { color: var(--text-dim); font-size: 0.9rem; text-transform: uppercase; letter-spacing: 2px; }
+    .save-area {
+      display: flex;
+      gap: 0.8rem;
+      justify-content: center;
+      margin-top: 1.5rem;
+      flex-wrap: wrap;
+    }
+    .save-area input {
+      background: rgba(0,0,0,0.5);
+      border: 1px solid var(--text-dim);
+      padding: 0.7rem 1rem;
+      color: var(--text);
+      font-family: var(--font-mono);
+      border-radius: 8px;
+      width: 200px;
+      outline: none;
+    }
+    .save-area input:focus { border-color: var(--primary); box-shadow: 0 0 15px rgba(0,255,65,0.2); }
+    .btn {
+      padding: 0.7rem 1.5rem;
+      border: 1px solid var(--primary);
+      background: transparent;
+      color: var(--primary);
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      cursor: pointer;
+      border-radius: 8px;
+      transition: all 0.3s;
+    }
+    .btn:hover { background: var(--primary); color: var(--bg); box-shadow: 0 0 25px rgba(0,255,65,0.3); }
+    .btn-danger { border-color: #ff3333; color: #ff3333; }
+    .btn-danger:hover { background: #ff3333; color: #fff; }
+    .table-container {
+      background: rgba(17,24,39,0.6);
+      border: 1px solid rgba(0,255,65,0.1);
+      border-radius: 12px;
+      overflow: hidden;
+      margin-top: 2rem;
+    }
+    table { width: 100%; border-collapse: collapse; }
+    th {
+      background: rgba(0,255,65,0.08);
+      padding: 1rem;
+      text-align: left;
+      font-family: var(--font-display);
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--primary);
+      border-bottom: 1px solid rgba(0,255,65,0.15);
+    }
+    td { padding: 1rem; border-bottom: 1px solid rgba(0,255,65,0.05); }
+    tr:hover td { background: rgba(0,255,65,0.03); }
+    .rank-1 { color: #ffd700; }
+    .rank-2 { color: #c0c0c0; }
+    .rank-3 { color: #cd7f32; }
+    .level-badge {
+      display: inline-block;
+      padding: 0.2rem 0.8rem;
+      border-radius: 20px;
+      font-size: 0.7rem;
+      border: 1px solid;
+    }
+    .level-beginner { border-color: var(--primary); color: var(--primary); }
+    .level-intermediate { border-color: #ffaa00; color: #ffaa00; }
+    .level-advanced { border-color: #ff3333; color: #ff3333; }
+    .empty-msg { text-align: center; padding: 3rem; color: var(--text-dim); }
+    .footer { text-align: center; padding: 2rem; color: var(--text-dim); font-size: 0.8rem; border-top: 1px solid rgba(0,255,65,0.1); margin-top: 3rem; }
+    @media (max-width: 600px) {
+      nav { padding: 0 1rem; }
+      .nav-links { gap: 0.8rem; }
+      .nav-links a { font-size: 0.7rem; }
+      .hero h1 { font-size: 1.8rem; }
+    }
+  </style>
 </head>
 <body>
 
-<nav class="navbar">
-    <div class="navbar-inner">
-        <a href="/" class="logo">Cyber<span>Arena</span></a>
-        <div class="hamburger" onclick="document.querySelector('.nav-links').classList.toggle('active')">&#9776;</div>
-        <ul class="nav-links">
-            <li><a href="/">Home</a></li>
-            <li><a href="/awareness.html">Awareness</a></li>
-            <li class="dropdown">
-                <a href="#">Labs &#9662;</a>
-                <div class="dropdown-content">
-                    <a href="/ethical-hacking/">Ethical Hacking</a>
-                    <a href="/soc/">SOC</a>
-                    <a href="/grc/">GRC</a>
-                    <a href="/malware-analysis/">Malware Analysis</a>
-                    <a href="/android-hacking/">Android Hacking</a>
-                </div>
-            </li>
-            <li class="dropdown">
-                <a href="#">Tools &#9662;</a>
-                <div class="dropdown-content">
-                    <a href="/terminal.html">Hacker Terminal</a>
-                    <a href="/whois.html">WHOIS Lookup</a>
-                </div>
-            </li>
-            <li><a href="/task.html">Challenges</a></li>
-            <li><a href="/leaderboard.html">Leaderboard</a></li>
-        </ul>
-    </div>
+<nav>
+  <div class="logo"><a href="/">Cyber<span>Arena</span></a></div>
+  <ul class="nav-links">
+    <li><a href="/">Home</a></li>
+    <li><a href="awareness.html">Awareness</a></li>
+    <li><a href="task.html">Challenges</a></li>
+    <li><a href="terminal.html">Terminal</a></li>
+    <li><a href="whois.html">WHOIS</a></li>
+  </ul>
 </nav>
 
 <div class="container">
-    <h1>&#127942; Leaderboard & Points</h1>
+  <div class="hero">
+    <h1>🏆 <span>Leaderboard</span></h1>
     <p>Complete challenges to earn points. Save your name to appear on the leaderboard!</p>
+  </div>
 
-    <div class="points-display">
-        <div class="score" id="totalPoints">0</div>
-        <div class="label">Total Points Earned</div>
+  <!-- Score Card -->
+  <div class="score-card">
+    <div class="score-num" id="totalPoints">0</div>
+    <p>Total Points Earned</p>
+    <div class="save-area">
+      <input type="text" id="playerName" placeholder="Enter your hacker name..." maxlength="20">
+      <button class="btn" onclick="saveScore()">💾 Save My Score</button>
+      <button class="btn btn-danger" onclick="clearScores()">🗑 Reset</button>
     </div>
+    <div id="saveMsg" style="margin-top:0.8rem;font-size:0.8rem;min-height:1.2rem;"></div>
+  </div>
 
-    <div class="name-input">
-        <input type="text" id="playerName" placeholder="Enter your name..." maxlength="20">
-        <button onclick="saveScore()">Save My Score</button>
-    </div>
-
-    <h2 style="color:#0f0; margin-top:40px;">&#127942; Top Hackers</h2>
-    <table>
-        <thead>
-            <tr>
-                <th>Rank</th>
-                <th>Name</th>
-                <th>Points</th>
-                <th>Level</th>
-            </tr>
-        </thead>
-        <tbody id="leaderboardBody">
-            <tr><td colspan="4" style="text-align:center; color:#555;">Complete challenges to see the leaderboard!</td></tr>
-        </tbody>
-    </table>
+  <!-- Leaderboard Table -->
+  <h2 style="font-family:var(--font-display);color:#fff;margin-bottom:1rem;">🏅 Top Hackers</h2>
+  <div class="table-container">
+    <div id="leaderboardBody"></div>
+  </div>
 </div>
 
 <div class="footer">
-    <p>CyberArena — Educational Cybersecurity Platform | <a href="/">Home</a></p>
+  CyberArena — Educational Cybersecurity Platform | <a href="/" style="color:var(--primary);">Home</a>
 </div>
 
 <script>
-    // ===== POINTS SYSTEM =====
-    // Points are stored in localStorage (your browser)
+  // ===== GET SCORES FROM localStorage =====
+  function getScores() {
+    try {
+      const data = JSON.parse(localStorage.getItem('cyberarena_scores') || '[]');
+      return Array.isArray(data) ? data : [];
+    } catch(e) { return []; }
+  }
 
-    function getPoints() {
-        return parseInt(localStorage.getItem('cyberarena_points') || '0');
+  function saveScores(scores) {
+    localStorage.setItem('cyberarena_scores', JSON.stringify(scores));
+  }
+
+  // ===== GET TOTAL POINTS FROM ALL LEVELS =====
+  function getTotalPoints() {
+    let total = 0;
+    for (let i = 1; i <= 6; i++) {
+      const key = 'level' + i + '_score';
+      const val = parseInt(localStorage.getItem(key) || '0');
+      total += val;
+    }
+    return total;
+  }
+
+  // ===== CALCULATE LEVEL BASED ON POINTS =====
+  function getLevel(points) {
+    if (points >= 25) return { name: 'Elite Hacker', cls: 'level-advanced' };
+    if (points >= 15) return { name: 'Advanced', cls: 'level-advanced' };
+    if (points >= 8) return { name: 'Intermediate', cls: 'level-intermediate' };
+    return { name: 'Beginner', cls: 'level-beginner' };
+  }
+
+  // ===== SAVE SCORE =====
+  function saveScore() {
+    const nameInput = document.getElementById('playerName');
+    const name = nameInput.value.trim();
+    const msg = document.getElementById('saveMsg');
+
+    if (!name) {
+      msg.textContent = '⚠️ Enter a hacker name first!';
+      msg.style.color = '#ffaa00';
+      return;
     }
 
-    function addPoints(amount) {
-        const current = getPoints();
-        const newTotal = current + amount;
-        localStorage.setItem('cyberarena_points', newTotal.toString());
-        updateDisplay();
+    const total = getTotalPoints();
+    if (total === 0) {
+      msg.textContent = '⚠️ Complete challenges first to earn points!';
+      msg.style.color = '#ffaa00';
+      return;
     }
 
-    function updateDisplay() {
-        document.getElementById('totalPoints').textContent = getPoints();
+    let scores = getScores();
+    
+    // Check if this name already exists — update if so
+    const existing = scores.findIndex(s => s.name.toLowerCase() === name.toLowerCase());
+    if (existing >= 0) {
+      scores[existing].points = total;
+      scores[existing].date = new Date().toISOString();
+    } else {
+      scores.push({
+        name: name,
+        points: total,
+        date: new Date().toISOString()
+      });
     }
 
-    // ===== LEADERBOARD =====
-    function getLeaderboard() {
-        try {
-            return JSON.parse(localStorage.getItem('cyberarena_leaderboard') || '[]');
-        } catch(e) {
-            return [];
-        }
-    }
-
-    function saveScore() {
-        const name = document.getElementById('playerName').value.trim();
-        if (!name) {
-            alert('Enter your name first!');
-            return;
-        }
-        if (name.length > 20) {
-            alert('Name too long (max 20 chars)');
-            return;
-        }
-
-        const points = getPoints();
-        if (points === 0) {
-            alert('You have 0 points. Complete some challenges first!');
-            return;
-        }
-
-        let leaderboard = getLeaderboard();
-
-        // Check if name already exists
-        const existing = leaderboard.findIndex(e => e.name.toLowerCase() === name.toLowerCase());
-        if (existing !== -1) {
-            if (leaderboard[existing].points < points) {
-                leaderboard[existing].points = points;
-                leaderboard[existing].level = getLevel(points);
-            }
-        } else {
-            leaderboard.push({
-                name: name,
-                points: points,
-                level: getLevel(points)
-            });
-        }
-
-        // Sort by points descending
-        leaderboard.sort((a, b) => b.points - a.points);
-
-        // Keep top 20
-        leaderboard = leaderboard.slice(0, 20);
-
-        localStorage.setItem('cyberarena_leaderboard', JSON.stringify(leaderboard));
-        renderLeaderboard();
-        alert('Score saved! You are on the leaderboard.');
-    }
-
-    function getLevel(points) {
-        if (points >= 100) return 'Expert';
-        if (points >= 70) return 'Advanced';
-        if (points >= 40) return 'Intermediate';
-        if (points >= 15) return 'Beginner';
-        return 'Rookie';
-    }
-
-    function renderLeaderboard() {
-        const leaderboard = getLeaderboard();
-        const tbody = document.getElementById('leaderboardBody');
-
-        if (leaderboard.length === 0) {
-            tbody.innerHTML = '<tr><td colspan="4" style="text-align:center; color:#555;">Complete challenges to see the leaderboard!</td></tr>';
-            return;
-        }
-
-        tbody.innerHTML = '';
-        leaderboard.forEach((entry, index) => {
-            const rankClass = index === 0 ? 'rank-1' : index === 1 ? 'rank-2' : index === 2 ? 'rank-3' : '';
-            const medals = index === 0 ? '&#129351;' : index === 1 ? '&#129352;' : index === 2 ? '&#129353;' : '#' + (index + 1);
-            const tr = document.createElement('tr');
-            tr.className = rankClass;
-            tr.innerHTML = `
-                <td>${medals}</td>
-                <td>${escapeHtml(entry.name)}</td>
-                <td>${entry.points}</td>
-                <td>${entry.level}</td>
-            `;
-            tbody.appendChild(tr);
-        });
-    }
-
-    function escapeHtml(text) {
-        const div = document.createElement('div');
-        div.textContent = text;
-        return div.innerHTML;
-    }
-
-    // ===== INIT =====
-    updateDisplay();
+    saveScores(scores);
+    msg.textContent = '✅ Score saved! You\'re on the leaderboard!';
+    msg.style.color = '#00ff41';
     renderLeaderboard();
+    updateTotalDisplay();
+    nameInput.value = '';
+    setTimeout(() => msg.textContent = '', 3000);
+  }
 
-    // ===== GLOBAL FUNCTION FOR LEVEL PAGES TO CALL =====
-    // Level pages can call: window.parent.addPoints(5) to add points
-    window.addPoints = addPoints;
+  // ===== CLEAR ALL SCORES =====
+  function clearScores() {
+    if (!confirm('⚠️ Reset all scores and leaderboard data?')) return;
+    localStorage.removeItem('cyberarena_scores');
+    for (let i = 1; i <= 6; i++) {
+      localStorage.removeItem('level' + i + '_score');
+    }
+    renderLeaderboard();
+    updateTotalDisplay();
+    document.getElementById('saveMsg').textContent = '🗑 All data reset';
+    document.getElementById('saveMsg').style.color = '#ff3333';
+    setTimeout(() => document.getElementById('saveMsg').textContent = '', 2000);
+  }
+
+  // ===== UPDATE TOTAL POINTS DISPLAY =====
+  function updateTotalDisplay() {
+    document.getElementById('totalPoints').textContent = getTotalPoints();
+  }
+
+  // ===== RENDER LEADERBOARD =====
+  function renderLeaderboard() {
+    const container = document.getElementById('leaderboardBody');
+    let scores = getScores();
+
+    if (scores.length === 0) {
+      container.innerHTML = `<table><thead><tr><th>Rank</th><th>Name</th><th>Points</th><th>Level</th></tr></thead><tbody><tr><td colspan="4" class="empty-msg">No hackers yet — complete challenges and save your score!</td></tr></tbody></table>`;
+      return;
+    }
+
+    // Sort by points descending
+    scores.sort((a, b) => b.points - a.points);
+
+    let html = `<table><thead><tr><th>Rank</th><th>Name</th><th>Points</th><th>Level</th></tr></thead><tbody>`;
+    
+    scores.forEach((s, i) => {
+      const rank = i + 1;
+      const rankClass = rank <= 3 ? `rank-${rank}` : '';
+      const level = getLevel(s.points);
+      const medal = rank === 1 ? '🥇' : rank === 2 ? '🥈' : rank === 3 ? '🥉' : '';
+      html += `<tr>
+        <td class="${rankClass}">${medal} ${rank}</td>
+        <td style="color:#fff;">${s.name}</td>
+        <td style="color:var(--primary);font-family:var(--font-display);font-weight:700;">${s.points}</td>
+        <td><span class="level-badge ${level.cls}">${level.name}</span></td>
+      </tr>`;
+    });
+
+    html += `</tbody></table>`;
+    container.innerHTML = html;
+  }
+
+  // ===== INIT =====
+  updateTotalDisplay();
+  renderLeaderboard();
+
+  // Auto-save the score on load if player already saved before
+  const existing = getScores();
+  if (existing.length > 0) {
+    // Update the display with latest total
+    const latest = existing[0];
+    // But don't auto-overwrite
+  }
 </script>
-
 </body>
 </html>
