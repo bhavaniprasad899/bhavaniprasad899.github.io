@@ -1,77 +1,105 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Level 3 – Command Line Hacking</title>
-<style>
-*{margin:0;padding:0;box-sizing:border-box}
-body{background:#0a0a0a;color:#0f0;font-family:'Courier New',monospace;min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:20px}
-.box{max-width:750px;width:100%;background:#111;border:2px solid #ff0;border-radius:10px;padding:30px;margin-top:20px;box-shadow:0 0 30px rgba(255,255,0,0.1)}
-h1{text-align:center;color:#ff0;font-size:26px;margin-bottom:5px;text-shadow:0 0 10px rgba(255,255,0,0.5)}
-h2{text-align:center;color:#aa0;font-size:14px;margin-bottom:20px;font-weight:normal}
-.mission{background:#0d0d0d;border:1px solid #aa0;border-radius:6px;padding:15px;margin-bottom:20px;font-size:13px;line-height:1.6}
-.mission span{color:#ff0}
-.panel{background:#0d0d0d;border:1px solid #aa0;border-radius:6px;padding:20px;margin-bottom:15px}
-.panel h3{color:#ff0;font-size:16px;margin-bottom:8px}
-.panel p{color:#aaa;font-size:13px;margin-bottom:10px;line-height:1.5}
-.panel .cmd-demo{background:#0a0a0a;border:1px solid #5a5a0a;border-radius:4px;padding:12px;font-size:13px;color:#ff0;margin:10px 0;font-family:'Courier New',monospace;line-height:1.6}
-.panel .cmd-demo .prompt{color:#0f0}.panel .cmd-demo .output{color:#aaa;padding-left:20px}
-.panel input{width:100%;padding:10px;background:#1a1a1a;border:1px solid #5a5a0a;border-radius:4px;color:#ff0;font-family:'Courier New',monospace;font-size:14px;outline:none;margin-bottom:8px}
-.panel input:focus{border-color:#ff0;box-shadow:0 0 8px rgba(255,255,0,0.2)}
-.panel button{padding:8px 20px;background:#ff0;color:#000;border:none;border-radius:4px;font-family:'Courier New',monospace;font-weight:bold;font-size:14px;cursor:pointer}
-.panel button:hover{background:#cc0;box-shadow:0 0 10px rgba(255,255,0,0.4)}
-.feedback{margin-top:8px;font-size:13px;padding:8px;border-radius:4px}
-.fb-correct{color:#0f0}.fb-wrong{color:#f44}.fb-hint{color:#ff0}
-.progress{display:flex;gap:8px;justify-content:center;margin-bottom:20px}
-.dot{width:14px;height:14px;border-radius:50%;background:#3a3a1a;border:1px solid #5a5a0a}
-.dot.done{background:#ff0;border-color:#ff0;box-shadow:0 0 6px #ff0}
-.status-bar{display:flex;justify-content:space-between;padding:10px;background:#0d0d0d;border-radius:4px;margin-bottom:20px;font-size:12px;color:#888}
-.status-bar span{color:#ff0}
-.cmd-table{border-collapse:collapse;width:100%;font-size:12px;margin:10px 0}
-.cmd-table td{border:1px solid #3a3a1a;padding:6px 10px;color:#aaa}
-.cmd-table td:first-child{color:#ff0;font-weight:bold}
-.back{display:block;text-align:center;margin-top:20px;color:#5a5a0a;text-decoration:none;font-size:13px}
-.back:hover{color:#ff0}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval' https:; img-src 'self' https: data:;">
+  <title>Level 3 – Command Line Hacking | CyberArena</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; }
+    :root { --bg:#0a0e17; --bg2:#111827; --primary:#00ff41; --text:#c8d6e5; --text-dim:#4a5568; --font-mono:'Share Tech Mono',monospace; --font-display:'Orbitron',sans-serif; }
+    body { background:var(--bg); color:var(--text); font-family:var(--font-mono); min-height:100vh; padding:2rem; }
+    .container { max-width:700px; margin:0 auto; }
+    h1 { font-family:var(--font-display); font-size:2rem; color:#fff; text-align:center; }
+    h1 span { color:var(--primary); }
+    .subtitle { text-align:center; color:var(--text-dim); margin-bottom:2rem; font-size:0.9rem; }
+    .score-bar { display:flex; justify-content:space-between; background:var(--bg2); border:1px solid rgba(0,255,65,0.1); border-radius:12px; padding:1rem 1.5rem; margin-bottom:2rem; }
+    .score-bar .score { font-family:var(--font-display); color:var(--primary); font-size:1.3rem; }
+    .challenge-card { background:var(--bg2); border:1px solid rgba(0,255,65,0.12); border-radius:16px; padding:1.5rem; margin-bottom:1rem; }
+    .challenge-card .num { color:var(--primary); font-size:0.8rem; text-transform:uppercase; letter-spacing:1px; }
+    .challenge-card .question { color:#fff; margin:0.5rem 0 1rem; }
+    input, textarea { width:100%; background:rgba(0,0,0,0.5); border:1px solid var(--text-dim); border-radius:8px; padding:0.7rem 1rem; color:var(--text); font-family:var(--font-mono); outline:none; margin-bottom:0.5rem; }
+    input:focus { border-color:var(--primary); }
+    .chk-btn { padding:0.6rem 1.5rem; border:1px solid var(--primary); background:transparent; color:var(--primary); font-family:var(--font-mono); cursor:pointer; border-radius:6px; transition:all 0.3s; }
+    .chk-btn:hover { background:var(--primary); color:var(--bg); }
+    .fb { font-size:0.85rem; min-height:1.5rem; margin-top:0.5rem; }
+    .fb-correct { color:var(--primary); }
+    .fb-wrong { color:#ff3333; }
+    .back { text-align:center; margin-top:2rem; }
+    .back a { color:var(--primary); text-decoration:none; }
+    @media(max-width:600px) { body { padding:1rem; } }
+  </style>
 </head>
 <body>
-<div class="box">
-<h1>🟡 Level 3 – Command Line Hacking</h1>
-<h2>━━ Real Terminal Commands ━━</h2>
-<div class="status-bar"><div>Score: <span id="score">0</span>/6</div><div>Challenge: <span id="current">1</span>/6</div></div>
-<div class="progress" id="progress"></div>
-<div class="mission"><span>🎯 MISSION:</span> Before doing these, open the <a href="terminal.html" style="color:#0ff">Terminal</a> in a new tab. Test commands there, then answer here.</div>
-<div id="ca"></div>
-<a href="task.html" class="back">⬅ Back to Levels</a>
+<div class="container">
+  <h1>🟡 <span>Level 3</span> — Command Line Hacking</h1>
+  <p class="subtitle">Test your Linux terminal knowledge. Answer all 6 to pass.</p>
+  <div class="score-bar"><span>Score</span><span class="score"><span id="scoreDisplay">0</span>/<span id="totalDisplay">6</span></span></div>
+  <div id="challenges"></div>
+  <div class="back"><a href="task.html">⬅ Back to Levels</a></div>
 </div>
 <script>
-  // ===== POINTS SYSTEM =====
-function addPoints(amount) {
-    const current = parseInt(localStorage.getItem('cyberarena_points') || '0');
-    localStorage.setItem('cyberarena_points', (current + amount).toString());
-}
-const challenges=[
-{title:'📂 Challenge 1: List Files','desc':'Open the Terminal. Type the command that shows all files and folders in the current directory.','answer':'ls','hint':'Type "ls" in the terminal and press Enter. It\'s just 2 letters.'},
-{title:'📁 Challenge 2: Change Directory','desc':'What Linux command changes your current directory? Example: "____ /home/user"','answer':'cd','hint':'It stands for "change directory". 2 letters.'},
-{title:'👤 Challenge 3: Who Are You?','desc':'Open the Terminal. Type the command that shows your current username.','answer':'whoami','hint':'Type "whoami" in the terminal. It literally asks "who am I?"'},
-{title:'📍 Challenge 4: Where Am I?','desc':'Open the Terminal. What command prints the full path of your current directory?','answer':'pwd','hint':'Stands for "print working directory". 3 letters.'},
-{title:'🌐 Challenge 5: DNS Lookup','desc':'Open the Terminal. Which command resolves a domain name to an IP address? Example: "____ google.com"','answer':'nslookup','hint':'It\'s "nslookup" — name server lookup. Try it in terminal with google.com'},
-{title:'🖥️ Challenge 6: Network Info','desc':'Open the Terminal. What command shows all network interfaces and IP addresses?','answer':'ifconfig','hint':'Type "ifconfig" in the terminal. It shows all network adapters.'}
-];
-let cur=0;let sc=0;let done=[false,false,false,false,false,false];
-const ca=document.getElementById('ca');const se=document.getElementById('score');
-const ce=document.getElementById('current');const pe=document.getElementById('progress');
-function rp(){pe.innerHTML='';for(let i=0;i<challenges.length;i++){let d=document.createElement('div');d.className='dot';if(done[i])d.className='dot done';pe.appendChild(d);}}
-function ld(idx){
-if(idx>=challenges.length){ca.innerHTML=`<div style="text-align:center;padding:30px"><div style="font-size:50px;">🏆</div><h2 style="color:#ff0;font-size:24px;margin:15px 0">COMMAND LINE MASTER!</h2><p style="color:#aaa;font-size:14px">Score: ${sc}/${challenges.length}</p><p style="color:#ff0;font-size:16px;margin:15px">${sc>=5?'🟡 You earned: COMMAND LINE BADGE':'🟡 Keep practicing in the terminal'}</p></div>';return;}
-const c=challenges[idx];ce.textContent=idx+1;
-ca.innerHTML=`<div class="panel"><h3>${c.title}</h3><p>${c.desc}</p><input type="text" id="ans" placeholder="Type the command..." autocomplete="off"><button id="btn">Submit</button><div id="fb" class="feedback"></div></div>`;
-document.getElementById('btn').addEventListener('click',()=>ch(idx));document.getElementById('ans').addEventListener('keypress',(e)=>{if(e.key==='Enter')ch(idx)});document.getElementById('ans').focus();}
-function ch(idx){const inp=document.getElementById('ans');const fb=document.getElementById('fb');const ans=inp.value.trim().toLowerCase();const c=challenges[idx];if(!ans){fb.textContent='⚠️ Type a command!';fb.className='feedback fb-hint';return}
-if(ans===c.answer.toLowerCase()){fb.textContent='Congratulations! Now try it in the Terminal!';fb.className='feedback fb-correct';done[idx]=true;sc++;se.textContent=sc;setTimeout(()=>{cur++;ld(cur);rp()},1200)}
-else{fb.innerHTML='❌ Wrong. '+c.hint;fb.className='feedback fb-wrong';setTimeout(()=>{cur++;ld(cur);rp()},1500)}rp();}
-rp();ld(0);
+  const challenges = [
+    { q: "What command lists all files in a directory (including hidden)?", answer: "ls -la" },
+    { q: "What command shows your current directory path?", answer: "pwd" },
+    { q: "What command changes directory?", answer: "cd" },
+    { q: "What command shows running processes?", answer: "ps aux" },
+    { q: "What command shows network connections?", answer: "netstat -tulpn" },
+    { q: "What command checks if a host is reachable?", answer: "ping" }
+  ];
+
+  let score = parseInt(localStorage.getItem('level3_score') || '0');
+  let done = JSON.parse(localStorage.getItem('level3_done') || '[false,false,false,false,false,false]');
+
+  document.getElementById('totalDisplay').textContent = challenges.length;
+  document.getElementById('scoreDisplay').textContent = score;
+
+  function render() {
+    const area = document.getElementById('challenges');
+    let html = '';
+    challenges.forEach((c, i) => {
+      const completed = done[i] || false;
+      html += `<div class="challenge-card" id="card${i}">
+        <div class="num">Challenge ${i+1} of ${challenges.length} ${completed ? '✅' : ''}</div>
+        <div class="question">${c.q}</div>
+        <input type="text" id="ans${i}" placeholder="Type your command..." ${completed ? 'disabled' : ''}>
+        <button class="chk-btn" onclick="check(${i})" ${completed ? 'disabled' : ''}>${completed ? 'Done ✓' : 'Check'}</button>
+        <div class="fb" id="fb${i}"></div>
+      </div>`;
+    });
+    area.innerHTML = html;
+    if (done.every(d => d) && score === challenges.length) {
+      // All done — show completion
+    }
+  }
+
+  function check(idx) {
+    const input = document.getElementById('ans' + idx);
+    const fb = document.getElementById('fb' + idx);
+    const ans = input.value.trim().toLowerCase().replace(/\s+/g, ' ');
+    if (!ans) { fb.textContent = '⚠️ Type a command!'; fb.className = 'fb'; return; }
+    const correct = challenges[idx].answer.toLowerCase();
+    if (ans === correct || ans === correct.replace(/\s+/g, ' ')) {
+      fb.textContent = '✅ Correct!'; fb.className = 'fb fb-correct';
+      if (!done[idx]) {
+        done[idx] = true;
+        score++;
+        localStorage.setItem('level3_score', score);
+        localStorage.setItem('level3_done', JSON.stringify(done));
+        document.getElementById('scoreDisplay').textContent = score;
+      }
+      input.disabled = true;
+      document.querySelector(`#card${idx} .chk-btn`).disabled = true;
+      document.querySelector(`#card${idx} .chk-btn`).textContent = 'Done ✓';
+    } else {
+      fb.textContent = '❌ Try again. Hint: check the Terminal simulator for help!'; fb.className = 'fb fb-wrong';
+    }
+  }
+
+  render();
 </script>
 </body>
 </html>
