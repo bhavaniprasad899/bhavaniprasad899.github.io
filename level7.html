@@ -71,6 +71,11 @@
 <div class="final-msg" id="final-msg"></div>
 
 <script>
+  // ===== POINTS SYSTEM =====
+function addPoints(amount) {
+    const current = parseInt(localStorage.getItem('cyberarena_points') || '0');
+    localStorage.setItem('cyberarena_points', (current + amount).toString());
+}
 const questions = [
   {
     q: "Which of the following techniques is most effective for preventing SQL Injection attacks?",
