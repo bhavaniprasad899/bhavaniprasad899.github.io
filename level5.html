@@ -47,6 +47,11 @@ h2{text-align:center;color:#a00;font-size:14px;margin-bottom:20px;font-weight:no
 <a href="task.html" class="back">⬅ Back to Levels</a>
 </div>
 <script>
+  // ===== POINTS SYSTEM =====
+function addPoints(amount) {
+    const current = parseInt(localStorage.getItem('cyberarena_points') || '0');
+    localStorage.setItem('cyberarena_points', (current + amount).toString());
+}
 const challenges=[{
 title:'🕵️ Scenario 1: Reconnaissance — Port Scanning',
 desc:'You are hired to test "target.local". First step: find open ports.',
