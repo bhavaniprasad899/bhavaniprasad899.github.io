@@ -51,10 +51,106 @@
 
     .nav-link { display:inline-block; color:#0f0; text-decoration:none; border:1px solid #0f0; padding:8px 20px; border-radius:6px; margin:10px 0; transition:0.3s; }
     .nav-link:hover { background:#0f0; color:#000; }
+
+    /* ===== NAVBAR STYLES ===== */
+    .navbar {
+        background: #0d0d0d;
+        border-bottom: 2px solid #00ff41;
+        padding: 0;
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+    }
+    .navbar-inner {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px 20px;
+    }
+    .navbar .logo {
+        color: #00ff41;
+        font-size: 22px;
+        font-weight: bold;
+        text-decoration: none;
+        text-shadow: 0 0 10px #00ff41;
+    }
+    .navbar .logo span {
+        color: #ff0040;
+    }
+    .nav-links {
+        display: flex;
+        flex-wrap: wrap;
+        list-style: none;
+        gap: 5px;
+    }
+    .nav-links li a {
+        color: #ccc;
+        text-decoration: none;
+        padding: 6px 12px;
+        font-size: 13px;
+        border: 1px solid transparent;
+        transition: 0.3s;
+    }
+    .nav-links li a:hover {
+        color: #00ff41;
+        border: 1px solid #00ff41;
+        background: rgba(0, 255, 65, 0.05);
+    }
+    .dropdown {
+        position: relative;
+        display: inline-block;
+    }
+    .dropdown-content {
+        display: none;
+        position: absolute;
+        background: #111;
+        border: 1px solid #00ff41;
+        min-width: 180px;
+        z-index: 1;
+    }
+    .dropdown-content a {
+        display: block;
+        padding: 10px 15px;
+        color: #ccc;
+        border-bottom: 1px solid #1a1a1a;
+    }
+    .dropdown-content a:hover {
+        background: #1a1a1a;
+        color: #00ff41;
+    }
+    .dropdown:hover .dropdown-content {
+        display: block;
+    }
+    .hamburger {
+        display: none;
+        color: #00ff41;
+        font-size: 28px;
+        cursor: pointer;
+    }
+    .footer {
+        text-align: center;
+        padding: 30px;
+        border-top: 1px solid #1a1a1a;
+        color: #555;
+        font-size: 13px;
+        margin-top: 50px;
+    }
+    .footer a {
+        color: #00ff41;
+        text-decoration: none;
+    }
+    @media (max-width: 768px) {
+        .navbar .logo { font-size: 18px; }
+        .nav-links { display: none; flex-direction: column; width: 100%; background: #0d0d0d; }
+        .nav-links.active { display: flex; }
+        .hamburger { display: block; }
+    }
+    /* ===== NAVBAR END ===== */
   </style>
 </head>
 <body>
-  <body>
 
 <!-- NAVBAR START -->
 <nav class="navbar">
@@ -88,9 +184,7 @@
 <!-- NAVBAR END -->
 
   <div class="container">
-  <div class="container">
 
-    <a href="index.html" class="nav-link">&larr; Back to Home</a>
     <h1>🔬 Pentest Lab</h1>
     <p style="text-align:center; color:#888;">Hands-on hacking sandbox. Try real attack techniques safely.</p>
 
@@ -149,7 +243,14 @@
       <div id="scan-result" class="result-box">Ready to scan...</div>
     </div>
 
-  </div>
+  </div>  <!-- container ends -->
+
+<!-- FOOTER START -->
+<div class="footer">
+    <p>CyberArena — Educational Cybersecurity Platform | <a href="/">Home</a> | <a href="/awareness.html">Awareness</a> | <a href="/task.html">Challenges</a></p>
+    <p style="margin-top:5px;">Built for learning. No illegal activity promoted. &copy; 2026</p>
+</div>
+<!-- FOOTER END -->
 
   <script>
     // ===================== LAB 1: SQL INJECTION SIMULATOR =====================
