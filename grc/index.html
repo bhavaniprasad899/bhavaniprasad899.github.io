@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="GRC - Governance Risk and Compliance training - ISO 27001, NIST, risk assessment, policy templates, security audits">
+    <title>GRC | CyberArena</title>
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { font-family:'Courier New',monospace; background:#0a0a0a; color:#00ff41; line-height:1.6; }
+        .navbar { background:#0d0d0d; border-bottom:2px solid #00ff41; position:sticky; top:0; z-index:1000; }
+        .navbar-inner { max-width:1200px; margin:0 auto; display:flex; justify-content:space-between; align-items:center; padding:10px 20px; }
+        .navbar .logo { color:#00ff41; font-size:22px; font-weight:bold; text-decoration:none; text-shadow:0 0 10px #00ff41; }
+        .navbar .logo span { color:#ff0040; }
+        .nav-links { display:flex; flex-wrap:wrap; list-style:none; gap:5px; }
+        .nav-links li a { color:#ccc; text-decoration:none; padding:6px 12px; font-size:13px; border:1px solid transparent; transition:0.3s; }
+        .nav-links li a:hover { color:#00ff41; border:1px solid #00ff41; background:rgba(0,255,65,0.05); }
+        .dropdown { position:relative; display:inline-block; }
+        .dropdown-content { display:none; position:absolute; background:#111; border:1px solid #00ff41; min-width:180px; z-index:1; }
+        .dropdown-content a { display:block; padding:10px 15px; color:#ccc; border-bottom:1px solid #1a1a1a; }
+        .dropdown-content a:hover { background:#1a1a1a; color:#00ff41; }
+        .dropdown:hover .dropdown-content { display:block; }
+        .hamburger { display:none; color:#00ff41; font-size:28px; cursor:pointer; }
+        .section-page { max-width:1000px; margin:30px auto; padding:0 20px; }
+        .section-page h1 { font-size:32px; color:#00ff41; text-shadow:0 0 15px #00ff41; margin-bottom:10px; }
+        .section-page h2 { color:#00ff41; font-size:22px; margin:30px 0 15px; border-bottom:1px solid #1a1a1a; padding-bottom:8px; }
+        .section-page h3 { color:#0f0; font-size:17px; margin:20px 0 10px; }
+        .section-page p { color:#bbb; margin-bottom:15px; font-size:15px; }
+        .section-page ul, .section-page ol { color:#bbb; margin:10px 0 20px 25px; }
+        .section-page li { margin-bottom:8px; }
+        .section-page code { background:#1a1a1a; padding:2px 6px; border-radius:3px; font-size:14px; color:#ff0; }
+        .section-page a { color:#0f0; }
+        .tool-box { background:#111; border:1px solid #333; padding:20px; margin:20px 0; border-radius:5px; }
+        .tool-box h4 { color:#00ff41; margin-bottom:10px; }
+        .tool-box pre { background:#0a0a0a; padding:15px; overflow-x:auto; border:1px solid #222; color:#0f0; font-family:'Courier New',monospace; font-size:13px; }
+        .footer { text-align:center; padding:30px; border-top:1px solid #1a1a1a; color:#555; font-size:13px; margin-top:50px; }
+        .footer a { color:#00ff41; text-decoration:none; }
+        @media (max-width:768px) {
+            .navbar .logo { font-size:18px; }
+            .nav-links { display:none; flex-direction:column; width:100%; background:#0d0d0d; }
+            .nav-links.active { display:flex; }
+            .hamburger { display:block; }
+            .section-page h1 { font-size:24px; }
+        }
+        ::-webkit-scrollbar { width:8px; }
+        ::-webkit-scrollbar-track { background:#0a0a0a; }
+        ::-webkit-scrollbar-thumb { background:#00ff41; border-radius:4px; }
+    </style>
+</head>
+<body>
+
+<nav class="navbar">
+    <div class="navbar-inner">
+        <a href="/" class="logo">Cyber<span>Arena</span></a>
+        <div class="hamburger" onclick="document.querySelector('.nav-links').classList.toggle('active')">&#9776;</div>
+        <ul class="nav-links">
+            <li><a href="/">Home</a></li>
+            <li><a href="/awareness.html">Awareness</a></li>
+            <li class="dropdown">
+                <a href="#">Labs &#9662;</a>
+                <div class="dropdown-content">
+                    <a href="/ethical-hacking/">Ethical Hacking</a>
+                    <a href="/soc/">SOC</a>
+                    <a href="/grc/">GRC</a>
+                    <a href="/malware-analysis/">Malware Analysis</a>
+                    <a href="/android-hacking/">Android Hacking</a>
+                </div>
+            </li>
+            <li class="dropdown">
+                <a href="#">Tools &#9662;</a>
+                <div class="dropdown-content">
+                    <a href="/terminal.html">Hacker Terminal</a>
+                    <a href="/whois.html">WHOIS Lookup</a>
+                </div>
+            </li>
+            <li><a href="/task.html">Challenges</a></li>
+        </ul>
+    </div>
+</nav>
+
+<div class="section-page">
+    <h1>&#128214; GRC — Governance, Risk & Compliance</h1>
+    <p>GRC is the backbone of enterprise security. This section covers security frameworks, risk assessment methodologies, compliance standards, and audit preparation.</p>
+
+    <h2>1. Governance</h2>
+    <p>Governance defines how security decisions are made, who is accountable, and how policies are enforced.</p>
+
+    <div class="tool-box">
+        <h4>Key Governance Elements</h4>
+        <ul>
+            <li><strong>Security Policy:</strong> High-level document defining security goals and rules</li>
+            <li><strong>Procedures:</strong> Step-by-step instructions for implementing policies</li>
+            <li><strong>Standards:</strong> Mandatory requirements (e.g., password complexity)</li>
+            <li><strong>Guidelines:</strong> Recommended practices (not mandatory)</li>
+            <li><strong>Roles & Responsibilities:</strong> Who does what (CISO, DPO, SOC Manager)</li>
+        </ul>
+    </div>
+
+    <h2>2. Risk Management</h2>
+    <p>Risk = Likelihood x Impact. Organizations must identify, assess, and mitigate risks.</p>
+
+    <div class="tool-box">
+        <h4>Risk Assessment Process</h4>
+        <pre>Step 1: IDENTIFY ASSETS
+- Servers, databases, applications, employee data, IP
+
+Step 2: IDENTIFY THREATS
+- Malware, insider threats, natural disasters, third-party risks
+
+Step 3: ASSESS VULNERABILITIES
+- Unpatched software, weak passwords, misconfigurations
+
+Step 4: CALCULATE RISK
+- Likelihood (1-5) x Impact (1-5) = Risk Score
+
+Step 5: TREAT RISK
+- Accept / Mitigate / Transfer / Avoid</pre>
+    </div>
+
+    <div class="tool-box">
+        <h4>Risk Matrix Example</h4>
+        <pre>                 IMPACT
+              Low  Med  High
+        High  Med  High  Critical
+LIKELI  Med   Low  Med   High
+        Low   Low  Low   Med
+
+Risk Score Legend:
+1-4   Low    → Accept
+5-9   Medium → Mitigate
+10-14 High   → Action required
+15-25 Critical → Immediate action</pre>
+    </div>
+
+    <h2>3. Compliance Frameworks</h2>
+
+    <div class="tool-box">
+        <h4>ISO 27001 — Information Security Management</h4>
+        <pre>Clauses:
+4. Context of the organization
+5. Leadership
+6. Planning (risk assessment)
+7. Support (awareness, competence)
+8. Operation (risk treatment plan)
+9. Performance evaluation (audits, reviews)
+10. Improvement (corrective actions)
+
+Annex A Controls (14 domains, 114 controls):
+A.5   Information security policies
+A.6   Organization of information security
+A.7   Human resource security
+A.8   Asset management
+A.9   Access control
+A.10  Cryptography
+A.11  Physical security
+A.12  Operations security
+A.13  Communications security
+A.14  System acquisition & development
+A.15  Supplier relationships
+A.16  Incident management
+A.17  Business continuity
+A.18  Compliance</pre>
+    </div>
+
+    <div class="tool-box">
+        <h4>NIST Cybersecurity Framework (CSF)</h4>
+        <pre>5 FUNCTIONS:
+1. IDENTIFY  — Asset management, risk assessment
+2. PROTECT  — Access control, data security, training
+3. DETECT   — Continuous monitoring, anomaly detection
+4. RESPOND  — Response planning, communication, mitigation
+5. RECOVER  — Recovery planning, improvements
+
+Tiers: Partial → Risk-Informed → Repeatable → Adaptive
+Profiles: Current Profile vs Target Profile</pre>
+    </div>
+
+    <div class="tool-box">
+        <h4>Other Compliance Standards</h4>
+        <ul>
+            <li><strong>GDPR:</strong> EU data protection — fines up to 4% of global revenue</li>
+            <li><strong>PCI DSS:</strong> Payment card industry — 12 requirements for handling card data</li>
+            <li><strong>HIPAA:</strong> Healthcare data protection (US)</li>
+            <li><strong>SOX:</strong> Financial reporting controls (US public companies)</li>
+            <li><strong>IT Act 2000:</strong> India's cyber law framework</li>
+        </ul>
+    </div>
+
+    <h2>4. Security Audits</h2>
+
+    <div class="tool-box">
+        <h4>Audit Checklist (Sample)</h4>
+        <pre>[ ] Password policy enforced (min 8 chars, complexity)
+[ ] MFA enabled for all admin accounts
+[ ] Firewall rules reviewed in last 90 days
+[ ] Antivirus/malware protection active on all endpoints
+[ ] Software patching within 30 days
+[ ] Access reviews conducted quarterly
+[ ] Encryption in transit (TLS 1.2+) and at rest
+[ ] Incident response plan tested in last 12 months
+[ ] Backup tested and verified
+[ ] Third-party vendors assessed for security</pre>
+    </div>
+
+    <h2>5. Policy Templates</h2>
+
+    <div class="tool-box">
+        <h4>Acceptable Use Policy (Template)</h4>
+        <pre>1. PURPOSE
+   This policy defines acceptable use of company IT resources.
+
+2. SCOPE
+   All employees, contractors, and third parties.
+
+3. POLICY
+   - Company devices are for business use only
+   - Personal use must not interfere with work
+   - Prohibited: illegal activities, harassment, piracy
+   - All internet traffic may be monitored
+
+4. VIOLATIONS
+   - Violations may result in disciplinary action
+   - Report violations to security@company.com
+
+5. REVIEW
+   - This policy is reviewed annually</pre>
+    </div>
+
+    <p style="margin-top:30px; color:#555; font-size:13px;">GRC professionals bridge the gap between technical security and business requirements. Start with understanding one framework at a time.</p>
+</div>
+
+<div class="footer">
+    <p>CyberArena — Educational Cybersecurity Platform | <a href="/">Home</a></p>
+</div>
+
+</body>
+</html>
