@@ -43,6 +43,11 @@ h2{text-align:center;color:#a50;font-size:14px;margin-bottom:20px;font-weight:no
 <a href="task.html" class="back">⬅ Back to Levels</a>
 </div>
 <script>
+  // ===== POINTS SYSTEM =====
+function addPoints(amount) {
+    const current = parseInt(localStorage.getItem('cyberarena_points') || '0');
+    localStorage.setItem('cyberarena_points', (current + amount).toString());
+}
 let timeLeft=300;let timerRunning=false;
 const challenges=[
 {title:'🔢 Challenge 1: Binary Decode','desc':'A message was found in binary. Decode it to get the flag.','display':'01000110 01001100 01000001 01000111 01111011 01100010 01101001 01101110 01100001 01110010 01111001 01011111 01101001 01110011 01011111 01100110 01110101 01101110 01111101','answer':'flag{binary_is_fun}'},
