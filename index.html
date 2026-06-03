@@ -350,6 +350,41 @@
     }
     .slider-dot.active { background: var(--primary); box-shadow: 0 0 10px var(--primary); width: 24px; border-radius: 4px; }
 
+    <!-- ===== LIVE MARKET TICKER ===== -->
+  <section class="market-ticker" id="market">
+    <div class="ticker-header">
+      <h2>Live <span>Market</span> Feed</h2>
+      <p>Real-time cryptocurrency &amp; commodity prices — refreshed every 60 seconds</p>
+    </div>
+    <div class="ticker-grid" id="tickerGrid">
+      <div class="ticker-card" id="btcCard">
+        <div class="ticker-icon">₿</div>
+        <div class="ticker-name">Bitcoin <span class="ticker-symbol">BTC/USD</span></div>
+        <div class="ticker-price" id="btcPrice">---</div>
+        <div class="ticker-change" id="btcChange">---</div>
+      </div>
+      <div class="ticker-card" id="goldCard">
+        <div class="ticker-icon" style="color:#ffd700;">🥇</div>
+        <div class="ticker-name">Gold <span class="ticker-symbol">XAU/USD</span></div>
+        <div class="ticker-price" id="goldPrice">---</div>
+        <div class="ticker-change" id="goldChange">---</div>
+      </div>
+      <div class="ticker-card" id="silverCard">
+        <div class="ticker-icon" style="color:#c0c0c0;">🥈</div>
+        <div class="ticker-name">Silver <span class="ticker-symbol">XAG/USD</span></div>
+        <div class="ticker-price" id="silverPrice">---</div>
+        <div class="ticker-change" id="silverChange">---</div>
+      </div>
+      <div class="ticker-card clock-card">
+        <div class="ticker-icon" style="color:#0ff;">🕐</div>
+        <div class="ticker-name">Live Time</div>
+        <div class="ticker-price clock-time" id="liveTime">--:--:--</div>
+        <div class="ticker-change" id="liveDate">---</div>
+      </div>
+    </div>
+    <p class="ticker-disclaimer">Data from CoinGecko API — updates every 60s</p>
+  </section>
+    
     /* ===== PATHWAY SECTION ===== */
     .pathway {
       position: relative;
