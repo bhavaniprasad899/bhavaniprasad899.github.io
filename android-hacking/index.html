@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Android Hacking | CyberArena</title>
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { font-family:'Courier New',monospace; background:#0a0a0a; color:#00ff41; line-height:1.6; }
+        .navbar { background:rgba(13,13,13,0.95); border-bottom:2px solid #00ff41; position:sticky; top:0; z-index:1000; }
+        .navbar-inner { max-width:1200px; margin:0 auto; display:flex; justify-content:space-between; align-items:center; padding:10px 20px; }
+        .navbar .logo { color:#00ff41; font-size:22px; font-weight:bold; text-decoration:none; text-shadow:0 0 10px #00ff41; }
+        .navbar .logo span { color:#ff0040; }
+        .nav-links { display:flex; flex-wrap:wrap; list-style:none; gap:5px; }
+        .nav-links li a { color:#ccc; text-decoration:none; padding:6px 12px; font-size:13px; border:1px solid transparent; transition:0.3s; }
+        .nav-links li a:hover { color:#00ff41; border:1px solid #00ff41; }
+        .dropdown { position:relative; display:inline-block; }
+        .dropdown-content { display:none; position:absolute; background:#111; border:1px solid #00ff41; min-width:180px; z-index:1; }
+        .dropdown-content a { display:block; padding:10px 15px; color:#ccc; border-bottom:1px solid #1a1a1a; }
+        .dropdown-content a:hover { background:#1a1a1a; color:#00ff41; }
+        .dropdown:hover .dropdown-content { display:block; }
+        .hamburger { display:none; color:#00ff41; font-size:28px; cursor:pointer; }
+        .container { max-width:1000px; margin:30px auto; padding:20px; }
+        .container h1 { font-size:32px; color:#00ff41; text-shadow:0 0 15px #00ff41; }
+        .container h2 { color:#00ff41; font-size:22px; margin:30px 0 15px; border-bottom:1px solid #333; padding-bottom:8px; }
+        .container p { color:#bbb; font-size:15px; margin-bottom:15px; }
+        .container ul { color:#bbb; margin:10px 0 20px 25px; }
+        .container li { margin-bottom:8px; }
+        .tool-box { background:#111; border:1px solid #333; padding:20px; margin:20px 0; border-radius:5px; }
+        .tool-box h4 { color:#00ff41; margin-bottom:10px; }
+        .tool-box pre { background:#0a0a0a; padding:15px; overflow-x:auto; border:1px solid #222; color:#0f0; font-family:'Courier New',monospace; font-size:13px; }
+        .container code { background:#1a1a1a; padding:2px 6px; border-radius:3px; font-size:14px; color:#ff0; }
+        .footer { text-align:center; padding:30px; border-top:1px solid #1a1a1a; color:#555; font-size:13px; margin-top:50px; }
+        .footer a { color:#00ff41; text-decoration:none; }
+        @media (max-width:768px) {
+            .nav-links { display:none; flex-direction:column; width:100%; background:#0d0d0d; }
+            .nav-links.active { display:flex; }
+            .hamburger { display:block; }
+            .container h1 { font-size:24px; }
+        }
+    </style>
+</head>
+<body>
+<nav class="navbar">
+    <div class="navbar-inner">
+        <a href="/" class="logo">Cyber<span>Arena</span></a>
+        <div class="hamburger" onclick="document.querySelector('.nav-links').classList.toggle('active')">&#9776;</div>
+        <ul class="nav-links">
+            <li><a href="/">Home</a></li>
+            <li><a href="/awareness.html">Awareness</a></li>
+            <li class="dropdown">
+                <a href="#">Labs &#9662;</a>
+                <div class="dropdown-content">
+                    <a href="/ethical-hacking/">Ethical Hacking</a>
+                    <a href="/soc/">SOC</a>
+                    <a href="/grc/">GRC</a>
+                    <a href="/malware-analysis/">Malware Analysis</a>
+                    <a href="/android-hacking/">Android Hacking</a>
+                </div>
+            </li>
+            <li class="dropdown">
+                <a href="#">Tools &#9662;</a>
+                <div class="dropdown-content">
+                    <a href="/terminal.html">Hacker Terminal</a>
+                    <a href="/whois.html">WHOIS Lookup</a>
+                </div>
+            </li>
+            <li><a href="/task.html">Challenges</a></li>
+        </ul>
+    </div>
+</nav>
+<div class="container">
+    <h1>&#128241; Android Hacking — Mobile Penetration Testing</h1>
+    <p>Learn how to test Android applications for security vulnerabilities. Covers APK reversing, ADB commands, app pentesting, and bypassing Android security controls.</p>
+
+    <h2>1. ADB (Android Debug Bridge) Basics</h2>
+    <p>ADB is the primary tool for interacting with Android devices from your computer.</p>
+    <div class="tool-box">
+        <h4>Essential ADB Commands</h4>
+        <pre># List connected devices
+adb devices
+
+# Install an APK
+adb install app.apk
+
+# Uninstall an app
+adb uninstall com.example.app
+
+# Pull files from device
+adb pull /sdcard/data.txt
+
+# Push files to device
+adb push local.txt /sdcard/
+
+# Open a shell on the device
+adb shell
+
+# List installed packages
+adb shell pm list packages
+
+# Start an activity
+adb shell am start -n com.example.app/.MainActivity</pre>
+    </div>
+
+    <h2>2. APK Reversing & Decompilation</h2>
+    <div class="tool-box">
+        <h4>Tools & Commands</h4>
+        <pre># Decompile APK with apktool
+apktool d app.apk -o output_dir
+
+# Convert APK to readable Java code (jadx)
+jadx app.apk
+
+# Extract resources
+apktool d -r app.apk
+
+# View AndroidManifest.xml
+# Check for:
+# - Exported activities (android:exported="true")
+# - Permissions requested
+# - Backup flag (android:allowBackup)
+# - Debuggable flag</pre>
+    </div>
+
+    <h2>3. Common Android Vulnerabilities</h2>
+    <div class="tool-box">
+        <h4>Insecure Data Storage</h4>
+        <pre># Check for hardcoded credentials
+strings app.apk | grep -i "password\|apikey\|secret\|token"
+
+# Check SharedPreferences on device
+adb shell
+cat /data/data/com.example.app/shared_prefs/*.xml
+
+# Check SQLite databases
+adb shell
+sqlite3 /data/data/com.example.app/databases/app.db
+.tables
+SELECT * FROM users;</pre>
+    </div>
+
+    <div class="tool-box">
+        <h4>Root Detection Bypass</h4>
+        <pre># Common root detection checks
+# 1. Check if su binary exists
+# 2. Check for root management apps
+# 3. Check Build.TAGS
+# 4. Check /system/app/Superuser.apk
+
+# Bypass techniques:
+# - Use Frida to hook root detection functions
+# - Use Objection for runtime manipulation
+# - Repackage APK after removing root checks
+
+# Frida command to bypass root detection
+frida -U -f com.example.app --no-pause -l bypass_root.js</pre>
+    </div>
+
+    <div class="tool-box">
+        <h4>OWASP Mobile Top 10</h4>
+        <pre>M1:  Improper Platform Usage
+M2:  Insecure Data Storage
+M3:  Insecure Communication
+M4:  Insecure Authentication
+M5:  Insufficient Cryptography
+M6:  Insecure Authorization
+M7:  Client Code Quality
+M8:  Code Tampering
+M9:  Reverse Engineering
+M10: Extraneous Functionality</pre>
+    </div>
+
+    <p style="margin-top:30px; color:#555; font-size:13px;">Always test only on apps you own or have written permission to test.</p>
+</div>
+<div class="footer">
+    <p>CyberArena — Educational Cybersecurity Platform | <a href="/">Home</a></p>
+</div>
+</body>
+</html>
