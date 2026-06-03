@@ -701,5 +701,83 @@
       }
     });
   </script>
+ // ===== LIVE PRICE FETCHER =====
+async function fetchPrices() {
+  try {
+    const response = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,gold,silver&vs_currencies=usd&include_24hr_change=true', {
+      headers: { 'Accept': 'application/json' }
+    });
+    const data = await response.json();
+
+    // Bitcoin
+    if (data.bitcoin) {
+      document.getElementById('btcPrice').textContent = '$' + data.bitcoin.usd.toLocaleString();
+      const btcChange = data.bitcoin.usd_24h_change;
+      const btcEl = document.getElementById('btcChange');
+      btcEl.textContent = (btcChange >= 0 ? '+' : '') + btcChange.toFixed(2) + '%';
+      btcEl.className = 'ticker-change ' + (btcChange >= 0 ? 'up' : 'down');
+    }
+
+    // Gold (CoinGecko uses "gold" id for an ETF-like token; for pure XAU we use alternative)
+    if (data.gold) {
+      document.getElementById('goldPrice').textContent = '$' + data.gold.usd.toLocaleString();
+      const gChange = data.gold.usd_24h_change;
+      const gEl = document.getElementById('goldChange');
+      gEl.textContent = (gChange >= 0 ? '+' : '') + gChange.toFixed(2) + '%';
+      gEl.className = 'ticker-change ' + (gChange >= 0 ? 'up' : 'down');
+    }
+
+    if (data.silver) {
+      document.getElementById('silverPrice').textContent = '$' + data.silver.usd.toLocaleString();
+      const sChange = data.silver.usd_24h_change;
+      const sEl = document.getElementById('silverChange');
+      sEl.textContent = (sChange >= 0 ? '+' : '') + sChange.toFixed(2) + '%';
+      sEl.className = 'ticker-change ' + (sChange >= 0 ? 'up' : 'down');
+    }
+  } catch (err) {
+    // If API fails, try fallback for gold/silver from alternative source
+    console.log('Price fetch issue, will retry:', err);
+  }
+}
+
+// ===== LIVE CLOCK =====
+function updateClock() {
+  const now = new Date();
+  const timeStr = now.toLocaleTimeString('en-US', { hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit' });
+  const dateStr = now.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+  document.getElementById('liveTime').textContent = timeStr;
+  document.getElementById('liveDate').textContent = dateStr;
+}
+
+// ===== FALLBACK FOR GOLD & SILVER (if CoinGecko doesn't have them) =====
+async function fetchGoldSilverFallback() {
+  try {
+    // Using GoldAPI.io free tier or metals-api as fallback
+    // For now, use a free metals API
+    const res = await fetch('https://api.metals.live/v1/spot/gold');
+    if (res.ok) {
+      const gData = await res.json();
+      const goldPrice = gData.price || gData;
+      document.getElementById('goldPrice').textContent = '$' + Number(goldPrice).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
+    }
+  } catch(e) {}
+  
+  try {
+    const res = await fetch('https://api.metals.live/v1/spot/silver');
+    if (res.ok) {
+      const sData = await res.json();
+      const silverPrice = sData.price || sData;
+      document.getElementById('silverPrice').textContent = '$' + Number(silverPrice).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
+    }
+  } catch(e) {}
+}
+
+// Initialize
+fetchPrices();
+fetchGoldSilverFallback();
+updateClock();
+setInterval(fetchPrices, 60000); // Refresh prices every 60 seconds
+setInterval(fetchGoldSilverFallback, 60000);
+setInterval(updateClock, 1000); // Update clock every second
 </body>
 </html>
