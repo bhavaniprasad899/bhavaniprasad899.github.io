@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="SOC Operations training - SIEM tools, alert triage, incident response, threat hunting, log analysis">
+    <title>SOC Operations | CyberArena</title>
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { font-family:'Courier New',monospace; background:#0a0a0a; color:#00ff41; line-height:1.6; }
+        .navbar { background:#0d0d0d; border-bottom:2px solid #00ff41; position:sticky; top:0; z-index:1000; }
+        .navbar-inner { max-width:1200px; margin:0 auto; display:flex; justify-content:space-between; align-items:center; padding:10px 20px; }
+        .navbar .logo { color:#00ff41; font-size:22px; font-weight:bold; text-decoration:none; text-shadow:0 0 10px #00ff41; }
+        .navbar .logo span { color:#ff0040; }
+        .nav-links { display:flex; flex-wrap:wrap; list-style:none; gap:5px; }
+        .nav-links li a { color:#ccc; text-decoration:none; padding:6px 12px; font-size:13px; border:1px solid transparent; transition:0.3s; }
+        .nav-links li a:hover { color:#00ff41; border:1px solid #00ff41; background:rgba(0,255,65,0.05); }
+        .dropdown { position:relative; display:inline-block; }
+        .dropdown-content { display:none; position:absolute; background:#111; border:1px solid #00ff41; min-width:180px; z-index:1; }
+        .dropdown-content a { display:block; padding:10px 15px; color:#ccc; border-bottom:1px solid #1a1a1a; }
+        .dropdown-content a:hover { background:#1a1a1a; color:#00ff41; }
+        .dropdown:hover .dropdown-content { display:block; }
+        .hamburger { display:none; color:#00ff41; font-size:28px; cursor:pointer; }
+        .section-page { max-width:1000px; margin:30px auto; padding:0 20px; }
+        .section-page h1 { font-size:32px; color:#00ff41; text-shadow:0 0 15px #00ff41; margin-bottom:10px; }
+        .section-page h2 { color:#00ff41; font-size:22px; margin:30px 0 15px; border-bottom:1px solid #1a1a1a; padding-bottom:8px; }
+        .section-page h3 { color:#0f0; font-size:17px; margin:20px 0 10px; }
+        .section-page p { color:#bbb; margin-bottom:15px; font-size:15px; }
+        .section-page ul, .section-page ol { color:#bbb; margin:10px 0 20px 25px; }
+        .section-page li { margin-bottom:8px; }
+        .section-page code { background:#1a1a1a; padding:2px 6px; border-radius:3px; font-size:14px; color:#ff0; }
+        .section-page a { color:#0f0; }
+        .tool-box { background:#111; border:1px solid #333; padding:20px; margin:20px 0; border-radius:5px; }
+        .tool-box h4 { color:#00ff41; margin-bottom:10px; }
+        .tool-box pre { background:#0a0a0a; padding:15px; overflow-x:auto; border:1px solid #222; color:#0f0; font-family:'Courier New',monospace; font-size:13px; }
+        .footer { text-align:center; padding:30px; border-top:1px solid #1a1a1a; color:#555; font-size:13px; margin-top:50px; }
+        .footer a { color:#00ff41; text-decoration:none; }
+        @media (max-width:768px) {
+            .navbar .logo { font-size:18px; }
+            .nav-links { display:none; flex-direction:column; width:100%; background:#0d0d0d; }
+            .nav-links.active { display:flex; }
+            .hamburger { display:block; }
+            .section-page h1 { font-size:24px; }
+        }
+        ::-webkit-scrollbar { width:8px; }
+        ::-webkit-scrollbar-track { background:#0a0a0a; }
+        ::-webkit-scrollbar-thumb { background:#00ff41; border-radius:4px; }
+    </style>
+</head>
+<body>
+
+<nav class="navbar">
+    <div class="navbar-inner">
+        <a href="/" class="logo">Cyber<span>Arena</span></a>
+        <div class="hamburger" onclick="document.querySelector('.nav-links').classList.toggle('active')">&#9776;</div>
+        <ul class="nav-links">
+            <li><a href="/">Home</a></li>
+            <li><a href="/awareness.html">Awareness</a></li>
+            <li class="dropdown">
+                <a href="#">Labs &#9662;</a>
+                <div class="dropdown-content">
+                    <a href="/ethical-hacking/">Ethical Hacking</a>
+                    <a href="/soc/">SOC</a>
+                    <a href="/grc/">GRC</a>
+                    <a href="/malware-analysis/">Malware Analysis</a>
+                    <a href="/android-hacking/">Android Hacking</a>
+                </div>
+            </li>
+            <li class="dropdown">
+                <a href="#">Tools &#9662;</a>
+                <div class="dropdown-content">
+                    <a href="/terminal.html">Hacker Terminal</a>
+                    <a href="/whois.html">WHOIS Lookup</a>
+                </div>
+            </li>
+            <li><a href="/task.html">Challenges</a></li>
+        </ul>
+    </div>
+</nav>
+
+<div class="section-page">
+    <h1>&#128200; SOC Operations — Blue Team Training</h1>
+    <p>Learn how Security Operations Centers work. This section covers SIEM, alert analysis, incident response, log management, and threat detection — the core skills of a SOC analyst.</p>
+
+    <h2>1. What is a SOC?</h2>
+    <p>A Security Operations Center (SOC) is a team that monitors and protects an organization's IT infrastructure 24/7. SOC analysts work in tiers:</p>
+    <ul>
+        <li><strong>Tier 1 (Triage):</strong> Monitors alerts, filters false positives, escalates real threats</li>
+        <li><strong>Tier 2 (Investigation):</strong> Deep dives into escalated incidents, contains threats</li>
+        <li><strong>Tier 3 (Threat Hunting):</strong> Proactively searches for hidden threats, reverse engineers malware</li>
+    </ul>
+
+    <h2>2. SIEM Tools (Security Information & Event Management)</h2>
+    <p>SIEM collects logs from all systems and alerts on suspicious activity.</p>
+
+    <div class="tool-box">
+        <h4>Splunk — Search & Correlation</h4>
+        <pre># Basic search — find failed logins
+index=windows EventCode=4625
+
+# Search for brute force (many failed logins from same IP)
+index=windows EventCode=4625 | stats count by src_ip | where count > 10
+
+# Search for suspicious PowerShell
+index=windows sourcetype="WinEventLog:Microsoft-Windows-PowerShell/Operational"</pre>
+    </div>
+
+    <div class="tool-box">
+        <h4>Wazuh (Open Source SIEM)</h4>
+        <pre># Wazuh rule example — detect new user creation
+&lt;rule id="100001" level="10"&gt;
+    &lt;if_group&gt;windows&lt;/if_group&gt;
+    &lt;field name="win.eventdata.eventID"&gt;4720&lt;/field&gt;
+    &lt;description&gt;New user account created&lt;/description&gt;
+&lt;/rule&gt;</pre>
+    </div>
+
+    <h2>3. Alert Triage — Real Scenarios</h2>
+
+    <div class="tool-box">
+        <h4>Scenario 1: Multiple Failed Logins (Brute Force)</h4>
+        <p><strong>Alert:</strong> 50 failed login attempts from IP 185.220.101.x within 2 minutes</p>
+        <p><strong>Triage Steps:</strong></p>
+        <ol>
+            <li>Check if the source IP is internal or external</li>
+            <li>Look at the target accounts — admin accounts?</li>
+            <li>Check if any login succeeded (EventCode 4624 after 4625)</li>
+            <li>If external, add IP to firewall blocklist</li>
+            <li>Escalate if credential compromise is confirmed</li>
+        </ol>
+    </div>
+
+    <div class="tool-box">
+        <h4>Scenario 2: Outbound Connection to Known Malicious IP</h4>
+        <p><strong>Alert:</strong> Internal host 10.0.1.55 connected to 203.0.113.5 (known C2 server)</p>
+        <p><strong>Triage Steps:</strong></p>
+        <ol>
+            <li>Isolate the host from the network immediately</li>
+            <li>Check what process made the connection</li>
+            <li>Look for recently created/modified files</li>
+            <li>Capture a memory dump for analysis</li>
+            <li>Check other hosts for similar connections</li>
+        </ol>
+    </div>
+
+    <div class="tool-box">
+        <h4>Scenario 3: Unauthorized Software Installation</h4>
+        <p><strong>Alert:</strong> Mimikatz detected on workstation WS-102</p>
+        <p><strong>Triage Steps:</strong></p>
+        <ol>
+            <li>Confirm — was it a red team exercise? If no, escalate immediately</li>
+            <li>Check who was logged in at the time</li>
+            <li>Look for lateral movement from this host</li>
+            <li>Reset affected user credentials</li>
+            <li>Begin incident response process</li>
+        </ol>
+    </div>
+
+    <h2>4. Log Analysis — What to Look For</h2>
+
+    <div class="tool-box">
+        <h4>Windows Event Logs — Key IDs</h4>
+        <pre>4624  — Successful logon
+4625  — Failed logon
+4634  — Logoff
+4648  — Logon with explicit credentials
+4672  — Admin logon
+4688  — Process created
+4698  — Scheduled task created
+4720  — User account created
+4732  — User added to group
+7045  — Service installed</pre>
+    </div>
+
+    <div class="tool-box">
+        <h4>Linux Log Analysis Commands</h4>
+        <pre># Check authentication logs
+cat /var/log/auth.log | grep "Failed password"
+
+# Check for sudo usage
+cat /var/log/auth.log | grep "sudo"
+
+# Check cron jobs
+cat /var/log/syslog | grep CRON
+
+# List all listening connections
+netstat -tulpn
+
+# Check running processes
+ps aux --sort=-%mem</pre>
+    </div>
+
+    <h2>5. Incident Response (IR) Playbook</h2>
+
+    <div class="tool-box">
+        <h4>4-Phase IR Process</h4>
+        <pre>PHASE 1: PREPARATION
+- Have playbooks ready
+- Ensure logging is enabled everywhere
+- Maintain updated asset inventory
+
+PHASE 2: DETECTION & ANALYSIS
+- Monitor SIEM alerts
+- Validate and triage
+- Determine scope of incident
+
+PHASE 3: CONTAINMENT & ERADICATION
+- Isolate affected systems
+- Remove malware
+- Patch vulnerabilities
+
+PHASE 4: RECOVERY & LESSONS LEARNED
+- Restore from clean backups
+- Document findings
+- Update security controls</pre>
+    </div>
+
+    <p style="margin-top:30px; color:#555; font-size:13px;">Practice your SOC skills on <a href="/task.html">Challenge Levels</a>.</p>
+</div>
+
+<div class="footer">
+    <p>CyberArena — Educational Cybersecurity Platform | <a href="/">Home</a></p>
+</div>
+
+</body>
+</html>
