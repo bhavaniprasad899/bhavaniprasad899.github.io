@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Challenges | CyberArena</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Courier New', monospace; background: #0a0a0a; color: #00ff41; line-height: 1.6; }
+        .navbar { background: rgba(13,13,13,0.95); border-bottom: 2px solid #00ff41; position: sticky; top: 0; z-index: 1000; }
+        .navbar-inner { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; padding: 10px 20px; }
+        .navbar .logo { color: #00ff41; font-size: 22px; font-weight: bold; text-decoration: none; text-shadow: 0 0 10px #00ff41; }
+        .navbar .logo span { color: #ff0040; }
+        .nav-links { display: flex; flex-wrap: wrap; list-style: none; gap: 5px; }
+        .nav-links li a { color: #ccc; text-decoration: none; padding: 6px 12px; font-size: 13px; border: 1px solid transparent; transition: 0.3s; }
+        .nav-links li a:hover { color: #00ff41; border: 1px solid #00ff41; }
+        .dropdown { position: relative; display: inline-block; }
+        .dropdown-content { display: none; position: absolute; background: #111; border: 1px solid #00ff41; min-width: 180px; z-index: 1; }
+        .dropdown-content a { display: block; padding: 10px 15px; color: #ccc; border-bottom: 1px solid #1a1a1a; }
+        .dropdown-content a:hover { background: #1a1a1a; color: #00ff41; }
+        .dropdown:hover .dropdown-content { display: block; }
+        .hamburger { display: none; color: #00ff41; font-size: 28px; cursor: pointer; }
+
+        .container { max-width: 1000px; margin: 30px auto; padding: 20px; }
+        h1 { text-align: center; font-size: 32px; color: #00ff41; text-shadow: 0 0 15px #00ff41; margin-bottom: 10px; }
+        .subtitle { text-align: center; color: #888; margin-bottom: 40px; }
+
+        .level-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+        .level-card { background: rgba(17,17,17,0.9); border: 1px solid #333; border-radius: 10px; padding: 25px; transition: 0.3s; }
+        .level-card:hover { border-color: #00ff41; box-shadow: 0 0 20px rgba(0,255,65,0.1); transform: translateY(-5px); }
+        .level-card h3 { color: #00ff41; margin-bottom: 10px; font-size: 18px; }
+        .level-card p { color: #aaa; font-size: 14px; margin-bottom: 15px; }
+        .level-card .badge { display: inline-block; padding: 3px 10px; font-size: 11px; border: 1px solid; border-radius: 3px; margin-right: 5px; margin-bottom: 5px; }
+        .badge-green { border-color: #00ff41; color: #00ff41; }
+        .badge-blue { border-color: #06f; color: #06f; }
+        .badge-yellow { border-color: #ff0; color: #ff0; }
+        .badge-red { border-color: #f44; color: #f44; }
+        .badge-purple { border-color: #a0f; color: #a0f; }
+        .level-card a { color: #00ff41; text-decoration: none; display: block; }
+
+        .footer { text-align: center; padding: 30px; border-top: 1px solid #1a1a1a; color: #555; font-size: 13px; margin-top: 50px; }
+        .footer a { color: #00ff41; text-decoration: none; }
+        @media (max-width: 768px) {
+            .nav-links { display: none; flex-direction: column; width: 100%; background: #0d0d0d; }
+            .nav-links.active { display: flex; }
+            .hamburger { display: block; }
+            h1 { font-size: 24px; }
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar">
+    <div class="navbar-inner">
+        <a href="/" class="logo">Cyber<span>Arena</span></a>
+        <div class="hamburger" onclick="document.querySelector('.nav-links').classList.toggle('active')">&#9776;</div>
+        <ul class="nav-links">
+            <li><a href="/">Home</a></li>
+            <li><a href="/awareness.html">Awareness</a></li>
+            <li class="dropdown">
+                <a href="#">Labs &#9662;</a>
+                <div class="dropdown-content">
+                    <a href="/ethical-hacking/">Ethical Hacking</a>
+                    <a href="/soc/">SOC</a>
+                    <a href="/grc/">GRC</a>
+                    <a href="/malware-analysis/">Malware Analysis</a>
+                    <a href="/android-hacking/">Android Hacking</a>
+                </div>
+            </li>
+            <li class="dropdown">
+                <a href="#">Tools &#9662;</a>
+                <div class="dropdown-content">
+                    <a href="/terminal.html">Hacker Terminal</a>
+                    <a href="/whois.html">WHOIS Lookup</a>
+                </div>
+            </li>
+            <li><a href="/challenges/task.html">Challenges</a></li>
+        </ul>
+    </div>
+</nav>
+
+<div class="container">
+    <h1>&#127919; Choose Your Mission</h1>
+    <p class="subtitle">7 levels of cybersecurity challenges. Start from beginner and work your way to advanced.</p>
+
+    <div class="level-grid">
+
+        <div class="level-card">
+            <a href="/level1.html">
+                <h3>&#128680; Level 1: Hacker Basics</h3>
+                <p>Learn the fundamentals of hacking. Find hidden info in source code, understand basic recon, and solve beginner challenges.</p>
+                <span class="badge badge-green">Beginner</span>
+                <span class="badge badge-green">5 Challenges</span>
+            </a>
+        </div>
+
+        <div class="level-card">
+            <a href="/level2.html">
+                <h3>&#127760; Level 2: Web Attacker</h3>
+                <p>Web application pentesting. SQL injection, XSS, HTTP manipulation, and cookie stealing.</p>
+                <span class="badge badge-blue">Medium</span>
+                <span class="badge badge-blue">5 Challenges</span>
+            </a>
+        </div>
+
+        <div class="level-card">
+            <a href="/level3.html">
+                <h3>&#9000; Level 3: Command Line</h3>
+                <p>Master Linux terminal commands used by ethical hackers. Learn nmap, grep, netstat and more.</p>
+                <span class="badge badge-blue">Medium</span>
+                <span class="badge badge-blue">6 Challenges</span>
+            </a>
+        </div>
+
+        <div class="level-card">
+            <a href="/level4.html">
+                <h3>&#128300; Level 4: CTF Logic</h3>
+                <p>Capture The Flag challenges. Binary decoding, base64, hex, ciphers, and logic puzzles. 5 minute timer!</p>
+                <span class="badge badge-yellow">Hard</span>
+                <span class="badge badge-yellow">5 Challenges</span>
+            </a>
+        </div>
+
+        <div class="level-card">
+            <a href="/level5.html">
+                <h3>&#9762; Level 5: Attack Simulation</h3>
+                <p>Real penetration testing scenarios. Choose the right commands and tools to complete each attack.</p>
+                <span class="badge badge-red">Advanced</span>
+                <span class="badge badge-red">5 Challenges</span>
+            </a>
+        </div>
+
+        <div class="level-card">
+            <a href="/level6.html">
+                <h3>&#129327; Level 6: Ultimate Quiz</h3>
+                <p>20 expert-level MCQ questions covering XSS, SQLi, port numbers, hashing, OSI model, tools, and more.</p>
+                <span class="badge badge-purple">Expert</span>
+                <span class="badge badge-purple">20 Questions</span>
+            </a>
+        </div>
+
+        <div class="level-card">
+            <a href="/guess.html">
+                <h3>&#128274; Level 7: System Breach</h3>
+                <p>Crack the system code! A guessing game with a hacker twist. Break through the security by finding the right number.</p>
+                <span class="badge badge-green">Fun</span>
+                <span class="badge badge-yellow">Logic</span>
+            </a>
+        </div>
+
+    </div>
+</div>
+
+<div class="footer">
+    <p>CyberArena — Educational Cybersecurity Platform | <a href="/">Home</a> | <a href="/awareness.html">Awareness</a></p>
+</div>
+
+</body>
+</html>
