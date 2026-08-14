@@ -37,7 +37,7 @@ Purpose of the Project:
 
 Live Website:
 
-https://bhavaniprasad899.github.io
+https://bhavaniprasad899.github.io/cyberarena/
 
 Developer:
 
